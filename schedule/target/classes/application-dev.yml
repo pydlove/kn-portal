@@ -1,0 +1,55 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  aop:
+    auto: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/blsh?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    filters: stat,wall,log4j
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    minldle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictabledleTimeMillis: 300000
+    validationQuery: select 1 from dual
+    testWhileldle: true
+    testOnBorrow: false
+    testOnReturn: false
+  mvc:
+    static-path-pattern: /**
+    favicon: false
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    cache: true
+server:
+  port: 9093
+  servlet:
+    context-path: /schedule-blsh-service
+  address: 0.0.0.0
+  tomcat:
+    basedir: D:\1@CodeManager\aiocloud-spance\aioc-talent\ui\ui-console\src\main\resources\static\temp
+mybatis:
+  mapper-locations: classpath:mapper-simple-blsh/*.xml
+  type-aliases-package: com.aiocloud.camp.dao.blsh.po
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+logging:
+  level:
+    com.aiocloud.blsh.camp: debug
+    com.aiocloud.camp.dao.blsh: debug
