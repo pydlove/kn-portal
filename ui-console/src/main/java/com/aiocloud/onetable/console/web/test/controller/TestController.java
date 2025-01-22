@@ -1,10 +1,14 @@
 package com.aiocloud.onetable.console.web.test.controller;
 
 import com.aiocloud.onetable.console.base.common.CommonResponse;
+import com.aiocloud.onetable.console.base.common.PageRequest;
+import com.aiocloud.onetable.console.base.common.PaginationResult;
+import com.aiocloud.onetable.console.web.test.dto.TestInfoDTO;
 import com.aiocloud.onetable.console.web.test.service.TestService;
 import com.aiocloud.onetable.console.web.test.vo.TestInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,5 +37,15 @@ public class TestController {
     public CommonResponse<TestInfoVO> selectExample() {
 
         return new CommonResponse<>(testService.getOneTest());
+    }
+
+    @GetMapping("/page")
+    public CommonResponse<PaginationResult<TestInfoVO>> selectPageExample(
+            TestInfoDTO testInfoDTO,
+            PageRequest pageRequest
+    ) {
+
+        PaginationResult<TestInfoVO> page = testService.selectPageExample(testInfoDTO, pageRequest);
+        return new CommonResponse<>(page);
     }
 }

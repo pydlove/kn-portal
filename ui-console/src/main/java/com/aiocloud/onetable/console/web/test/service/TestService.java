@@ -1,5 +1,8 @@
 package com.aiocloud.onetable.console.web.test.service;
 
+import com.aiocloud.onetable.console.base.common.PageRequest;
+import com.aiocloud.onetable.console.base.common.PaginationResult;
+import com.aiocloud.onetable.console.web.test.dto.TestInfoDTO;
 import com.aiocloud.onetable.console.web.test.vo.TestInfoVO;
 import com.aiocloud.onetable.mysql.test.po.TestInfoPO;
 
@@ -15,4 +18,7 @@ import com.aiocloud.onetable.mysql.test.po.TestInfoPO;
 public interface TestService {
 
     TestInfoVO getOneTest();
+
+    PaginationResult<TestInfoVO> selectPageExample(TestInfoDTO testInfoDTO, PageRequest pageRequest);
+
 }

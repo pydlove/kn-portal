@@ -11,6 +11,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(1002, "Refresh token 无效"),
     TOKEN_EXCEPTION(1003, "token 异常"),
     TOKEN_HAS_EXPIRED(1004, "token 已过期"),
+    INTERNAL_SERVER_ERROR(1000, "内部服务器错误"),
 
     ;
 
