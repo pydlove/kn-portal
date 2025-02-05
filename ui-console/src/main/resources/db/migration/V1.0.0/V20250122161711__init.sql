@@ -9,4 +9,4 @@ CREATE TABLE `t_test_info`
     `delete_status` int          DEFAULT NULL,
     `test_name`     varchar(255) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
