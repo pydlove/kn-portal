@@ -25,7 +25,7 @@ public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
         }
 
         httpServletResponse.setContentType("application/json;charset=UTF-8");
-        httpServletResponse.setHeader(SystemConstant.X_AUTH_TOKEN, "");
+        httpServletResponse.setHeader(SystemConstant.TOKEN, "");
         SecurityContextHolder.clearContext();
 
         CommonResponse<String> commonResponse = new CommonResponse<>("login out");

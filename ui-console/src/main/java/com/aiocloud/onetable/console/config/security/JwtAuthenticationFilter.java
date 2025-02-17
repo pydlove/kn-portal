@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.constant.SystemConstant;
+import com.aiocloud.onetable.console.web.login.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,7 +29,7 @@ import java.util.List;
  * @copyright: @copyright (c) 2022 
  * @company: aiocloud
  * @author: panyong
- * @version: 1.0.0 
+ * @version: 1.0.0
  * @createTime: 2025-01-21 15:03 
  */
 @RequiredArgsConstructor
@@ -37,12 +38,12 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenGenerator jwtTokenGenerator;
-    // private final AccountUserDetailsService accountUserDetailsService;
+    private final AccountUserDetailsService accountUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        String token = request.getHeader(SystemConstant.X_AUTH_TOKEN);
+        String token = request.getHeader(SystemConstant.TOKEN);
 
         // 未获取到token，继续往后走，因为后面还有鉴权管理器等去判断是否拥有身份凭证，所以可以放行
         // 没有token相当于匿名访问，若有一些接口是需要权限的，则不能访问这些接口

@@ -1,6 +1,8 @@
 package com.aiocloud.onetable.console.web.login.service;
 
 
+import com.aiocloud.onetable.console.web.login.dto.LoginDTO;
+import com.aiocloud.onetable.console.web.login.vo.UserInfoVO;
 import org.springframework.security.core.userdetails.User;
 
 import java.security.Permission;
@@ -22,4 +24,6 @@ public interface UserService {
     List<Permission> getPermissionByUserId(Integer userId);
 
     List<Permission> getPermissionByUser(User user);
+
+    UserInfoVO doLogin(LoginDTO login);
 }

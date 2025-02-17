@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.onetable.mysql.sys.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.onetable.mysql.sys.po.SysUserPO">
+        <id property="id" column="id"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userName" column="user_name"/>
+        <result property="roleId" column="role_id"/>
+        <result property="createUid" column="create_uid"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUid" column="update_uid"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="deleteFlag" column="delete_flag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,user_password,user_name,role_id,create_uid,dept_id,
+        create_time,update_uid,update_time,status,delete_flag
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where user_id = #{id}
+    </select>
+
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where user_name = #{username
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from sys_user
+        where id = #{id}
+    </delete>
+    <insert id="insert" keyColumn="user_id" keyProperty="userId"
+            parameterType="com.aiocloud.onetable.mysql.sys.po.SysUserPO" useGeneratedKeys="true">
+        insert into sys_user
+        (id, user_password, user_name, role_id, create_uid, dept_id,
+         create_time, update_uid, update_time, status, delete_flag)
+        values (#{id}, #{userPassword}, #{userName}, #{roleId}, #{createUid}, #{deptId},
+                #{createTime}, #{updateUid}, #{updateTime}, #{status}, #{deleteFlag})
+    </insert>
+    <insert id="insertSelective" keyColumn="user_id" keyProperty="userId"
+            parameterType="com.aiocloud.onetable.mysql.sys.po.SysUserPO" useGeneratedKeys="true">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userPassword != null">user_password,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userPassword != null">#{userPassword},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.aiocloud.onetable.mysql.sys.po.SysUserPO">
+        update sys_user
+        <set>
+            <if test="userPassword != null">
+                user_password = #{userPassword},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.onetable.mysql.sys.po.SysUserPO">
+        update sys_user
+        set user_password = #{userPassword},
+            user_name     = #{userName},
+            role_id       = #{roleId},
+            create_uid    = #{createUid},
+            dept_id       = #{deptId},
+            create_time   = #{createTime},
+            update_uid    = #{updateUid},
+            update_time   = #{updateTime},
+            status        = #{status},
+            delete_flag   = #{deleteFlag}
+        where id = #{id}
+    </update>
+</mapper>

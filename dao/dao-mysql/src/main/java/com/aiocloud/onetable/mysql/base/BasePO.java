@@ -25,11 +25,9 @@ public class BasePO {
 
     private Date updateTime;
 
-    private Integer deleteStatus;
-
-    private Integer version;
+    private Integer deleteFlag;
 
     private Long createUid;
 
-    private Long modifyUid;
+    private Long updateUid;
 }

@@ -37,7 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // Generate a token and place it in the request header
         String token = jwtTokenGenerator.generateToken(authentication.getName(), jwtTokenProperties.getIssuer(), jwtTokenProperties.getAudience());
-        httpServletResponse.setHeader(SystemConstant.X_AUTH_TOKEN, token);
+        httpServletResponse.setHeader(SystemConstant.TOKEN, token);
 
         CommonResponse<String> commonResponse = new CommonResponse<>(null);
 

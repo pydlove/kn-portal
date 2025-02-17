@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 public class AccountUserDetailsService implements UserDetailsService {
 
 
-    private final UserService userService;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username), true);

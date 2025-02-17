@@ -87,7 +87,7 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(accountUserDetailsService);
 
         // 设置加密机制，用于对用户进行身份验证
-        //authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 }
