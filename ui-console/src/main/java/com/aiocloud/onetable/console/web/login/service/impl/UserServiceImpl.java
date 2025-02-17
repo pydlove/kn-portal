@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import com.aiocloud.onetable.console.base.exception.BizException;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
+import com.aiocloud.onetable.console.config.security.JwtTokenGenerator;
+import com.aiocloud.onetable.console.config.security.JwtTokenProperties;
 import com.aiocloud.onetable.console.web.login.UserPwdTool;
 import com.aiocloud.onetable.console.web.login.dto.LoginDTO;
 import com.aiocloud.onetable.console.web.login.service.UserService;
@@ -42,6 +44,8 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
 
     private final SysUserMapper sysUserMapper;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenGenerator jwtTokenGenerator;
+    private final JwtTokenProperties jwtTokenProperties;
     @Override
     public List<Permission> getPermissionByUsername(String username) {
         return null;
@@ -60,12 +64,16 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
     @Override
     public UserInfoVO doLogin(LoginDTO login) {
 
-        SysUserPO sysUser = Optional.ofNullable(sysUserMapper.selectByUsername(login.getUsername())).orElse(new SysUserPO());
+        String username = login.getUsername();
+        SysUserPO sysUser = Optional.ofNullable(sysUserMapper.selectByUsername(username)).orElse(new SysUserPO());
         String desPassword = UserPwdTool.doPasswordDeAesCBC(login.getRandomId(), login.getUserPwd());
         boolean matches = passwordEncoder.matches(desPassword, sysUser.getUserPassword());
         if (matches) {
+
+            String token = jwtTokenGenerator.generateToken(username, jwtTokenProperties.getIssuer(), jwtTokenProperties.getAudience());
+
             UserInfoVO userInfoVO = new UserInfoVO();
-            userInfoVO.setToken(sysUser.getId().toString());
+            userInfoVO.setToken(token);
             userInfoVO.setUserId(sysUser.getId());
             userInfoVO.setUsername(sysUser.getUserName());
 

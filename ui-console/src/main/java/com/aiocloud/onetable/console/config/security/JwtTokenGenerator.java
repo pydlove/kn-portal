@@ -97,16 +97,12 @@ public class JwtTokenGenerator {
      */
     public static String generateToken(String username, String issuer, List<String> audiences) {
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(AUD_KEY, audiences);
-
         return BEARER_PREFIX + Jwts.builder()
                 .setSubject(username)
                 .setIssuer(issuer)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, secretKey)
-                .setClaims(claims)
                 .compact();
     }
 

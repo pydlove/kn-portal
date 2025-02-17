@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -37,11 +39,25 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Value("${system.url.whitelist:/login/do}")
+    private String urlWhitelist;
+
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
     private final JwtTokenGenerator jwtTokenGenerator;
     private final AccountUserDetailsService accountUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        String[] urls = urlWhitelist.split(SystemConstant.SEPARATOR_COMMA);
+        for (String url : urls) {
+            if (Objects.equals(contextPath + url.trim(), request.getRequestURI())) {
+                chain.doFilter(request, response);
+                return;
+            }
+        }
 
         String token = request.getHeader(SystemConstant.TOKEN);
 

@@ -35,7 +35,7 @@
         select
         <include refid="Base_Column_List"/>
         from sys_user
-        where user_name = #{username
+        where user_name = #{username}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
