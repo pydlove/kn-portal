@@ -13,5 +13,10 @@ import lombok.Data;
  */
 @Data
 public class ApplyDTO {
+
     private String username;
+    private Long tableId;
+    private String applyReason;
+    private String purpose;
+    private String applyNo;
 }

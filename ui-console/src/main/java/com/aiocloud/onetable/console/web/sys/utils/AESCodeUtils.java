@@ -1,7 +1,7 @@
 /**
  * 2009-10-5
  */
-package com.aiocloud.onetable.console.web.login.utils;
+package com.aiocloud.onetable.console.web.sys.utils;
 
 
 import javax.crypto.Cipher;

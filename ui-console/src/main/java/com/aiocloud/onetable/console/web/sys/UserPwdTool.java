@@ -1,7 +1,7 @@
-package com.aiocloud.onetable.console.web.login;
+package com.aiocloud.onetable.console.web.sys;
 
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
-import com.aiocloud.onetable.console.web.login.utils.AESCodeUtils;
+import com.aiocloud.onetable.console.web.sys.utils.AESCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import org.springframework.util.StringUtils;

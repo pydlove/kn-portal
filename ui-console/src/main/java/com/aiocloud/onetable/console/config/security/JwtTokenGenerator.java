@@ -1,10 +1,15 @@
 package com.aiocloud.onetable.console.config.security;
 
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
+import com.aiocloud.onetable.console.base.exception.BadRequestException;
+import com.aiocloud.onetable.console.base.exception.ErrorCode;
+import com.aiocloud.onetable.console.constant.SystemConstant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -331,4 +336,32 @@ public class JwtTokenGenerator {
         return token.substring(7).trim();
     }
 
+    /**
+     * getUserName
+     *
+     * @since 1.0.0
+     *
+     * @param: request
+     * @return: java.lang.String
+     * @author: panyong
+     * @version: 1.0.0
+     * @createTime: 2025-02-19 11:30 
+     */
+    public String getUserName(HttpServletRequest request) {
+
+        String token = request.getHeader(SystemConstant.TOKEN);
+        if (StrUtil.isBlankOrUndefined(token)) {
+            return null;
+        }
+
+        Claims claims = extractAllClaims(token);
+        if (claims == null) {
+            return null;
+        }
+        if (isTokenExpired(claims.getExpiration())) {
+            return null;
+        }
+
+        return claims.getSubject();
+    }
 }
