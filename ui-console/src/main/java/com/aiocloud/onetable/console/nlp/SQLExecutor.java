@@ -32,7 +32,6 @@ public class SQLExecutor {
      */
     public List executeSql(String sql, List<String> columnList) throws SQLException {
         List<List> resultList = new ArrayList<>();
-        resultList.add(columnList);
         try(
             PreparedStatement preparedStatement = sessionFactory.openSession().getConnection().prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();

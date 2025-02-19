@@ -1,12 +1,12 @@
 package com.aiocloud.onetable.console.web.table.controller;
 
 import com.aiocloud.onetable.console.utils.Result;
+import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @auther ybin
@@ -19,8 +19,9 @@ public class TalkController {
     @Resource
     private TalkService talkService;
 
-    @PostMapping("/question")
-    public Result question(@RequestBody String tableName, @RequestBody String content){
+    @GetMapping("/question")
+    @ResponseBody
+    public Result question(String tableName, String content){
         return talkService.question(tableName, content);
     }
 }

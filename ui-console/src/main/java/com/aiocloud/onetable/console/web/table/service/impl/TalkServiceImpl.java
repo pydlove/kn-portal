@@ -4,6 +4,7 @@ import com.aiocloud.onetable.console.nlp.SQLExecutor;
 import com.aiocloud.onetable.console.nlp.cache.TableMap;
 import com.aiocloud.onetable.console.nlp.parse.SQLGenerator;
 import com.aiocloud.onetable.console.utils.Result;
+import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,18 +29,20 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public Result question(String tableName, String content) {
-        List list = new ArrayList();
+        TalkDTO talkDTO = new TalkDTO();
         try {
             String select = SQLGenerator.generate(tableName, content);
-            List<String> columnList = null;
+            List<String> columnList = new ArrayList<>();
             TableMap.map.forEach((key, value) -> {
                 columnList.add(value);
             });
-            list = sqlExecutor.executeSql(select, columnList);
+            talkDTO.setColumnList(columnList);
+            List list = sqlExecutor.executeSql(select, columnList);
+            talkDTO.setDataList(list);
         } catch (SQLException e) {
             logger.error("会话异常", e);
             Result.fail("会话异常", e);
         }
-        return Result.success("", list);
+        return Result.success("", talkDTO);
     }
 }

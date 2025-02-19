@@ -35,7 +35,7 @@ public class SQLGenerator {
         content = content.replaceAll(regex, "");
         List<Condition> conditionList = SQLExtractor.extractConditon(content);
         List<Sort> sortList = SQLExtractor.extractSortField(content);
-        String sql = generate("test_table", conditionList, sortList);
+        String sql = generate(tableName, conditionList, sortList);
         return sql;
     }
 
