@@ -26,13 +26,16 @@ public class DictionaryConfPO extends BasePO {
     private String wordNature;
 
     @TableField("word_usege")
-    private Integer wordUsege;
+    private String wordUsege;
 
     @TableField("word_desc")
-    private Date wordDesc;
+    private String wordDesc;
 
     @TableField("delete_flag")
-    private Date deleteFlag;
+    private Integer deleteFlag;
+
+    @TableField("create_time")
+    private Date createTime;
 
     @TableField("update_time")
     private Date updateTime;
