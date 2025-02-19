@@ -1,8 +1,9 @@
 package com.aiocloud.onetable.console.web.table.service;
 
-import com.aiocloud.onetable.mysql.table.po.ApplyPO;
-
-import java.util.List;
+import com.aiocloud.onetable.console.base.common.PageRequest;
+import com.aiocloud.onetable.console.base.common.PaginationResult;
+import com.aiocloud.onetable.console.web.table.dto.ApplyDTO;
+import com.aiocloud.onetable.console.web.table.vo.ApplyVO;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface ApplyService {
 
-    int submitApply(ApplyPO applyPO);
+    int submitApply(ApplyDTO applyDTO);
 
-    List<ApplyPO> getAllApplies();
+    PaginationResult<ApplyVO> getAllApplies(ApplyDTO applyDTO, PageRequest pageRequest);
 }

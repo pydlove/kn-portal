@@ -1,16 +1,23 @@
 package com.aiocloud.onetable.mysql.table.mapper;
 
 import com.aiocloud.onetable.mysql.table.po.ApplyPO;
+import com.aiocloud.onetable.mysql.test.po.TestInfoPO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
-* @author py_wo
-* @description 针对表【t_apply】的数据库操作Mapper
-* @createDate 2025-02-18 14:37:11
-* @Entity com.aiocloud.ontable.mysql.sys.po.TApply
-*/
-public interface ApplyMapper {
+ *
+ * @description: ApplyMapper.java
+ * @copyright: @copyright (c) 2022 
+ * @company: aiocloud
+ * @author: panyong
+ * @version: 1.0.0 
+ * @createTime: 2025-02-18 17:54
+ */
+@Mapper
+public interface ApplyMapper extends BaseMapper<ApplyPO> {
 
     int deleteByPrimaryKey(Long id);
 

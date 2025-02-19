@@ -1,7 +1,13 @@
 package com.aiocloud.onetable.console.web.table.controller;
 
 
+import com.aiocloud.onetable.console.base.common.CommonResponse;
+import com.aiocloud.onetable.console.base.common.PageRequest;
+import com.aiocloud.onetable.console.base.common.PaginationResult;
+import com.aiocloud.onetable.console.web.table.dto.ApplyDTO;
 import com.aiocloud.onetable.console.web.table.service.ApplyService;
+import com.aiocloud.onetable.console.web.table.vo.ApplyVO;
+import com.aiocloud.onetable.console.web.test.dto.TestInfoDTO;
 import com.aiocloud.onetable.mysql.table.po.ApplyPO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +32,16 @@ public class ApplyController {
     private final ApplyService applyService;
 
     @PostMapping("/submit")
-    public int submitApply(@RequestBody ApplyPO applyPO) {
-        return applyService.submitApply(applyPO);
+    public CommonResponse<Integer> submitApply(@RequestBody ApplyDTO applyDTO) {
+        return new CommonResponse<>(applyService.submitApply(applyDTO));
     }
 
     @GetMapping("/list")
-    public List<ApplyPO> getAllApplies() {
-        return applyService.getAllApplies();
+    public CommonResponse<PaginationResult<ApplyVO>>  getAllApplies(
+            ApplyDTO applyDTO,
+            PageRequest pageRequest
+    ) {
+        return new CommonResponse<>(applyService.getAllApplies(applyDTO, pageRequest));
     }
 }
 

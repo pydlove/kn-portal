@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.constant.SystemConstant;
-import com.aiocloud.onetable.console.web.login.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
