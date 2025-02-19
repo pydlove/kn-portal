@@ -4,10 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.common.PageRequest;
 import com.aiocloud.onetable.console.base.common.PaginationResult;
+import com.aiocloud.onetable.console.web.sys.service.UserService;
 import com.aiocloud.onetable.console.web.table.dto.ApplyDTO;
 import com.aiocloud.onetable.console.web.table.service.ApplyService;
 import com.aiocloud.onetable.console.web.table.vo.ApplyVO;
 import com.aiocloud.onetable.mysql.table.mapper.ApplyMapper;
+import com.aiocloud.onetable.mysql.table.mapper.TableInfoMapper;
 import com.aiocloud.onetable.mysql.table.po.ApplyPO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,10 +33,17 @@ import java.util.List;
 public class ApplyServiceImpl extends ServiceImpl<ApplyMapper, ApplyPO> implements ApplyService {
 
     private final ApplyMapper applyMapper;
+    private final TableInfoMapper tableInfoMapper;
+    private final UserService userService;
 
     @Override
     public int submitApply(ApplyDTO applyDTO) {
         ApplyPO applyPO = BeanUtil.copyProperties(applyDTO, ApplyPO.class);
+
+        // Get the user's ID from the token.
+        Long userId = userService.getCurrentUserId();
+        applyPO.setUserId(userId);
+
         return applyMapper.insertSelective(applyPO);
     }
 

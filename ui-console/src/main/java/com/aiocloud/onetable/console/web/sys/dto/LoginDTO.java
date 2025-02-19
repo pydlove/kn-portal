@@ -1,4 +1,4 @@
-package com.aiocloud.onetable.console.web.login.dto;
+package com.aiocloud.onetable.console.web.sys.dto;
 
 import lombok.Data;
 

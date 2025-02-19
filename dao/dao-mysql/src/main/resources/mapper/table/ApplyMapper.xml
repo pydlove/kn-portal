@@ -5,133 +5,163 @@
 <mapper namespace="com.aiocloud.onetable.mysql.table.mapper.ApplyMapper">
 
     <resultMap id="BaseResultMap" type="com.aiocloud.onetable.mysql.table.po.ApplyPO">
-            <id property="id" column="id" />
-            <result property="userId" column="user_id" />
-            <result property="username" column="username" />
-            <result property="tableId" column="table_id" />
-            <result property="applyReason" column="apply_reason" />
-            <result property="purpose" column="purpose" />
-            <result property="createTime" column="create_time" />
-            <result property="createUid" column="create_uid" />
-            <result property="updateUid" column="update_uid" />
-            <result property="updateTime" column="update_time" />
-            <result property="deleteFlag" column="delete_flag" />
-            <result property="applyNo" column="apply_no" />
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="tableId" column="table_id"/>
+        <result property="applyReason" column="apply_reason"/>
+        <result property="purpose" column="purpose"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUid" column="create_uid"/>
+        <result property="updateUid" column="update_uid"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="applyNo" column="apply_no"/>
+        <result property="applyStatus" column="apply_status"/>
+        <result property="applyResult" column="apply_result"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,user_id,username,table_id,apply_reason,purpose,
-        create_time,create_uid,update_uid,update_time,delete_flag, apply_no
+        create_time,create_uid,update_uid,update_time,delete_flag, apply_no, apply_status, apply_result
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from t_apply
-        where  id = #{id} 
+        where id = #{id}
     </select>
 
     <select id="selectAllApplies" resultMap="BaseResultMap">
-        SELECT id,user_id,username,table_id,apply_reason,purpose,
-               create_time,create_uid,update_uid,update_time,delete_flag, apply_no
+        SELECT id,
+               user_id,
+               username,
+               table_id,
+               apply_reason,
+               purpose,
+               create_time,
+               create_uid,
+               update_uid,
+               update_time,
+               delete_flag,
+               apply_no,
+               apply_status,
+               apply_result
         FROM t_apply
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from t_apply
-        where  id = #{id} 
+        delete
+        from t_apply
+        where id = #{id}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.aiocloud.onetable.mysql.table.po.ApplyPO" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.aiocloud.onetable.mysql.table.po.ApplyPO"
+            useGeneratedKeys="true">
         insert into t_apply
-        ( id,user_id,username,table_id,apply_reason,purpose,
-        create_time,create_uid,update_uid,update_time,delete_flag,apply_no)
-        values (#{id},#{userId},#{username},#{tableId},#{applyReason},#{purpose},
-        #{createTime},#{createUid},#{updateUid},#{updateTime},#{deleteFlag},#{applyNo})
+        (id, user_id, username, table_id, apply_reason, purpose,
+         create_time, create_uid, update_uid, update_time, delete_flag, apply_no, apply_status, apply_result)
+        values (#{id}, #{userId}, #{username}, #{tableId}, #{applyReason}, #{purpose},
+                #{createTime}, #{createUid}, #{updateUid}, #{updateTime}, #{deleteFlag}, #{applyNo}, #{applyStatus},
+                #{applyResult})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.aiocloud.onetable.mysql.table.po.ApplyPO" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.onetable.mysql.table.po.ApplyPO" useGeneratedKeys="true">
         insert into t_apply
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
-                <if test="userId != null">user_id,</if>
-                <if test="username != null">username,</if>
-                <if test="tableId != null">table_id,</if>
-                <if test="applyReason != null">apply_reason,</if>
-                <if test="purpose != null">purpose,</if>
-                <if test="createTime != null">create_time,</if>
-                <if test="createUid != null">create_uid,</if>
-                <if test="updateUid != null">update_uid,</if>
-                <if test="updateTime != null">update_time,</if>
-                <if test="deleteFlag != null">delete_flag,</if>
-                <if test="applyNo != null">apply_no,</if>
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="username != null">username,</if>
+            <if test="tableId != null">table_id,</if>
+            <if test="applyReason != null">apply_reason,</if>
+            <if test="purpose != null">purpose,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+            <if test="applyNo != null">apply_no,</if>
+            <if test="applyStatus != null">apply_status,</if>
+            <if test="applyResult != null">apply_result,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id},</if>
-                <if test="userId != null">#{userId},</if>
-                <if test="username != null">#{username},</if>
-                <if test="tableId != null">#{tableId},</if>
-                <if test="applyReason != null">#{applyReason},</if>
-                <if test="purpose != null">#{purpose},</if>
-                <if test="createTime != null">#{createTime},</if>
-                <if test="createUid != null">#{createUid},</if>
-                <if test="updateUid != null">#{updateUid},</if>
-                <if test="updateTime != null">#{updateTime},</if>
-                <if test="deleteFlag != null">#{deleteFlag},</if>
-                <if test="applyNo != null">#{apply_no},</if>
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="username != null">#{username},</if>
+            <if test="tableId != null">#{tableId},</if>
+            <if test="applyReason != null">#{applyReason},</if>
+            <if test="purpose != null">#{purpose},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+            <if test="applyNo != null">#{applyNo},</if>
+            <if test="applyStatus != null">#{applyStatus},</if>
+            <if test="applyResult != null">#{applyResult},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.aiocloud.onetable.mysql.table.po.ApplyPO">
         update t_apply
         <set>
-                <if test="userId != null">
-                    user_id = #{userId},
-                </if>
-                <if test="username != null">
-                    username = #{username},
-                </if>
-                <if test="tableId != null">
-                    table_id = #{tableId},
-                </if>
-                <if test="applyReason != null">
-                    apply_reason = #{applyReason},
-                </if>
-                <if test="purpose != null">
-                    purpose = #{purpose},
-                </if>
-                <if test="createTime != null">
-                    create_time = #{createTime},
-                </if>
-                <if test="createUid != null">
-                    create_uid = #{createUid},
-                </if>
-                <if test="updateUid != null">
-                    update_uid = #{updateUid},
-                </if>
-                <if test="updateTime != null">
-                    update_time = #{updateTime},
-                </if>
-                <if test="deleteFlag != null">
-                    delete_flag = #{deleteFlag},
-                </if>
-                <if test="applyNo != null">
-                    apply_no = #{applyNo},
-                </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="tableId != null">
+                table_id = #{tableId},
+            </if>
+            <if test="applyReason != null">
+                apply_reason = #{applyReason},
+            </if>
+            <if test="purpose != null">
+                purpose = #{purpose},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag},
+            </if>
+            <if test="applyNo != null">
+                apply_no = #{applyNo},
+            </if>
+            <if test="applyStatus != null">
+                apply_status = #{applyStatus},
+            </if>
+            <if test="applyResult != null">
+                apply_result = #{applyResult},
+            </if>
         </set>
-        where   id = #{id} 
+        where id = #{id}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.aiocloud.onetable.mysql.table.po.ApplyPO">
         update t_apply
-        set 
-            user_id =  #{userId},
-            username =  #{username},
-            table_id =  #{tableId},
-            apply_reason =  #{applyReason},
-            purpose =  #{purpose},
-            create_time =  #{createTime},
-            create_uid =  #{createUid},
-            update_uid =  #{updateUid},
-            update_time =  #{updateTime},
-            delete_flag =  #{deleteFlag},
-            apply_no =  #{applyNo}
-        where   id = #{id}
+        set user_id      = #{userId},
+            username     = #{username},
+            table_id     = #{tableId},
+            apply_reason = #{applyReason},
+            purpose      = #{purpose},
+            create_time  = #{createTime},
+            create_uid   = #{createUid},
+            update_uid   = #{updateUid},
+            update_time  = #{updateTime},
+            delete_flag  = #{deleteFlag},
+            apply_result = #{applyResult},
+            apply_status = #{applyStatus},
+            apply_no     = #{applyNo}
+        where id = #{id}
     </update>
 </mapper>

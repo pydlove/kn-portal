@@ -1,14 +1,14 @@
-package com.aiocloud.onetable.console.web.login.controller;
+package com.aiocloud.onetable.console.web.sys.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.common.CommonResponse;
 import com.aiocloud.onetable.console.config.security.JwtTokenGenerator;
 import com.aiocloud.onetable.console.config.security.JwtTokenProperties;
 import com.aiocloud.onetable.console.constant.SystemConstant;
-import com.aiocloud.onetable.console.web.login.UserPwdTool;
-import com.aiocloud.onetable.console.web.login.dto.LoginDTO;
-import com.aiocloud.onetable.console.web.login.service.UserService;
-import com.aiocloud.onetable.console.web.login.vo.UserInfoVO;
+import com.aiocloud.onetable.console.web.sys.UserPwdTool;
+import com.aiocloud.onetable.console.web.sys.dto.LoginDTO;
+import com.aiocloud.onetable.console.web.sys.service.UserService;
+import com.aiocloud.onetable.console.web.sys.vo.UserInfoVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

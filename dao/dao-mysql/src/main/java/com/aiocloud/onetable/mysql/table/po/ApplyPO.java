@@ -30,4 +30,8 @@ public class ApplyPO extends BasePO {
     
     private String applyNo;
 
+    private String applyStatus;
+
+    private String applyResult;
+
 }

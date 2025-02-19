@@ -1,4 +1,4 @@
-package com.aiocloud.onetable.console.web.login.vo;
+package com.aiocloud.onetable.console.web.sys.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

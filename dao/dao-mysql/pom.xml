@@ -37,6 +37,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.23</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.aiocloud.parent</groupId>
+            <artifactId>common</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
 
