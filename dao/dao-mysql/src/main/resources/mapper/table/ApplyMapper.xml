@@ -164,4 +164,19 @@
             apply_no     = #{applyNo}
         where id = #{id}
     </update>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        INSERT INTO apply_table (id, applyStatus)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.applyStatus.code}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        id = VALUES(id),
+        applyStatus = VALUES(applyStatus)
+    </update>
+
 </mapper>

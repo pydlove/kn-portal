@@ -4,6 +4,7 @@ import com.aiocloud.onetable.mysql.table.po.ApplyPO;
 import com.aiocloud.onetable.mysql.test.po.TestInfoPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public interface ApplyMapper extends BaseMapper<ApplyPO> {
 
     int updateByPrimaryKey(ApplyPO record);
 
-    List<ApplyPO> getAllApplies();
+    List<ApplyPO> selectAllApplies();
 
+    int batchUpdate(@Param("batchApplies") List<ApplyPO> batchApplies);
 }

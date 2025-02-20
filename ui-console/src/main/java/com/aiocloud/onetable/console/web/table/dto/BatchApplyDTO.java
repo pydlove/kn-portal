@@ -2,9 +2,11 @@ package com.aiocloud.onetable.console.web.table.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  *
- * @description: ApplyDTO.java
+ * @description: BatchApplyDTO.java
  * @copyright: @copyright (c) 2022 
  * @company: aiocloud
  * @author: panyong
@@ -12,13 +14,8 @@ import lombok.Data;
  * @createTime: 2025-02-18 17:36 
  */
 @Data
-public class ApplyDTO {
+public class BatchApplyDTO {
 
-    private Long id;
-    private String username;
-    private Long tableId;
-    private String applyReason;
-    private String purpose;
-    private String applyNo;
+    private List<Long> ids;
     private Integer applyStatus;
 }

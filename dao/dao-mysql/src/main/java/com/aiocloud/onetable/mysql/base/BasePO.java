@@ -12,7 +12,7 @@ import java.util.Date;
  * @copyright: @copyright (c) 2022 
  * @company: aiocloud
  * @author: panyong
- * @version: 1.0.0 
+ * @version: 1.0.0
  * @createTime: 2025-01-21 17:20 
  */
 @Data
@@ -30,4 +30,9 @@ public class BasePO {
     private Long createUid;
 
     private Long updateUid;
+
+    public Date getUpdateTime() {
+
+        return updateTime == null ? new Date() : updateTime;
+    }
 }

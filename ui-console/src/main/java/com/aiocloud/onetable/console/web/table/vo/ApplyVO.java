@@ -1,6 +1,9 @@
 package com.aiocloud.onetable.console.web.table.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  *
@@ -17,11 +20,16 @@ public class ApplyVO {
     private Long id;
     private Long userId;
     private String username;
-    private String tableId;
+    private Long tableId;
     private String tableName;
     private String applyReason;
     private String purpose;
     private String applyNo;
     private Integer applyStatus;
+    private String chApplyStatus;
     private String applyResult;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 }

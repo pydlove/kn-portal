@@ -5,6 +5,7 @@ import com.aiocloud.onetable.console.base.common.CommonResponse;
 import com.aiocloud.onetable.console.base.common.PageRequest;
 import com.aiocloud.onetable.console.base.common.PaginationResult;
 import com.aiocloud.onetable.console.web.table.dto.ApplyDTO;
+import com.aiocloud.onetable.console.web.table.dto.BatchApplyDTO;
 import com.aiocloud.onetable.console.web.table.service.ApplyService;
 import com.aiocloud.onetable.console.web.table.vo.ApplyVO;
 import com.aiocloud.onetable.console.web.test.dto.TestInfoDTO;
@@ -43,5 +44,16 @@ public class ApplyController {
     ) {
         return new CommonResponse<>(applyService.getAllApplies(applyDTO, pageRequest));
     }
+
+    @PostMapping("/update")
+    public CommonResponse<Integer> updateApply(@RequestBody ApplyDTO applyDTO) {
+        return new CommonResponse<>(applyService.updateApply(applyDTO));
+    }
+
+    @PostMapping("/batch-update")
+    public CommonResponse<Integer> batchUpdateApply(@RequestBody BatchApplyDTO batchApplyDTO) {
+        return new CommonResponse<>(applyService.batchUpdateApply(batchApplyDTO));
+    }
+
 }
 

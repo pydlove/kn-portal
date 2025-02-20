@@ -3,6 +3,7 @@ package com.aiocloud.onetable.console.web.table.service;
 import com.aiocloud.onetable.console.base.common.PageRequest;
 import com.aiocloud.onetable.console.base.common.PaginationResult;
 import com.aiocloud.onetable.console.web.table.dto.ApplyDTO;
+import com.aiocloud.onetable.console.web.table.dto.BatchApplyDTO;
 import com.aiocloud.onetable.console.web.table.vo.ApplyVO;
 
 /**
@@ -19,4 +20,8 @@ public interface ApplyService {
     int submitApply(ApplyDTO applyDTO);
 
     PaginationResult<ApplyVO> getAllApplies(ApplyDTO applyDTO, PageRequest pageRequest);
+
+    Integer updateApply(ApplyDTO applyDTO);
+
+    Integer batchUpdateApply(BatchApplyDTO batchApplyDTO);
 }
