@@ -2,7 +2,7 @@ package com.aiocloud.onetable.console.nlp.parse;
 
 import com.aiocloud.onetable.console.nlp.model.Condition;
 import com.aiocloud.onetable.console.nlp.model.Sort;
-import com.aiocloud.onetable.console.nlp.cache.TableMap;
+import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
 import com.aiocloud.onetable.console.utils.StringUtil;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
@@ -22,7 +22,7 @@ public class SQLExtractor {
      * @param content
      * @return
      */
-    public static List<Condition> extractConditon(String content){
+    public static List<Condition> extractConditon(String tableName, String content){
         if (StringUtil.isBlank(content)){
             return null;
         }
@@ -56,7 +56,7 @@ public class SQLExtractor {
                     CoNLLWord lastWord = wordArray[i - 1];
                     if (lastWord.POSTAG.equals("column")){
                         lastColumn = true;
-                        condition.setLeftValue(TableMap.map.get(lastWord.LEMMA));
+                        condition.setLeftValue(TableInfoCache.get(tableName, lastWord.LEMMA));
                     } else {
                         condition.setLeftValue(String.join("", "'",  lastWord.LEMMA, "'"));
                     }
@@ -65,7 +65,7 @@ public class SQLExtractor {
                     CoNLLWord nextWord = wordArray[i + 1];
                     if (nextWord.POSTAG.equals("column")){
                         nextColumn = true;
-                        condition.setRightValue(TableMap.map.get(nextWord.LEMMA));
+                        condition.setRightValue(TableInfoCache.get(tableName, nextWord.LEMMA));
                     } else {
                         condition.setRightValue(String.join("", "'",  nextWord.LEMMA, "'"));
                     }
@@ -101,7 +101,7 @@ public class SQLExtractor {
      * @param content
      * @return
      */
-    public static List<Sort> extractSortField(String content){
+    public static List<Sort> extractSortField(String tableName, String content){
         if (StringUtil.isBlank(content)){
             return null;
         }
@@ -117,7 +117,7 @@ public class SQLExtractor {
                     sortList.add(sort);
                     sort = new Sort();
                 }
-                sort.setColumnName(TableMap.map.get(word.LEMMA));
+                sort.setColumnName(TableInfoCache.get(tableName, word.LEMMA));
             }
             if (word.LEMMA.contains("降") || word.LEMMA.contains("倒")){
                 sort.setSortType("desc");

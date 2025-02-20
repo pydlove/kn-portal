@@ -1,7 +1,7 @@
 package com.aiocloud.onetable.console.web.table.service.impl;
 
 import com.aiocloud.onetable.console.nlp.SQLExecutor;
-import com.aiocloud.onetable.console.nlp.cache.TableMap;
+import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
 import com.aiocloud.onetable.console.nlp.parse.SQLGenerator;
 import com.aiocloud.onetable.console.utils.Result;
 import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther ybin
@@ -32,14 +33,20 @@ public class TalkServiceImpl implements TalkService {
         TalkDTO talkDTO = new TalkDTO();
         try {
             String select = SQLGenerator.generate(tableName, content);
+            logger.info("解析SQL为：{}", select);
             List<String> columnList = new ArrayList<>();
-            TableMap.map.forEach((key, value) -> {
+            Map<String, String> tableMap = TableInfoCache.getTableMap(tableName);
+            if (tableMap == null){
+                logger.error("查不到表{}信息", tableName);
+                Result.fail("查不到表" + tableName + "信息");
+            }
+            tableMap.forEach((key, value) -> {
                 columnList.add(value);
             });
-            talkDTO.setColumnList(columnList);
             List list = sqlExecutor.executeSql(select, columnList);
+            talkDTO.setColumnList(columnList);
             talkDTO.setDataList(list);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("会话异常", e);
             Result.fail("会话异常", e);
         }

@@ -19,8 +19,8 @@ public class ColumnInfoPO extends BasePO {
     @TableField("id")
     private Long id;
 
-    @TableField("table_id")
-    private Long tableId;
+    @TableField("table_name")
+    private String tableName;
 
     @TableField("column_name")
     private String columnName;

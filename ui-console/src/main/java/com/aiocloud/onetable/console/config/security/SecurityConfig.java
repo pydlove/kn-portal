@@ -53,21 +53,21 @@ public class SecurityConfig {
             urlWhiteArr = new String[] {};
         }
 
-        http
-                // 禁用csrf(防止跨站请求伪造攻击)
-                .csrf(AbstractHttpConfigurer::disable)
-                // 登录操作
-                .formLogin(form -> form.successHandler(loginSuccessHandler).failureHandler(loginFailureHandler))
-                // 登出操作
-                .logout(logout -> logout.logoutSuccessHandler(jwtLogoutSuccessHandler))
-                // 使用无状态session，即不使用session缓存数据
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 设置白名单
-                .authorizeHttpRequests(auth -> auth.requestMatchers(urlWhiteArr).permitAll().anyRequest().authenticated())
-                // 异常处理器
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler))
-                // 添加jwt过滤器
-                .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//        http
+//                // 禁用csrf(防止跨站请求伪造攻击)
+//                .csrf(AbstractHttpConfigurer::disable)
+//                // 登录操作
+//                .formLogin(form -> form.successHandler(loginSuccessHandler).failureHandler(loginFailureHandler))
+//                // 登出操作
+//                .logout(logout -> logout.logoutSuccessHandler(jwtLogoutSuccessHandler))
+//                // 使用无状态session，即不使用session缓存数据
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                // 设置白名单
+//                .authorizeHttpRequests(auth -> auth.requestMatchers(urlWhiteArr).permitAll().anyRequest().authenticated())
+//                // 异常处理器
+//                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler))
+//                // 添加jwt过滤器
+//                .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
