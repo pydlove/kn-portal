@@ -188,4 +188,16 @@ public class StringUtil {
 		Matcher matcher = Pattern.compile("[^0-9]").matcher(str);
 		return matcher.replaceAll("").trim();
 	}
+
+	/**
+	 * 字符串是否是纯数字
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str){
+		if (isBlank(str)){
+			return false;
+		}
+		return str.matches("[0-9]+");
+	}
 }

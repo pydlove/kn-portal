@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 public class TalkDTO {
 
+    private int mode = 0;// 0：表格  1：柱状图  2：饼图  3：折线图
     private List<String> columnList;
     private List<List> dataList;
 

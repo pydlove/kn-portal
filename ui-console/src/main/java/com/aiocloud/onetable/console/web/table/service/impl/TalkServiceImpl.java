@@ -4,6 +4,7 @@ import com.aiocloud.onetable.console.nlp.SQLExecutor;
 import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
 import com.aiocloud.onetable.console.nlp.parse.SQLGenerator;
 import com.aiocloud.onetable.console.utils.Result;
+import com.aiocloud.onetable.console.utils.StringUtil;
 import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,26 @@ public class TalkServiceImpl implements TalkService {
                 logger.error("查不到表{}信息", tableName);
                 Result.fail("查不到表" + tableName + "信息");
             }
-            tableMap.forEach((key, value) -> {
-                columnList.add(value);
-            });
+            if (select.contains("*")){
+                tableMap.forEach((key, value) -> {
+                    columnList.add(value);
+                });
+                //将*替换为真实查询的字段
+                select = select.replace("*", String.join(",", columnList));
+            } else {
+                //获取真实查询的字段
+                String showColumns = select.substring(select.indexOf("select") + 6, select.indexOf("from"));
+                if (!StringUtil.isBlank(showColumns)){
+                    String[] columns = showColumns.trim().split(",");
+                    for (String column : columns) {
+                        if (column.contains("count(1)")){ //统计列替换
+                            columnList.add("count");
+                            continue;
+                        }
+                        columnList.add(column);
+                    }
+                }
+            }
             List list = sqlExecutor.executeSql(select, columnList);
             talkDTO.setColumnList(columnList);
             talkDTO.setDataList(list);
