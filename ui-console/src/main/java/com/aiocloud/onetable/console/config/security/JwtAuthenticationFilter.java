@@ -1,6 +1,5 @@
 package com.aiocloud.onetable.console.config.security;
 
-import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.constant.SystemConstant;
@@ -50,6 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        Claims claims;
+
         String[] urls = urlWhitelist.split(SystemConstant.SEPARATOR_COMMA);
         for (String url : urls) {
             if (Objects.equals(contextPath + url.trim(), request.getRequestURI())) {
@@ -58,33 +59,93 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-        String token = request.getHeader(SystemConstant.TOKEN);
-
-        // 未获取到token，继续往后走，因为后面还有鉴权管理器等去判断是否拥有身份凭证，所以可以放行
-        // 没有token相当于匿名访问，若有一些接口是需要权限的，则不能访问这些接口
-        if (StrUtil.isBlankOrUndefined(token)) {
-            chain.doFilter(request, response);
+        claims = getClaimsAndCheckToken(request, response);
+        if (claims == null) {
             return;
         }
 
-        Claims claims = jwtTokenGenerator.extractAllClaims(token);
-        if (claims == null) {
-            throw new BadRequestException(ErrorCode.TOKEN_EXCEPTION);
-        }
-        if (jwtTokenGenerator.isTokenExpired(claims.getExpiration())) {
-            throw new BadRequestException(ErrorCode.TOKEN_HAS_EXPIRED);
-        }
-
-        String username = claims.getSubject();
-
-        // 构建UsernamePasswordAuthenticationToken，这里密码为null，是因为提供了正确的token，实现自动登录
-//        List<GrantedAuthority> authorities = accountUserDetailsService.getUserAuthority(username);
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        chain.doFilter(request, response);
+        executeRequest(request, response, chain, claims);
     }
+
+    private void executeRequest(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Claims claims) throws IOException {
+
+        try {
+
+            String username = claims.getSubject();
+
+            // 构建UsernamePasswordAuthenticationToken，这里密码为null，是因为提供了正确的token，实现自动登录
+            // List<GrantedAuthority> authorities = accountUserDetailsService.getUserAuthority(username);
+
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            chain.doFilter(request, response);
+
+        } catch (BadRequestException ex) {
+            handleBadRequestException(response, ex);
+        } catch (Exception ex) {
+            handleGeneralException(response, ex);
+        }
+    }
+
+    private Claims getClaimsAndCheckToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        try {
+
+            String token = request.getHeader(SystemConstant.TOKEN);
+
+            // 未获取到token，继续往后走，因为后面还有鉴权管理器等去判断是否拥有身份凭证，所以可以放行
+            // 没有token相当于匿名访问，若有一些接口是需要权限的，则不能访问这些接口
+            // if (StrUtil.isBlankOrUndefined(token)) {
+            //     chain.doFilter(request, response);
+            //     return;
+            // }
+
+            Claims claims = jwtTokenGenerator.extractAllClaims(token);
+            if (claims == null) {
+                throw new BadRequestException(ErrorCode.TOKEN_EXCEPTION);
+            }
+
+            if (jwtTokenGenerator.isTokenExpired(claims.getExpiration())) {
+                throw new BadRequestException(ErrorCode.TOKEN_HAS_EXPIRED);
+            }
+
+            return claims;
+
+        } catch (BadRequestException ex) {
+            tokenNotExistOrExpired(response, ex);
+        } catch (Exception ex) {
+            tokenNotExistOrExpired(response);
+        }
+
+        return null;
+    }
+
+    private void handleBadRequestException(HttpServletResponse response, BadRequestException e) throws IOException {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(String.format("{\"code\": 500, \"message\": \"%s\"}", e.getMessage()));
+    }
+
+    private void handleGeneralException(HttpServletResponse response, Exception e) throws IOException {
+        log.error("General exception occurred", e);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write("{\"code\": 500, \"message\": \"服务器内部错误\"}");
+    }
+
+    private void tokenNotExistOrExpired(HttpServletResponse response, BadRequestException e) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(String.format("{\"code\": 401, \"message\": \"%s\"}", e.getMessage()));
+    }
+
+    private void tokenNotExistOrExpired(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write("{\"code\": 401, \"message\": \"服务器内部错误\"}");
+    }
+
 }

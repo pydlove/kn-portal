@@ -5,6 +5,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.common.PageRequest;
 import com.aiocloud.onetable.console.base.common.PaginationResult;
+import com.aiocloud.onetable.console.web.sys.service.MessageService;
+import com.aiocloud.onetable.console.web.sys.service.TableAuthService;
 import com.aiocloud.onetable.console.web.sys.service.UserService;
 import com.aiocloud.onetable.console.web.table.dto.ApplyDTO;
 import com.aiocloud.onetable.console.web.table.dto.BatchApplyDTO;
@@ -20,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +44,8 @@ import java.util.stream.Collectors;
 @Service
 public class ApplyServiceImpl extends ServiceImpl<ApplyMapper, ApplyPO> implements ApplyService {
 
+    private final MessageService messageService;
+    private final TableAuthService tableAuthService;
     private final ApplyMapper applyMapper;
     private final TableInfoMapper tableInfoMapper;
     private final UserService userService;
@@ -91,9 +96,17 @@ public class ApplyServiceImpl extends ServiceImpl<ApplyMapper, ApplyPO> implemen
         applyPO.setId(applyDTO.getId());
         applyPO.setApplyStatus(applyDTO.getApplyStatus());
 
+        ApplyPO apply = applyMapper.selectByPrimaryKey(applyDTO.getId());
+        messageService.submitApplyMessage(apply);
+
+        if (ApplyStatusEnum.APPROVED.getCode() == applyDTO.getApplyStatus()) {
+            tableAuthService.addAccessAuth(apply);
+        }
+
         return applyMapper.updateByPrimaryKeySelective(applyPO);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Integer batchUpdateApply(BatchApplyDTO batchApplyDTO) {
 

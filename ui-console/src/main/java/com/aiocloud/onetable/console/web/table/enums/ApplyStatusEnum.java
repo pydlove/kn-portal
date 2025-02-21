@@ -15,8 +15,8 @@ import lombok.Getter;
 @Getter
 public enum ApplyStatusEnum {
     PENDING(0, "待审批"),
-    REJECTED(1, "审批通过"),
-    APPROVED(2, "审批拒绝");
+    APPROVED(1, "审批通过"),
+    REJECTED(2, "审批拒绝");
 
     private final int code;
     private final String description;

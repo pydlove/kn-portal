@@ -15,8 +15,6 @@ import lombok.Getter;
 public class PageRequest {
 
     private Integer page = 1;
-
-
     private Integer rows = 15;
 
     public PageRequest(Integer rows, Integer page) {

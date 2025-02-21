@@ -32,7 +32,10 @@ public class BasePO {
     private Long updateUid;
 
     public Date getUpdateTime() {
-
         return updateTime == null ? new Date() : updateTime;
+    }
+
+    public Integer getDeleteFlag() {
+        return deleteFlag == null ? 0 : deleteFlag;
     }
 }

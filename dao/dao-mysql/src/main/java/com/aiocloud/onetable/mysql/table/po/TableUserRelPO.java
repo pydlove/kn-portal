@@ -4,34 +4,28 @@ import com.aiocloud.onetable.mysql.base.BasePO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 /**
  *
- * @description: ApplyPO.java
+ * @description: TableUserRelPO.java
  * @copyright: @copyright (c) 2022 
  * @company: aiocloud
  * @author: panyong
  * @version: 1.0.0 
- * @createTime: 2025-02-18 17:51 
+ * @createTime: 2025-02-21 14:39 
  */
 @EqualsAndHashCode(callSuper = true)
-@TableName("t_apply")
+@TableName(value = "t_table_user_rel")
 @Data
-public class ApplyPO extends BasePO {
+public class TableUserRelPO extends BasePO {
 
+    /**
+     * 用户ID
+     */
     private Long userId;
 
-    private String username;
-
+    /**
+     * 表名称
+     */
     private Long tableId;
-
-    private String applyReason;
-
-    private String purpose;
-    
-    private String applyNo;
-
-    private Integer applyStatus;
-
-    private String applyResult;
-
 }
