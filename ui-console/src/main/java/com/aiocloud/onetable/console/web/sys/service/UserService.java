@@ -1,8 +1,14 @@
 package com.aiocloud.onetable.console.web.sys.service;
 
 
+import com.aiocloud.onetable.console.base.common.PageRequest;
+import com.aiocloud.onetable.console.base.common.PaginationResult;
 import com.aiocloud.onetable.console.web.sys.dto.LoginDTO;
+import com.aiocloud.onetable.console.web.sys.dto.UserAddDTO;
+import com.aiocloud.onetable.console.web.sys.dto.UserDTO;
+import com.aiocloud.onetable.console.web.sys.dto.UserUpdateDTO;
 import com.aiocloud.onetable.console.web.sys.vo.UserInfoVO;
+import com.aiocloud.onetable.console.web.sys.vo.UserPageVO;
 import org.springframework.security.core.userdetails.User;
 
 import java.security.Permission;
@@ -28,5 +34,13 @@ public interface UserService {
     UserInfoVO doLogin(LoginDTO login);
 
     Long getCurrentUserId();
+
+    int insertUser(UserAddDTO user);
+
+    int deleteUserById(Long id);
+
+    int updateUser(UserUpdateDTO user);
+
+    PaginationResult<UserPageVO> getUserPage(UserDTO userDTO, PageRequest pageRequest);
 
 }

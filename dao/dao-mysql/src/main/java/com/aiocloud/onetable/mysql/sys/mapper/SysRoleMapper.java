@@ -4,6 +4,8 @@ import com.aiocloud.onetable.mysql.sys.po.SysRolePO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  *
  * @description: SysRoleMapper.java
@@ -27,5 +29,7 @@ public interface SysRoleMapper extends BaseMapper<SysRolePO> {
     int updateByPrimaryKeySelective(SysRolePO record);
 
     int updateByPrimaryKey(SysRolePO record);
+
+    List<SysRolePO> selectAll();
 
 }

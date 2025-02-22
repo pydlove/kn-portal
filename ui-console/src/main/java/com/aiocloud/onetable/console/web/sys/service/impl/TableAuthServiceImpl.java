@@ -41,9 +41,16 @@ public class TableAuthServiceImpl implements TableAuthService {
 
         Long currentUserId = userService.getCurrentUserId();
 
+        Long userId = apply.getUserId();
+        Long tableId = apply.getTableId();
+        TableUserRelPO tableUserRel = tableUserRelMapper.selectByUserIdAndTableId(userId, tableId);
+        if (Objects.nonNull(tableUserRel)) {
+            return;
+        }
+
         TableUserRelPO tableUserRelPO = new TableUserRelPO();
-        tableUserRelPO.setUserId(apply.getUserId());
-        tableUserRelPO.setTableId(apply.getTableId());
+        tableUserRelPO.setUserId(userId);
+        tableUserRelPO.setTableId(tableId);
         tableUserRelPO.setCreateUid(currentUserId);
         tableUserRelPO.setUpdateUid(currentUserId);
         tableUserRelMapper.insertSelective(tableUserRelPO);

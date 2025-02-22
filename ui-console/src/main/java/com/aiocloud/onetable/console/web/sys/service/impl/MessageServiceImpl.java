@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.common.PageRequest;
 import com.aiocloud.onetable.console.base.common.PaginationResult;
 import com.aiocloud.onetable.console.web.sys.dto.MessageDTO;
+import com.aiocloud.onetable.console.web.sys.enums.DeleteFlagEnum;
 import com.aiocloud.onetable.console.web.sys.enums.MessageTypeEnum;
 import com.aiocloud.onetable.console.web.sys.enums.MessageOpStatusEnum;
 import com.aiocloud.onetable.console.web.sys.service.MessageService;
@@ -16,6 +17,7 @@ import com.aiocloud.onetable.console.web.table.dto.BatchApplyDTO;
 import com.aiocloud.onetable.console.web.table.enums.ApplyStatusEnum;
 import com.aiocloud.onetable.mysql.sys.mapper.SysMessageMapper;
 import com.aiocloud.onetable.mysql.sys.po.SysMessagePO;
+import com.aiocloud.onetable.mysql.sys.po.SysUserPO;
 import com.aiocloud.onetable.mysql.table.mapper.ApplyMapper;
 import com.aiocloud.onetable.mysql.table.po.ApplyPO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -74,6 +76,7 @@ public class MessageServiceImpl extends ServiceImpl<SysMessageMapper, SysMessage
         queryWrapper.lambda().eq(SysMessagePO::getToUserId, currentUserId);
         queryWrapper.lambda().eq(SysMessagePO::getOpStatus, MessageOpStatusEnum.UNREAD.getCode());
 
+        queryWrapper.lambda().eq(SysMessagePO::getDeleteFlag, DeleteFlagEnum.UNDELETE.getCode());
         queryWrapper.lambda().orderByDesc(SysMessagePO::getCreateTime);
 
         Page<SysMessagePO> result = sysMessageMapper.selectPage(applyPage, queryWrapper);

@@ -1,8 +1,11 @@
 package com.aiocloud.onetable.mysql.table.mapper;
 
+import com.aiocloud.onetable.mysql.table.dto.TableUserRelDTO;
 import com.aiocloud.onetable.mysql.table.po.TableUserRelPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  *
@@ -29,4 +32,7 @@ public interface TableUserRelMapper extends BaseMapper<TableUserRelPO> {
     int updateByPrimaryKey(TableUserRelPO record);
 
     TableUserRelPO selectByUserIdAndTableId(Long userId, Long tableId);
+
+    List<TableUserRelDTO> selectAllUserTable();
+
 }
