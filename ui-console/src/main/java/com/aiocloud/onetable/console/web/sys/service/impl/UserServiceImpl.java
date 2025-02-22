@@ -6,13 +6,16 @@ import com.aiocloud.onetable.console.config.security.JwtTokenGenerator;
 import com.aiocloud.onetable.console.config.security.JwtTokenProperties;
 import com.aiocloud.onetable.console.web.sys.UserPwdTool;
 import com.aiocloud.onetable.console.web.sys.dto.LoginDTO;
+import com.aiocloud.onetable.console.web.sys.service.MenuService;
 import com.aiocloud.onetable.console.web.sys.service.UserService;
+import com.aiocloud.onetable.console.web.sys.vo.MenuVO;
 import com.aiocloud.onetable.console.web.sys.vo.UserInfoVO;
 import com.aiocloud.onetable.mysql.sys.mapper.SysUserMapper;
 import com.aiocloud.onetable.mysql.sys.po.SysUserPO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> implements UserService {
 
     private static final Map<String, Long> USER_ID_MAP = new ConcurrentHashMap<>();
+
+    private final MenuService menuService;
     private final SysUserMapper sysUserMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenGenerator jwtTokenGenerator;
@@ -74,6 +79,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
             userInfoVO.setToken(token);
             userInfoVO.setUserId(sysUser.getId());
             userInfoVO.setUsername(sysUser.getUserName());
+
+            List<MenuVO> menuVOList = menuService.selectAccessMenus(username);
+            userInfoVO.setMenuList(menuVOList);
 
             return userInfoVO;
         } else {

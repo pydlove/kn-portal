@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.onetable.mysql.sys.mapper.SysMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.onetable.mysql.sys.po.SysMenuPO">
+            <id property="id" column="id" />
+            <id property="menuCode" column="menu_code" />
+            <result property="menuName" column="menu_name" />
+            <result property="menuUrl" column="menu_url" />
+            <result property="menuRemark" column="menu_remark" />
+            <result property="menuType" column="menu_type" />
+            <result property="parentId" column="parent_id" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="createUid" column="create_uid" />
+            <result property="updateUid" column="update_uid" />
+            <result property="deleteFlag" column="delete_flag" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,menu_code,menu_name,menu_url,menu_remark,menu_type,
+        parent_id,create_time,update_time,create_uid,update_uid,
+        delete_flag
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu
+        where  id = #{id} AND menu_code = #{menuCode} 
+    </select>
+
+    <select id="selectByUserName" resultMap="BaseResultMap">
+        select t1.*
+        from sys_menu t1
+        left join sys_role_menu_rel t2 on t2.menu_code = t1.menu_code
+        left join sys_role t3 on t3.id = t2.role_id
+        left join sys_user t4 on t4.role_id = t3.id
+        where t4.user_name = #{userName} and t1.delete_flag = 0 and t2.delete_flag = 0 and t3.delete_flag = 0 and t4.delete_flag = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sys_menu
+        where  id = #{id} AND menu_code = #{menuCode} 
+    </delete>
+    <insert id="insert">
+        insert into sys_menu
+        ( id,menu_code,menu_name,menu_url,menu_remark,menu_type,
+        parent_id,create_time,update_time,create_uid,update_uid,
+        delete_flag)
+        values (#{id},#{menuCode},#{menuName},#{menuUrl},#{menuRemark},#{menuType},
+        #{parentId},#{createTime},#{updateTime},#{createUid},#{updateUid},
+        #{deleteFlag})
+    </insert>
+    <insert id="insertSelective">
+        insert into sys_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="menuCode != null">menu_code,</if>
+                <if test="menuName != null">menu_name,</if>
+                <if test="menuUrl != null">menu_url,</if>
+                <if test="menuRemark != null">menu_remark,</if>
+                <if test="menuType != null">menu_type,</if>
+                <if test="parentId != null">parent_id,</if>
+                <if test="createTime != null">create_time,</if>
+                <if test="updateTime != null">update_time,</if>
+                <if test="createUid != null">create_uid,</if>
+                <if test="updateUid != null">update_uid,</if>
+                <if test="deleteFlag != null">delete_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="menuCode != null">#{menuCode},</if>
+                <if test="menuName != null">#{menuName},</if>
+                <if test="menuUrl != null">#{menuUrl},</if>
+                <if test="menuRemark != null">#{menuRemark},</if>
+                <if test="menuType != null">#{menuType},</if>
+                <if test="parentId != null">#{parentId},</if>
+                <if test="createTime != null">#{createTime},</if>
+                <if test="updateTime != null">#{updateTime},</if>
+                <if test="createUid != null">#{createUid},</if>
+                <if test="updateUid != null">#{updateUid},</if>
+                <if test="deleteFlag != null">#{deleteFlag},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.aiocloud.onetable.mysql.sys.po.SysMenuPO">
+        update sys_menu
+        <set>
+                <if test="menuName != null">
+                    menu_name = #{menuName},
+                </if>
+                <if test="menuUrl != null">
+                    menu_url = #{menuUrl},
+                </if>
+                <if test="menuRemark != null">
+                    menu_remark = #{menuRemark},
+                </if>
+                <if test="menuType != null">
+                    menu_type = #{menuType},
+                </if>
+                <if test="parentId != null">
+                    parent_id = #{parentId},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime},
+                </if>
+                <if test="updateTime != null">
+                    update_time = #{updateTime},
+                </if>
+                <if test="createUid != null">
+                    create_uid = #{createUid},
+                </if>
+                <if test="updateUid != null">
+                    update_uid = #{updateUid},
+                </if>
+                <if test="deleteFlag != null">
+                    delete_flag = #{deleteFlag},
+                </if>
+        </set>
+        where   id = #{id} AND menu_code = #{menuCode} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.onetable.mysql.sys.po.SysMenuPO">
+        update sys_menu
+        set 
+            menu_name =  #{menuName},
+            menu_url =  #{menuUrl},
+            menu_remark =  #{menuRemark},
+            menu_type =  #{menuType},
+            parent_id =  #{parentId},
+            create_time =  #{createTime},
+            update_time =  #{updateTime},
+            create_uid =  #{createUid},
+            update_uid =  #{updateUid},
+            delete_flag =  #{deleteFlag}
+        where   id = #{id} AND menu_code = #{menuCode} 
+    </update>
+</mapper>

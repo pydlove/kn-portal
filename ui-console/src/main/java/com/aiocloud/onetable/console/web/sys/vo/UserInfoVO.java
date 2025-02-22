@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  *
  * @description: UserInfoVO.java
@@ -21,4 +23,6 @@ public class UserInfoVO {
     private String token;
     private Long userId;
     private String username;
+
+    List<MenuVO> menuList;
 }

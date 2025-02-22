@@ -91,4 +91,11 @@ public class LoginController {
 
         return new CommonResponse<>(result);
     }
+
+    @GetMapping("/logout")
+    public CommonResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        // Clear the token from the response header or client-side storage
+        response.setHeader(SystemConstant.TOKEN, "");
+        return new CommonResponse<>("Logged out successfully");
+    }
 }
