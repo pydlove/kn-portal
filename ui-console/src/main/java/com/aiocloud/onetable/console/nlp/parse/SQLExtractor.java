@@ -85,34 +85,37 @@ public class SQLExtractor {
      * @return
      */
     public static String extractGroupField(String tableName, String content){
-        String groupColumns = "";
+        List<String> groupColumns = new ArrayList<>();
         if (StringUtil.isBlank(content)){
-            return groupColumns;
+            return "";
         }
         content = KeywordSpliter.splitGroupText(content);
         if (StringUtil.isBlank(content)){
-            return groupColumns;
+            return "";
         }
         CoNLLSentence coNLLWords = HanLP.parseDependency(content);
         CoNLLWord[] wordArray = coNLLWords.getWordArray();
         for (int i = 0; i < wordArray.length; i++) {
             CoNLLWord word = wordArray[i];
             if (word.POSTAG.equals("column")){
-                groupColumns = StringUtil.isBlank(groupColumns) ? TableInfoCache.get(tableName, word.LEMMA) : String.join(",", groupColumns, TableInfoCache.get(tableName, word.LEMMA));
-                continue;
+                String column = TableInfoCache.get(tableName, word.LEMMA);
+                if (!StringUtil.isBlank(column)){
+                    groupColumns.add(column);
+                    continue;
+                }
             }
             // 判断是否是分组结束
             for (String[] groupSplitRange : KeywordSpliter.groupSplitRanges) {
                 if (groupSplitRange[0].contains(word.LEMMA)){
-                    groupColumns = "";
+                    groupColumns.clear();
                     break;
                 }
                 if (groupSplitRange[1].contains(word.LEMMA)){
-                    return groupColumns;
+                    return String.join(",", groupColumns);
                 }
             }
         }
-        return groupColumns;
+        return String.join(",", groupColumns);
     }
 
     /**

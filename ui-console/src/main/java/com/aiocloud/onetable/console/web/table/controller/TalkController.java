@@ -1,8 +1,9 @@
 package com.aiocloud.onetable.console.web.table.controller;
 
+import com.aiocloud.onetable.console.base.common.CommonResponse;
 import com.aiocloud.onetable.console.utils.Result;
-import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
+import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
