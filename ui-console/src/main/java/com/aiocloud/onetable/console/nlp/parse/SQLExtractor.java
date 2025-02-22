@@ -23,10 +23,10 @@ public class SQLExtractor {
      * @return
      */
     public static List<Condition> extractConditon(String tableName, String content){
-        if (StringUtil.isBlank(content)){
-            return null;
-        }
         List<Condition> conditionList = new ArrayList<>();
+        if (StringUtil.isBlank(content)){
+            return conditionList;
+        }
         Condition condition = new Condition();
         // todo 用于实现or的条件
         String[] strings = checkOr(content);
@@ -84,16 +84,38 @@ public class SQLExtractor {
      * @param content
      * @return
      */
-    public static String extractGroupField(String content){
+    public static String extractGroupField(String tableName, String content){
+        List<String> groupColumns = new ArrayList<>();
         if (StringUtil.isBlank(content)){
-            return null;
+            return "";
         }
-        String groupField = "";
-
-        if (content.contains("分组") && (content.contains("通过") || content.contains("根据") || content.contains("使用"))){
-
+        content = KeywordSpliter.splitGroupText(content);
+        if (StringUtil.isBlank(content)){
+            return "";
         }
-        return groupField;
+        CoNLLSentence coNLLWords = HanLP.parseDependency(content);
+        CoNLLWord[] wordArray = coNLLWords.getWordArray();
+        for (int i = 0; i < wordArray.length; i++) {
+            CoNLLWord word = wordArray[i];
+            if (word.POSTAG.equals("column")){
+                String column = TableInfoCache.get(tableName, word.LEMMA);
+                if (!StringUtil.isBlank(column)){
+                    groupColumns.add(column);
+                    continue;
+                }
+            }
+            // 判断是否是分组结束
+            for (String[] groupSplitRange : KeywordSpliter.groupSplitRanges) {
+                if (groupSplitRange[0].contains(word.LEMMA)){
+                    groupColumns.clear();
+                    break;
+                }
+                if (groupSplitRange[1].contains(word.LEMMA)){
+                    return String.join(",", groupColumns);
+                }
+            }
+        }
+        return String.join(",", groupColumns);
     }
 
     /**
@@ -102,11 +124,14 @@ public class SQLExtractor {
      * @return
      */
     public static List<Sort> extractSortField(String tableName, String content){
-        if (StringUtil.isBlank(content)){
-            return null;
-        }
-        content = checkSort(content);
         List<Sort> sortList = new ArrayList<>();
+        if (StringUtil.isBlank(content)){
+            return sortList;
+        }
+        content = KeywordSpliter.splitSortText(content);
+        if (StringUtil.isBlank(content)){
+            return sortList;
+        }
         Sort sort = new Sort();
         CoNLLSentence coNLLWords = HanLP.parseDependency(content);
         CoNLLWord[] wordArray = coNLLWords.getWordArray();
@@ -128,6 +153,22 @@ public class SQLExtractor {
             sort = new Sort();
         }
         return sortList;
+    }
+
+    /**
+     * 提取取数限制
+     * @param content
+     * @return
+     */
+    public static String extractLimit(String content){
+        if (StringUtil.isBlank(content)){
+            return "";
+        }
+        String limitText = KeywordSpliter.splitLimitText(content);
+        if (StringUtil.isNumeric(limitText)){
+            return limitText;
+        }
+        return "";
     }
 
     /**
@@ -163,47 +204,10 @@ public class SQLExtractor {
         }
     }
 
-    private static String checkGroup(String content){
-        if (StringUtil.isBlank(content)){
-            return "";
-        }
-        if (content.contains("通过") && content.contains("分组")){
-            content = content.substring(content.indexOf("通过"), content.lastIndexOf("分组") + 2);
-        } else if (content.contains("根据") && content.contains("分组")){
-            content = content.substring(content.indexOf("根据"), content.lastIndexOf("分组") + 2);
-        } else if (content.contains("使用") && content.contains("分组")){
-            content = content.substring(content.indexOf("使用"), content.lastIndexOf("分组") + 2);
-        } else if (content.contains("使") && content.contains("分组")){
-            content = content.substring(content.indexOf("使"), content.lastIndexOf("分组") + 2);
-        } else if (content.contains("让") && content.contains("分组")){
-            content = content.substring(content.indexOf("让"), content.lastIndexOf("分组") + 2);
-        }
-
-        return content;
-    }
-
-     private static String checkSort(String content){
-         if (StringUtil.isBlank(content)){
-             return "";
-         }
-         if (content.contains("通过") && content.contains("排序")){
-             content = content.substring(content.indexOf("通过"), content.lastIndexOf("排序") + 2);
-         } else if (content.contains("根据") && content.contains("排序")){
-             content = content.substring(content.indexOf("根据"), content.lastIndexOf("排序") + 2);
-         } else if (content.contains("使用") && content.contains("排序")){
-             content = content.substring(content.indexOf("使用"), content.lastIndexOf("排序") + 2);
-         } else if (content.contains("使")){
-             content = content.substring(content.indexOf("使"), content.lastIndexOf("排序") + 2);
-         } else if (content.contains("让")){
-             content = content.substring(content.indexOf("让"), content.lastIndexOf("排序") + 2);
-         }
-         return content;
-     }
-
     private static String[] checkOr(String content){
         String[] contentArr = new String[]{};
         if (StringUtil.isBlank(content)){
-            return null;
+            return contentArr;
         }
         if (content.contains("或者")){
             contentArr = content.split("或者");

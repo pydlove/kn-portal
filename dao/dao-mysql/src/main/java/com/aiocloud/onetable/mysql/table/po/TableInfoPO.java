@@ -22,10 +22,10 @@ public class TableInfoPO extends BasePO {
     @TableField("table_name")
     private String tableName;
 
-    @TableField("table_name")
+    @TableField("table_comment")
     private String tableComment;
 
-    @TableField("table_name")
+    @TableField("delete_flag")
     private Integer deleteFlag;
 
     @TableField("create_time")

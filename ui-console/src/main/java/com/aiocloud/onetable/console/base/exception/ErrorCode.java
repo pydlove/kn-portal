@@ -19,6 +19,8 @@ public enum ErrorCode {
     UNAUTHORIZED(1005, "没有权限"),
     PARAMETER_ERROR(1006, "参数错误"),
 
+    UNRECOGNIZED(1006, "很抱歉，未能识别您的需求。"),
+
     ;
 
     private final int code;
