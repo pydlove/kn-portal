@@ -1,7 +1,9 @@
 package com.aiocloud.onetable.console.web.table.controller;
 
 import com.aiocloud.onetable.console.base.common.CommonResponse;
+import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.utils.Result;
+import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
 import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,10 @@ public class TalkController {
 
     @PostMapping("/question")
     @ResponseBody
-    public CommonResponse question(String tableName, String content){
-        return talkService.question(tableName, content);
+    public CommonResponse question(@RequestBody TalkDTO talkDTO){
+        if (talkDTO == null){
+            return new CommonResponse<>(ErrorCode.PARAMETER_ERROR);
+        }
+        return talkService.question(talkDTO.getTableName(), talkDTO.getContent());
     }
 }

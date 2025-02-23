@@ -5,12 +5,11 @@ import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.nlp.SQLExecutor;
 import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
 import com.aiocloud.onetable.console.nlp.parse.SQLGenerator;
-import com.aiocloud.onetable.console.utils.Result;
 import com.aiocloud.onetable.console.utils.StringUtil;
 import com.aiocloud.onetable.console.web.sys.service.TableAuthService;
-import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TableInfoService;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
+import com.aiocloud.onetable.console.web.table.vo.TalkVO;
 import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,13 +37,13 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public CommonResponse question(String tableName, String content) {
-        TalkDTO talkDTO = new TalkDTO();
+        TalkVO talkVO = new TalkVO();
         try {
             if (!checkTableAuth(tableName)){
-                return new CommonResponse(ErrorCode.UNAUTHORIZED, talkDTO);
+                return new CommonResponse(ErrorCode.UNAUTHORIZED, talkVO);
             }
         } catch (Exception e) {
-            return new CommonResponse(ErrorCode.UNAUTHORIZED, talkDTO);
+            return new CommonResponse(ErrorCode.UNAUTHORIZED, talkVO);
         }
         try {
             String select = SQLGenerator.generate(tableName, content);
@@ -52,19 +51,19 @@ public class TalkServiceImpl implements TalkService {
             Map<String, String> tableMap = TableInfoCache.getTableMap(tableName);
             if (tableMap == null){
                 logger.error("查不到表{}信息", tableName);
-                return new CommonResponse(ErrorCode.NOTFOUNDTABLE, talkDTO);
+                return new CommonResponse(ErrorCode.NOTFOUNDTABLE, talkVO);
             }
             List<String> columnList = fullColumns(select, tableMap);
             if (select.contains("*")){//将*替换为真实查询的字段
                 select = select.replace("*", String.join(",", columnList));
             }
             List list = sqlExecutor.executeSql(select, columnList);
-            talkDTO.setColumnList(columnList).setDataList(list);
+            talkVO.setColumnList(columnList).setDataList(list);
         } catch (Exception e) {
             logger.error("对话异常", e);
-            return new CommonResponse(ErrorCode.UNRECOGNIZED, talkDTO);
+            return new CommonResponse(ErrorCode.UNRECOGNIZED, talkVO);
         }
-        return new CommonResponse(talkDTO);
+        return new CommonResponse(talkVO);
     }
 
     /**
