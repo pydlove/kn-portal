@@ -1,5 +1,6 @@
 package com.aiocloud.onetable.console.web.table.service;
 
+import com.aiocloud.onetable.console.base.common.CommonResponse;
 import com.aiocloud.onetable.console.utils.Result;
 
 /**
@@ -7,5 +8,5 @@ import com.aiocloud.onetable.console.utils.Result;
  */
 public interface TalkService {
 
-    Result question(String tableName, String content);
+    CommonResponse question(String tableName, String content);
 }

@@ -1,5 +1,6 @@
 package com.aiocloud.onetable.console.web.table.service.impl;
 
+import com.aiocloud.onetable.console.base.common.CommonResponse;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.nlp.SQLExecutor;
 import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
@@ -36,14 +37,14 @@ public class TalkServiceImpl implements TalkService {
     private TableAuthService tableAuthService;
 
     @Override
-    public Result question(String tableName, String content) {
+    public CommonResponse question(String tableName, String content) {
         TalkDTO talkDTO = new TalkDTO();
         try {
             if (!checkTableAuth(tableName)){
-                return Result.fail(ErrorCode.UNAUTHORIZED.getMsg(), talkDTO);
+                return new CommonResponse(ErrorCode.UNAUTHORIZED, talkDTO);
             }
         } catch (Exception e) {
-            return Result.fail(ErrorCode.UNAUTHORIZED.getMsg(), talkDTO);
+            return new CommonResponse(ErrorCode.UNAUTHORIZED, talkDTO);
         }
         try {
             String select = SQLGenerator.generate(tableName, content);
@@ -51,7 +52,7 @@ public class TalkServiceImpl implements TalkService {
             Map<String, String> tableMap = TableInfoCache.getTableMap(tableName);
             if (tableMap == null){
                 logger.error("查不到表{}信息", tableName);
-                return Result.fail("查不到表" + tableName + "信息", talkDTO);
+                return new CommonResponse(ErrorCode.NOTFOUNDTABLE, talkDTO);
             }
             List<String> columnList = fullColumns(select, tableMap);
             if (select.contains("*")){//将*替换为真实查询的字段
@@ -61,9 +62,9 @@ public class TalkServiceImpl implements TalkService {
             talkDTO.setColumnList(columnList).setDataList(list);
         } catch (Exception e) {
             logger.error("对话异常", e);
-            return Result.fail(ErrorCode.UNRECOGNIZED.getMsg(), talkDTO);
+            return new CommonResponse(ErrorCode.UNRECOGNIZED, talkDTO);
         }
-        return Result.success("", talkDTO);
+        return new CommonResponse(talkDTO);
     }
 
     /**

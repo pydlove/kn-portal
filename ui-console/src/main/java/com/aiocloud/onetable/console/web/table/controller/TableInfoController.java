@@ -1,8 +1,6 @@
 package com.aiocloud.onetable.console.web.table.controller;
 
 import com.aiocloud.onetable.console.base.common.CommonResponse;
-import com.aiocloud.onetable.console.base.exception.ErrorCode;
-import com.aiocloud.onetable.console.utils.Result;
 import com.aiocloud.onetable.console.web.table.service.TableInfoService;
 import com.aiocloud.onetable.console.web.table.vo.TableInfoVO;
 import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
@@ -29,13 +27,9 @@ public class TableInfoController {
     private TableInfoService tableInfoService;
 
     @GetMapping("/list")
-    public Result selectList(TableInfoPO tableInfoPO) {
-        try {
-            return Result.success("", tableInfoService.selectList(tableInfoPO));
-        } catch (Exception e) {
-            log.error("查询表配置信息异常", e);
-            return Result.fail(ErrorCode.INTERNAL_SERVER_ERROR.getMsg(), e);
-        }
+    @ResponseBody
+    public CommonResponse selectList(TableInfoPO tableInfoPO) {
+        return new CommonResponse(tableInfoService.selectList(tableInfoPO));
     }
 
     @GetMapping("/all")

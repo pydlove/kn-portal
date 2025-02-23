@@ -20,9 +20,9 @@ public class TalkController {
     @Resource
     private TalkService talkService;
 
-    @GetMapping("/question")
+    @PostMapping("/question")
     @ResponseBody
-    public Result question(String tableName, String content){
+    public CommonResponse question(String tableName, String content){
         return talkService.question(tableName, content);
     }
 }
