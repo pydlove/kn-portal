@@ -35,7 +35,7 @@ public interface UserService {
 
     Long getCurrentUserId();
 
-    int insertUser(UserAddDTO user);
+    Long insertUser(UserAddDTO user);
 
     int deleteUserById(Long id);
 

@@ -32,6 +32,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CommonResponse<String>> handleException(BizException e) {
         var httpStatusCode = e.getClass().getAnnotation(ResponseStatus.class).code();
         var errorResponse = new CommonResponse<>(e.getErrorCode(), e.getDetails());
+        errorResponse.setData(e.getErrorCode().getMsg());
+        return new ResponseEntity<>(errorResponse, httpStatusCode);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<CommonResponse<String>> handleException(BadRequestException e) {
+        var httpStatusCode = e.getClass().getAnnotation(ResponseStatus.class).code();
+        ErrorCode errorCode = e.getErrorCode();
+        var errorResponse = new CommonResponse<>(errorCode, errorCode.getMsg());
+        errorResponse.setData(errorCode.getMsg());
         return new ResponseEntity<>(errorResponse, httpStatusCode);
     }
 }

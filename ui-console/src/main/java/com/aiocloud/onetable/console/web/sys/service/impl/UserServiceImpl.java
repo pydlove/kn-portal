@@ -20,12 +20,14 @@ import com.aiocloud.onetable.console.web.sys.service.UserService;
 import com.aiocloud.onetable.console.web.sys.vo.MenuVO;
 import com.aiocloud.onetable.console.web.sys.vo.UserInfoVO;
 import com.aiocloud.onetable.console.web.sys.vo.UserPageVO;
+import com.aiocloud.onetable.console.web.table.service.TableInfoService;
 import com.aiocloud.onetable.mysql.sys.mapper.SysRoleMapper;
 import com.aiocloud.onetable.mysql.sys.mapper.SysUserMapper;
 import com.aiocloud.onetable.mysql.sys.po.SysRolePO;
 import com.aiocloud.onetable.mysql.sys.po.SysUserPO;
 import com.aiocloud.onetable.mysql.table.dto.TableUserRelDTO;
 import com.aiocloud.onetable.mysql.table.mapper.TableUserRelMapper;
+import com.aiocloud.onetable.mysql.table.po.TableUserRelPO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -34,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -130,8 +133,14 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
         return sysUser.getId();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public int insertUser(UserAddDTO user) {
+    public Long insertUser(UserAddDTO user) {
+
+        SysUserPO userPO = sysUserMapper.selectByUsername(user.getUserName());
+        if (null != userPO) {
+            throw new BadRequestException(ErrorCode.USER_EXIST);
+        }
 
         String desPassword = UserPwdTool.doPasswordDeAesCBC(user.getRandomId(), user.getUserPwd());
         String pwd = passwordEncoder.encode(desPassword);
@@ -140,7 +149,12 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
         sysUserPO.setUserName(user.getUserName());
         sysUserPO.setRoleId(user.getRoleId());
         sysUserPO.setUserPassword(pwd);
-        return sysUserMapper.insertSelective(sysUserPO);
+        sysUserMapper.insertSelective(sysUserPO);
+
+        Long userId = sysUserPO.getId();
+        saveUserTableRel(user.getTableIds(), userId);
+
+        return userId;
     }
 
     @Override
@@ -152,16 +166,26 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
         return sysUserMapper.updateByPrimaryKeySelective(sysUserPO);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateUser(UserUpdateDTO user) {
 
-        String desPassword = UserPwdTool.doPasswordDeAesCBC(user.getRandomId(), user.getUserPwd());
-        String pwd = passwordEncoder.encode(desPassword);
+        Long userId = user.getUserId();
 
         SysUserPO sysUserPO = new SysUserPO();
+        sysUserPO.setId(userId);
         sysUserPO.setUserName(user.getUserName());
         sysUserPO.setRoleId(user.getRoleId());
-        sysUserPO.setUserPassword(pwd);
+
+        if (StrUtil.isNotEmpty(user.getUserPwd())) {
+            String desPassword = UserPwdTool.doPasswordDeAesCBC(user.getRandomId(), user.getUserPwd());
+            String pwd = passwordEncoder.encode(desPassword);
+            sysUserPO.setUserPassword(pwd);
+        }
+
+        tableUserRelMapper.deleteByUserId(userId);
+        saveUserTableRel(user.getTableIds(), userId);
+
         return sysUserMapper.updateByPrimaryKeySelective(sysUserPO);
     }
 
@@ -188,10 +212,10 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
         List<TableUserRelDTO> tableUserRelDTOS = Optional.ofNullable(tableUserRelMapper.selectAllUserTable()).orElse(new ArrayList<>());
         Map<Long, List<String>> userTableNamesMap = new HashMap<>();
         for (TableUserRelDTO tableUserRelDTO : tableUserRelDTOS) {
-            String tableName = tableUserRelDTO.getTableName();
+            String tableComment = "【" + tableUserRelDTO.getTableComment() + "】";
             List<String> tableNames = userTableNamesMap.computeIfAbsent(tableUserRelDTO.getUserId(), k -> new ArrayList<>());
-            if (!tableNames.contains(tableName)) {
-                tableNames.add(tableName);
+            if (!tableNames.contains(tableComment)) {
+                tableNames.add(tableComment);
             }
         }
 
@@ -203,5 +227,18 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
         });
 
         return new PaginationResult<>(result.getTotal(), userPages);
+    }
+
+    private void saveUserTableRel(List<Long> user, Long userId) {
+
+        List<Long> tableIds = Optional.ofNullable(user).orElse(new ArrayList<>());
+        for (Long tableId : tableIds) {
+            TableUserRelPO tableUserRelPO = new TableUserRelPO();
+            tableUserRelPO.setUserId(userId);
+            tableUserRelPO.setTableId(tableId);
+            tableUserRelPO.setCreateUid(getCurrentUserId());
+            tableUserRelPO.setUpdateUid(getCurrentUserId());
+            tableUserRelMapper.insertSelective(tableUserRelPO);
+        }
     }
 }

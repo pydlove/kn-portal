@@ -2,6 +2,8 @@ package com.aiocloud.onetable.console.web.sys.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  *
  * @description: UserAddDTO.java
@@ -14,8 +16,10 @@ import lombok.Data;
 @Data
 public class UserUpdateDTO {
 
+    private Long userId;
     private String userName;
     private String userPwd;
     private Long roleId;
+    private List<Long> tableIds;
     private String randomId;
 }

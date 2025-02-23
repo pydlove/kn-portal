@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 public class TableUserRelDTO {
 
+    private String tableComment;
     private String tableName;
     private Long userId;
     private Long tableId;
