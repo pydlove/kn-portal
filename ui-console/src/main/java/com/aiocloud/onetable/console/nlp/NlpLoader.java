@@ -39,7 +39,7 @@ public class NlpLoader {
             }
             if (columnInfoPOList != null && columnInfoPOList.size() > 0){
                 for (ColumnInfoPO columnInfoPO : columnInfoPOList) {
-                    TableInfoCache.put(columnInfoPO.getTableName(), columnInfoPO.getColumnComment(), columnInfoPO.getColumnName());
+                    TableInfoCache.put(columnInfoPO.getTableName(), columnInfoPO.getColumnComment(), columnInfoPO);
                     CustomDictionary.add(columnInfoPO.getColumnComment(), "column");
                 }
             }

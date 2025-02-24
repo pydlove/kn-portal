@@ -9,7 +9,9 @@ import com.aiocloud.onetable.console.utils.StringUtil;
 import com.aiocloud.onetable.console.web.sys.service.TableAuthService;
 import com.aiocloud.onetable.console.web.table.service.TableInfoService;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
+import com.aiocloud.onetable.console.web.table.vo.ColumnInfoVo;
 import com.aiocloud.onetable.console.web.table.vo.TalkVO;
+import com.aiocloud.onetable.mysql.table.po.ColumnInfoPO;
 import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,17 +51,20 @@ public class TalkServiceImpl implements TalkService {
         try {
             String select = SQLGenerator.generate(tableName, content);
             logger.info("解析SQL为：{}", select);
-            Map<String, String> tableMap = TableInfoCache.getTableMap(tableName);
+            Map<String, ColumnInfoPO> tableMap = TableInfoCache.getTableMap(tableName);
             if (tableMap == null){
                 logger.error("查不到表{}信息", tableName);
                 return new CommonResponse(ErrorCode.NOTFOUNDTABLE, talkVO);
             }
-            List<String> columnList = fullColumns(select, tableMap);
+
+            Map<String, ColumnInfoVo> columnInfoVoMap = formatColumnInfo(tableMap);
+            List<String> columnList = fullColumns(select, columnInfoVoMap);
             if (select.contains("*")){//将*替换为真实查询的字段
                 select = select.replace("*", String.join(",", columnList));
             }
             List list = sqlExecutor.executeSql(select, columnList);
-            talkVO.setColumnList(columnList).setDataList(list);
+            List<ColumnInfoVo> resultColumns = getColumnInfo(columnInfoVoMap, columnList);
+            talkVO.setColumnList(resultColumns).setDataList(list);
         } catch (Exception e) {
             logger.error("对话异常", e);
             return new CommonResponse(ErrorCode.UNRECOGNIZED, talkVO);
@@ -71,11 +77,11 @@ public class TalkServiceImpl implements TalkService {
      * @param sql
      * @param tableMap
      */
-    public List<String> fullColumns(String sql, Map<String, String> tableMap){
+    public List<String> fullColumns(String sql, Map<String, ColumnInfoVo> tableMap){
         List<String> columnList = new ArrayList<>();
         if (sql.contains("*")){
             tableMap.forEach((key, value) -> {
-                columnList.add(value);
+                columnList.add(value.getColumnName());
             });
             return columnList;
         }
@@ -88,10 +94,34 @@ public class TalkServiceImpl implements TalkService {
                     columnList.add("count");
                     continue;
                 }
-                columnList.add(column);
+                columnList.add(tableMap.get(column.trim()).getColumnName());
             }
         }
         return columnList;
+    }
+
+    /**
+     * 表字段信息去重
+     * @param tableMap
+     * @return
+     */
+    private Map<String, ColumnInfoVo> formatColumnInfo(Map<String, ColumnInfoPO> tableMap){
+        Map<String, ColumnInfoVo> columnInfoVoMap = new HashMap<>();
+        tableMap.forEach((key, value) -> {
+            if (!columnInfoVoMap.containsKey(value.getColumnName())){
+                columnInfoVoMap.put(value.getColumnName(), new ColumnInfoVo(value.getColumnName(), value.getColumnComment()));
+            }
+        });
+        columnInfoVoMap.put("count", new ColumnInfoVo("count", "数量"));
+        return columnInfoVoMap;
+    }
+
+    private List<ColumnInfoVo> getColumnInfo(Map<String, ColumnInfoVo> tableMap, List<String> columnList){
+        List<ColumnInfoVo> columnInfoVoList = new ArrayList<>();
+        for (String column : columnList) {
+            columnInfoVoList.add(tableMap.get(column));
+        }
+        return columnInfoVoList;
     }
 
     /**

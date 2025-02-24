@@ -56,7 +56,7 @@ public class SQLExtractor {
                     CoNLLWord lastWord = wordArray[i - 1];
                     if (lastWord.POSTAG.equals("column")){
                         lastColumn = true;
-                        condition.setLeftValue(TableInfoCache.get(tableName, lastWord.LEMMA));
+                        condition.setLeftValue(TableInfoCache.get(tableName, lastWord.LEMMA).getColumnName());
                     } else {
                         condition.setLeftValue(String.join("", "'",  lastWord.LEMMA, "'"));
                     }
@@ -65,7 +65,7 @@ public class SQLExtractor {
                     CoNLLWord nextWord = wordArray[i + 1];
                     if (nextWord.POSTAG.equals("column")){
                         nextColumn = true;
-                        condition.setRightValue(TableInfoCache.get(tableName, nextWord.LEMMA));
+                        condition.setRightValue(TableInfoCache.get(tableName, nextWord.LEMMA).getColumnName());
                     } else {
                         condition.setRightValue(String.join("", "'",  nextWord.LEMMA, "'"));
                     }
@@ -98,7 +98,7 @@ public class SQLExtractor {
         for (int i = 0; i < wordArray.length; i++) {
             CoNLLWord word = wordArray[i];
             if (word.POSTAG.equals("column")){
-                String column = TableInfoCache.get(tableName, word.LEMMA);
+                String column = TableInfoCache.get(tableName, word.LEMMA).getColumnName();
                 if (!StringUtil.isBlank(column)){
                     groupColumns.add(column);
                     continue;
@@ -142,7 +142,7 @@ public class SQLExtractor {
                     sortList.add(sort);
                     sort = new Sort();
                 }
-                sort.setColumnName(TableInfoCache.get(tableName, word.LEMMA));
+                sort.setColumnName(TableInfoCache.get(tableName, word.LEMMA).getColumnName());
             }
             if (word.LEMMA.contains("降") || word.LEMMA.contains("倒")){
                 sort.setSortType("desc");
