@@ -35,7 +35,7 @@
         select
         <include refid="Base_Column_List"/>
         from sys_user
-        where user_name = #{username}
+        where user_name = #{username} limit 1
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -51,7 +51,7 @@
         values (#{id}, #{userPassword}, #{userName}, #{roleId}, #{createUid}, #{deptId},
                 #{createTime}, #{updateUid}, #{updateTime}, #{status}, #{deleteFlag})
     </insert>
-    <insert id="insertSelective" keyColumn="user_id" keyProperty="userId"
+    <insert id="insertSelective" keyColumn="user_id" keyProperty="id"
             parameterType="com.aiocloud.onetable.mysql.sys.po.SysUserPO" useGeneratedKeys="true">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">

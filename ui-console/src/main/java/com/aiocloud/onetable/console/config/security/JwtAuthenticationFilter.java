@@ -124,14 +124,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void handleBadRequestException(HttpServletResponse response, BadRequestException e) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(String.format("{\"code\": 500, \"message\": \"%s\"}", e.getMessage()));
     }
 
     private void handleGeneralException(HttpServletResponse response, Exception e) throws IOException {
         log.error("General exception occurred", e);
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write("{\"code\": 500, \"message\": \"服务器内部错误\"}");
     }

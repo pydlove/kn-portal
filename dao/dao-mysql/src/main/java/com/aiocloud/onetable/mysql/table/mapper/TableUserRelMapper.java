@@ -4,6 +4,7 @@ import com.aiocloud.onetable.mysql.table.dto.TableUserRelDTO;
 import com.aiocloud.onetable.mysql.table.po.TableUserRelPO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,4 +36,5 @@ public interface TableUserRelMapper extends BaseMapper<TableUserRelPO> {
 
     List<TableUserRelDTO> selectAllUserTable();
 
+    int deleteByUserId(@Param("userId") Long userId);
 }

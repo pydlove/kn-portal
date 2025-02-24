@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @copyright: @copyright (c) 2022 
  * @company: aiocloud
  * @author: panyong
- * @version: 1.0.0 
+ * @version: 1.0.0
  * @createTime: 2025-02-22 21:06 
  */
 @RequiredArgsConstructor
@@ -36,13 +36,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/add")
-    public CommonResponse<Integer> addUser(@RequestBody UserAddDTO userAddDTO) {
+    public CommonResponse<Long> addUser(@RequestBody UserAddDTO userAddDTO) {
         return new CommonResponse<>(userService.insertUser(userAddDTO));
     }
 
     @PostMapping("/delete")
-    public CommonResponse<Integer> deleteUser(@RequestParam("id") Long id) {
-        return new CommonResponse<>(userService.deleteUserById(id));
+    public CommonResponse<Integer> deleteUser(@RequestBody UserDTO userDTO) {
+        return new CommonResponse<>(userService.deleteUserById(userDTO.getId()));
     }
 
     @PostMapping("/update")

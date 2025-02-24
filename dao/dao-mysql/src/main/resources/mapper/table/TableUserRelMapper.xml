@@ -43,6 +43,7 @@
     <select id="selectAllUserTable" resultMap="ExtResultMap">
         select t1.user_id,
                t1.table_id,
+               t2.table_comment,
                t2.table_name
         from t_table_user_rel t1
                  left join t_table_info t2 on t2.id = t1.table_id
@@ -53,6 +54,13 @@
         from t_table_user_rel
         where id = #{id}
     </delete>
+
+    <delete id="deleteByUserId">
+        delete
+        from t_table_user_rel
+        where user_id = #{userId}
+    </delete>
+
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="com.aiocloud.onetable.mysql.table.po.TableUserRelPO" useGeneratedKeys="true">
         insert into t_table_user_rel
