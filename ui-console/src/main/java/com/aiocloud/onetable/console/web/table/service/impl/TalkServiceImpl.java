@@ -41,13 +41,13 @@ public class TalkServiceImpl implements TalkService {
     @Override
     public CommonResponse question(String tableName, String content) {
         TalkVO talkVO = new TalkVO();
-        try {
+        /*try {
             if (!checkTableAuth(tableName)){
                 return new CommonResponse(ErrorCode.UNAUTHORIZED, talkVO);
             }
         } catch (Exception e) {
             return new CommonResponse(ErrorCode.UNAUTHORIZED, talkVO);
-        }
+        }*/
         try {
             String select = SQLGenerator.generate(tableName, content);
             logger.info("解析SQL为：{}", select);
