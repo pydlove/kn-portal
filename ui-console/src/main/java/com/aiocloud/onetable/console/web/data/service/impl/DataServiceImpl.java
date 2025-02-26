@@ -1,6 +1,7 @@
 package com.aiocloud.onetable.console.web.data.service.impl;
 
 import com.aiocloud.onetable.console.base.common.CommonResponse;
+import com.aiocloud.onetable.console.enums.ChartTypeEnum;
 import com.aiocloud.onetable.console.web.data.service.DataService;
 import com.aiocloud.onetable.console.web.table.vo.*;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class DataServiceImpl implements DataService {
 
     private TalkResultVO generateListData(CommonResponse<TalkVO> list, String chartType) {
         TalkResultVO talkResultVO = new TalkResultVO();
-        talkResultVO.setChartType(chartType);
+        talkResultVO.setChartType(ChartTypeEnum.TABLE.getName());
 
 //        talkResultVO.setTableData();
         // 生成列表数据
@@ -58,7 +59,7 @@ public class DataServiceImpl implements DataService {
         barVO.setXAxis(xList);
         barVO.setYAxis(yList);
         TalkResultVO talkResultVO = new TalkResultVO();
-        talkResultVO.setChartType(chartType);
+        talkResultVO.setChartType(ChartTypeEnum.BAR.getName());
         talkResultVO.setBarData(barVO);
         return talkResultVO;
     }
@@ -66,7 +67,7 @@ public class DataServiceImpl implements DataService {
     private TalkResultVO generatePieChartData(CommonResponse<TalkVO> list, String chartType) {
 
         TalkResultVO talkResultVO = new TalkResultVO();
-        talkResultVO.setChartType(chartType);
+        talkResultVO.setChartType(ChartTypeEnum.PIE.getName());
         return talkResultVO;
     }
 
@@ -86,7 +87,7 @@ public class DataServiceImpl implements DataService {
         }
         lineVO.setXAxis(xList);
         lineVO.setYAxis(yList);
-        talkResultVO.setChartType(chartType);
+        talkResultVO.setChartType(ChartTypeEnum.LINE.getName());
         talkResultVO.setLineData(lineVO);
         return talkResultVO;
     }
