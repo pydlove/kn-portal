@@ -26,10 +26,10 @@ public class TableInfoController {
     @Resource
     private TableInfoService tableInfoService;
 
-    @GetMapping("/list")
+    @GetMapping("/tableInfo")
     @ResponseBody
-    public CommonResponse selectList(TableInfoPO tableInfoPO) {
-        return new CommonResponse(tableInfoService.selectList(tableInfoPO));
+    public CommonResponse tableInfo(TableInfoPO tableInfoPO) {
+        return new CommonResponse(tableInfoService.tableInfo(tableInfoPO));
     }
 
     @GetMapping("/all")

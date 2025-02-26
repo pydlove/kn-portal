@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class SQLGenerator {
 
-    public static String generate(String tableName, String content){
+    public static String generate(String tableName, String content, Integer pageSize, Integer pageNum){
         String regex = "(?<!\\d:)\\s+(?!\\d+:)";//时间格式中的空格不能去掉
         content = content.replaceAll(regex, "");
         List<Condition> conditionList = SQLExtractor.extractConditon(tableName, content);
@@ -31,6 +31,11 @@ public class SQLGenerator {
         String groupBy = generateGroupBy(groupColumns);
         String orderBy = generateOrderBy(sortList);
         String limit = generateLimit(limitNum);
+        if (StringUtil.isBlank(limit) && StringUtil.isBlank(groupBy)){
+            pageSize = pageSize == null || pageSize == 0 ? 10 : pageSize.intValue();
+            pageNum = pageNum == null ? 0 : pageNum.intValue();
+            limit = String.join("", " limit ", String.valueOf(pageSize),  " offset ", String.valueOf(pageSize * pageNum));
+        }
         return String.join("", select, where, groupBy, orderBy, limit);
     }
 

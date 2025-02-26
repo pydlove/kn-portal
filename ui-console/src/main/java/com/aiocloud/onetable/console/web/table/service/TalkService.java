@@ -8,5 +8,5 @@ import com.aiocloud.onetable.console.utils.Result;
  */
 public interface TalkService {
 
-    CommonResponse question(String tableName, String content);
+    CommonResponse question(String tableName, String content, Integer pageSize, Integer pageNum);
 }

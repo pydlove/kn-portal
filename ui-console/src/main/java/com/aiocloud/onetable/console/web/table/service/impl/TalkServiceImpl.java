@@ -39,7 +39,7 @@ public class TalkServiceImpl implements TalkService {
     private TableAuthService tableAuthService;
 
     @Override
-    public CommonResponse question(String tableName, String content) {
+    public CommonResponse question(String tableName, String content, Integer pageSize, Integer pageNum) {
         TalkVO talkVO = new TalkVO();
         /*try {
             if (!checkTableAuth(tableName)){
@@ -49,7 +49,7 @@ public class TalkServiceImpl implements TalkService {
             return new CommonResponse(ErrorCode.UNAUTHORIZED, talkVO);
         }*/
         try {
-            String select = SQLGenerator.generate(tableName, content);
+            String select = SQLGenerator.generate(tableName, content,pageSize, pageNum);
             logger.info("解析SQL为：{}", select);
             Map<String, ColumnInfoPO> tableMap = TableInfoCache.getTableMap(tableName);
             if (tableMap == null){
@@ -81,7 +81,9 @@ public class TalkServiceImpl implements TalkService {
         List<String> columnList = new ArrayList<>();
         if (sql.contains("*")){
             tableMap.forEach((key, value) -> {
-                columnList.add(value.getColumnName());
+                if (!"count".equals(key)){
+                    columnList.add(value.getColumnName());
+                }
             });
             return columnList;
         }
