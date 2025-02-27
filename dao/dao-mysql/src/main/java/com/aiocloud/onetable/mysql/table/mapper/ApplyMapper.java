@@ -35,4 +35,7 @@ public interface ApplyMapper extends BaseMapper<ApplyPO> {
     List<ApplyPO> selectAllApplies();
 
     int batchUpdate(@Param("batchApplies") List<ApplyPO> batchApplies);
+
+    Integer selectCountByTableIdAndUserId(Long tableId, Long userId);
+
 }

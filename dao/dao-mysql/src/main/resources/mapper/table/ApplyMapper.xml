@@ -51,6 +51,12 @@
         FROM t_apply
     </select>
 
+    <select id="selectCountByTableIdAndUserId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM t_apply
+        where table_id = #{tableId} and user_id = #{userId} and delete_flag = 0 limit 1
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from t_apply

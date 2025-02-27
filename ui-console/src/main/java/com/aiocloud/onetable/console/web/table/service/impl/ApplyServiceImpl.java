@@ -2,6 +2,7 @@ package com.aiocloud.onetable.console.web.table.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.aiocloud.onetable.console.base.common.PageRequest;
 import com.aiocloud.onetable.console.base.common.PaginationResult;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -124,5 +126,13 @@ public class ApplyServiceImpl extends ServiceImpl<ApplyMapper, ApplyPO> implemen
         }
 
         return null;
+    }
+
+    @Override
+    public boolean checkSubmitApply(Long tableId, Long currentUserId) {
+
+        Integer count = applyMapper.selectCountByTableIdAndUserId(tableId, currentUserId);
+
+        return BooleanUtil.isFalse(Objects.isNull(count) || count == 0);
     }
 }

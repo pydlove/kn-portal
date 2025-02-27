@@ -126,18 +126,18 @@ public class TalkServiceImpl implements TalkService {
         return columnInfoVoList;
     }
 
-    /**
-     * 校验表权限
-     * @param tableName
-     * @return
-     */
-    private boolean checkTableAuth(String tableName){
-        TableInfoPO tableInfoPO = new TableInfoPO();
-        tableInfoPO.setTableName(tableName);
-        List<TableInfoPO> tableInfoPOS = tableInfoService.selectList(tableInfoPO);
-        if (tableInfoPOS == null || tableInfoPOS.size() == 0){
-            return false;
-        }
-        return tableAuthService.checkAccessAuth(tableInfoPOS.get(0).getId());
-    }
+//    /**
+//     * 校验表权限
+//     * @param tableName
+//     * @return
+//     */
+//    private boolean checkTableAuth(String tableName){
+//        TableInfoPO tableInfoPO = new TableInfoPO();
+//        tableInfoPO.setTableName(tableName);
+//        List<TableInfoPO> tableInfoPOS = tableInfoService.selectList(tableInfoPO);
+//        if (tableInfoPOS == null || tableInfoPOS.size() == 0){
+//            return false;
+//        }
+//        return tableAuthService.checkAccessAuth(tableInfoPOS.get(0).getId());
+//    }
 }
