@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DataServiceImpl implements DataService {
@@ -46,7 +47,7 @@ public class DataServiceImpl implements DataService {
         //数据转化
         TalkVO data = list.getData();
         List<ColumnInfoVo> columnList = data.getColumnList();
-        List<List> dataList = data.getDataList();
+        List<Map> dataList = data.getDataList();
         BarVO barVO = new BarVO();
         barVO.setXName(columnList.get(0).getColumnName());
         barVO.setYName(columnList.get(1).getColumnName());
@@ -77,7 +78,7 @@ public class DataServiceImpl implements DataService {
         //数据转化
         TalkVO data = list.getData();
         List<ColumnInfoVo> columnList = data.getColumnList();
-        List<List> dataList = data.getDataList();
+        List<Map> dataList = data.getDataList();
         LineVO lineVO = new LineVO();
         List<String> xList = new ArrayList<>();
         List<String> yList = new ArrayList<>();

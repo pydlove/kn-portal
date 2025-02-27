@@ -64,7 +64,7 @@ public class TalkServiceImpl implements TalkService {
             }
             List list = sqlExecutor.executeSql(select, columnList);
             List<ColumnInfoVo> resultColumns = getColumnInfo(columnInfoVoMap, columnList);
-            talkVO.setColumnList(resultColumns).setDataList(list);
+            talkVO.setColumnList(resultColumns).setDataList(list).setMode(resultType(content, select));
         } catch (Exception e) {
             logger.error("对话异常", e);
             return new CommonResponse(ErrorCode.UNRECOGNIZED, talkVO);
@@ -124,6 +124,19 @@ public class TalkServiceImpl implements TalkService {
             columnInfoVoList.add(tableMap.get(column));
         }
         return columnInfoVoList;
+    }
+
+    private int resultType(String content, String sql){
+        if (sql.contains("count") && (content.contains("趋势") || content.contains("走势"))){
+            return 3;
+        }
+        if (sql.contains("count") && (content.contains("比例")|| content.contains("占比"))){
+            return 2;
+        }
+        if (sql.contains("count")){
+            return 1;
+        }
+        return 0;
     }
 
 //    /**
