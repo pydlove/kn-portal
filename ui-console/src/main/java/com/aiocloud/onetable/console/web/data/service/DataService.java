@@ -14,7 +14,7 @@ import java.util.Map;
  * @Date 2025/2/20 20:22
  */
 public interface DataService {
-    TalkResultVO generateChartData(CommonResponse<TalkVO> list, String chartType);
+    TalkResultVO generateChartData(CommonResponse<TalkVO> list);
 
     // 导出数据
 //    byte[] exportData(String tableName, String format, Map<String, Object> filters);

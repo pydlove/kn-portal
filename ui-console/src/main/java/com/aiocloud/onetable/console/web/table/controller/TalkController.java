@@ -35,7 +35,7 @@ public class TalkController {
         }
         CommonResponse question = talkService.question(talkDTO.getTableName(), talkDTO.getContent(), talkDTO.getPageSize(), talkDTO.getPageNum());
 
-        TalkResultVO talkResultVO = dataService.generateChartData(question, "1");
+        TalkResultVO talkResultVO = dataService.generateChartData(question);
 
         return new CommonResponse<TalkResultVO>(talkResultVO);
     }
