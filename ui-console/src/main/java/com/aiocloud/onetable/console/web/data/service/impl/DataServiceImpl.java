@@ -14,7 +14,11 @@ import java.util.Map;
 public class DataServiceImpl implements DataService {
 
     @Override
-    public TalkResultVO generateChartData(CommonResponse<TalkVO> list, String chartType) {
+    public TalkResultVO generateChartData(CommonResponse<TalkVO> list) {
+        TalkVO talkVO = list.getData();
+//        String chartType = String.valueOf(data.getMode());
+
+        String chartType = "1";
         try {
             switch (chartType) {
                 case "0":
@@ -34,7 +38,7 @@ public class DataServiceImpl implements DataService {
         }
     }
 
-    private TalkResultVO generateListData(CommonResponse<TalkVO> list, String chartType) {
+    private TalkResultVO generateListData(TalkVO talkVO, String chartType) {
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.TABLE.getName());
 
@@ -43,8 +47,10 @@ public class DataServiceImpl implements DataService {
         return talkResultVO;
     }
 
-    private TalkResultVO generateBarChartData(CommonResponse<TalkVO> list, String chartType) {
+    private TalkResultVO generateBarChartData(TalkVO talkVO, String chartType) {
         //数据转化
+        List<ColumnInfoVo> columnList = talkVO.getColumnList();
+        List<List> dataList = talkVO.getDataList();
         TalkVO data = list.getData();
         List<ColumnInfoVo> columnList = data.getColumnList();
         List<Map> dataList = data.getDataList();
@@ -59,23 +65,24 @@ public class DataServiceImpl implements DataService {
         }
         barVO.setXAxis(xList);
         barVO.setYAxis(yList);
+
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.BAR.getName());
         talkResultVO.setBarData(barVO);
         return talkResultVO;
     }
 
-    private TalkResultVO generatePieChartData(CommonResponse<TalkVO> list, String chartType) {
+    private TalkResultVO generatePieChartData(TalkVO talkVO, String chartType) {
 
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.PIE.getName());
         return talkResultVO;
     }
 
-    private TalkResultVO generateLineChartData(CommonResponse<TalkVO> list, String chartType) {
-        TalkResultVO talkResultVO = new TalkResultVO();
-        talkResultVO.setChartType(chartType);
+    private TalkResultVO generateLineChartData(TalkVO talkVO, String chartType) {
         //数据转化
+        List<ColumnInfoVo> columnList = talkVO.getColumnList();
+        List<List> dataList = talkVO.getDataList();
         TalkVO data = list.getData();
         List<ColumnInfoVo> columnList = data.getColumnList();
         List<Map> dataList = data.getDataList();
@@ -88,6 +95,9 @@ public class DataServiceImpl implements DataService {
         }
         lineVO.setXAxis(xList);
         lineVO.setYAxis(yList);
+
+        TalkResultVO talkResultVO = new TalkResultVO();
+        talkResultVO.setChartType(chartType);
         talkResultVO.setChartType(ChartTypeEnum.LINE.getName());
         talkResultVO.setLineData(lineVO);
         return talkResultVO;
