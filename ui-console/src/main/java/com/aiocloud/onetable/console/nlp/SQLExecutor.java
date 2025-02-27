@@ -11,7 +11,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther ybin
@@ -31,15 +33,15 @@ public class SQLExecutor {
      * @throws SQLException
      */
     public List executeSql(String sql, List<String> columnList) throws SQLException {
-        List<List> resultList = new ArrayList<>();
+        List<Map<String,String>> resultList = new ArrayList<>();
         try(
             PreparedStatement preparedStatement = sessionFactory.openSession().getConnection().prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
         ){
             while (resultSet.next()){
-                List<String> data = new ArrayList<>();
+                Map<String,String> data = new HashMap<>();
                 for (int i = 1; i <= columnList.size(); i++) {
-                    data.add(resultSet.getString(i));
+                    data.put(columnList.get(i - 1),resultSet.getString(i));
                 }
                 resultList.add(data);
             }
