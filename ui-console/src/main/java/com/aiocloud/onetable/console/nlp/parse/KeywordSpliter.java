@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 public class KeywordSpliter {
 
     public static final String[][] groupSplitRanges = new String[][]{
-            {"通过", "分组"},{"根据", "分组"},{"使用", "分组"},{"使", "分组"},{"让", "分组"}
+            {"通过", "分组"},{"根据", "分组"},{"使用", "分组"},{"使", "分组"},{"让", "分组"},
+            {"通过", "统计"},{"根据", "统计"},{"使用", "统计"},{"使", "统计"},{"让", "统计"}
     };
 
     public static final String[][] sortSplitRanges = new String[][]{
