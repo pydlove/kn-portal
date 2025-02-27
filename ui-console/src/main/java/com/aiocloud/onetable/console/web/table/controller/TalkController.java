@@ -39,4 +39,13 @@ public class TalkController {
 
         return new CommonResponse<TalkResultVO>(talkResultVO);
     }
+
+    @PostMapping("/preview")
+    @ResponseBody
+    public CommonResponse preview(@RequestBody TalkDTO talkDTO){
+        if (talkDTO == null){
+            return new CommonResponse<>(ErrorCode.PARAMETER_ERROR);
+        }
+        return talkService.question(talkDTO.getTableName(), talkDTO.getContent(), talkDTO.getPageSize(), talkDTO.getPageNum());
+    }
 }
