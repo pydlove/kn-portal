@@ -24,4 +24,6 @@ public interface ApplyService {
     Integer updateApply(ApplyDTO applyDTO);
 
     Integer batchUpdateApply(BatchApplyDTO batchApplyDTO);
+
+    boolean checkSubmitApply(Long tableId, Long currentUserId);
 }

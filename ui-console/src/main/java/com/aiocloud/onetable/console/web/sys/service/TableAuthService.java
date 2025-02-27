@@ -12,7 +12,7 @@ import com.aiocloud.onetable.mysql.table.po.ApplyPO;
  * @createTime: 2025-02-21 14:33 
  */
 public interface TableAuthService {
-    Boolean checkAccessAuth(Long tableId);
+    Integer checkAccessAuth(Long tableId);
 
     void addAccessAuth(ApplyPO apply);
 }

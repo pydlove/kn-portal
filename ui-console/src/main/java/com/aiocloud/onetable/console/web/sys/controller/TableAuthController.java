@@ -37,7 +37,7 @@ public class TableAuthController {
     private final TableAuthService tableAuthService;
 
     @GetMapping("/check")
-    public CommonResponse<Boolean> checkAccessAuth(@RequestParam("tableId") Long tableId ) {
+    public CommonResponse<Integer> checkAccessAuth(@RequestParam("tableId") Long tableId ) {
 
         return new CommonResponse<>(tableAuthService.checkAccessAuth(tableId));
     }
