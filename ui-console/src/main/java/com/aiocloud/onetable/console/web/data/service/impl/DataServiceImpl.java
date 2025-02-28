@@ -16,9 +16,8 @@ public class DataServiceImpl implements DataService {
     @Override
     public TalkResultVO generateChartData(CommonResponse<TalkVO> list) {
         TalkVO talkVO = list.getData();
-//        String chartType = String.valueOf(data.getMode());
-
-        String chartType = "1";
+//        String chartType = "1";
+        String chartType = String.valueOf(talkVO.getMode());
         try {
             switch (chartType) {
                 case "0":
@@ -31,38 +30,37 @@ public class DataServiceImpl implements DataService {
                     return generateLineChartData(list, chartType);
                 default:
                     return generateListData(list, chartType);
-//                    throw new IllegalArgumentException("Unsupported chart type: " + chartType);
             }
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private TalkResultVO generateListData(TalkVO talkVO, String chartType) {
+    private TalkResultVO generateListData(CommonResponse<TalkVO> list, String chartType) {
+        TalkVO talkVO = list.getData();
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.TABLE.getName());
 
-//        talkResultVO.setTableData();
-        // 生成列表数据
+        //talkResultVO.setTableData(talkVO);
         return talkResultVO;
     }
 
-    private TalkResultVO generateBarChartData(TalkVO talkVO, String chartType) {
-        //数据转化
+    private TalkResultVO generateBarChartData(CommonResponse<TalkVO> list, String chartType) {
+        TalkVO talkVO = list.getData();
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
-        List<List> dataList = talkVO.getDataList();
-        TalkVO data = list.getData();
-        List<ColumnInfoVo> columnList = data.getColumnList();
-        List<Map> dataList = data.getDataList();
+        List<Map> dataList = talkVO.getDataList();
+
         BarVO barVO = new BarVO();
         barVO.setXName(columnList.get(0).getColumnName());
         barVO.setYName(columnList.get(1).getColumnName());
+
         List<String> xList = new ArrayList<>();
         List<String> yList = new ArrayList<>();
-        for (int i = 0; i < dataList.size(); i++) {
-            xList.add((String)dataList.get(i).get(0));
-            yList.add((String)dataList.get(i).get(1));
+        for (Map data : dataList) {
+            xList.add((String) data.get(columnList.get(0).getColumnName()));
+            yList.add((String) data.get(columnList.get(1).getColumnName()));
         }
+
         barVO.setXAxis(xList);
         barVO.setYAxis(yList);
 
@@ -72,32 +70,47 @@ public class DataServiceImpl implements DataService {
         return talkResultVO;
     }
 
-    private TalkResultVO generatePieChartData(TalkVO talkVO, String chartType) {
+    private TalkResultVO generatePieChartData(CommonResponse<TalkVO> list, String chartType) {
+        TalkVO talkVO = list.getData();
+        List<ColumnInfoVo> columnList = talkVO.getColumnList();
+        List<Map> dataList = talkVO.getDataList();
+
+        PieVO pieVO = new PieVO();
+        List<PieDataVO> pieDataList = new ArrayList<>();
+        for (Map data : dataList) {
+            PieDataVO pieDataVO = new PieDataVO();
+            pieDataVO.setName(data.get(columnList.get(0).getColumnName()).toString());
+            pieDataVO.setValue(data.get(columnList.get(1).getColumnName()).toString());
+            pieDataList.add(pieDataVO);
+        }
+        pieVO.setData(pieDataList);
 
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.PIE.getName());
+        talkResultVO.setPieData(pieVO);
         return talkResultVO;
     }
 
-    private TalkResultVO generateLineChartData(TalkVO talkVO, String chartType) {
-        //数据转化
+    private TalkResultVO generateLineChartData(CommonResponse<TalkVO> list, String chartType) {
+        TalkVO talkVO = list.getData();
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
-        List<List> dataList = talkVO.getDataList();
-        TalkVO data = list.getData();
-        List<ColumnInfoVo> columnList = data.getColumnList();
-        List<Map> dataList = data.getDataList();
+        List<Map> dataList = talkVO.getDataList();
+
         LineVO lineVO = new LineVO();
+        lineVO.setXName(columnList.get(0).getColumnDesc());
+        lineVO.setYName(columnList.get(1).getColumnDesc());
+
         List<String> xList = new ArrayList<>();
         List<String> yList = new ArrayList<>();
-        for (int i = 0; i < dataList.size(); i++) {
-            xList.add((String)dataList.get(i).get(0));
-            yList.add((String)dataList.get(i).get(1));
+        for (Map data : dataList) {
+            xList.add((String) data.get(columnList.get(0).getColumnName()));
+            yList.add((String) data.get(columnList.get(1).getColumnName()));
         }
+
         lineVO.setXAxis(xList);
         lineVO.setYAxis(yList);
 
         TalkResultVO talkResultVO = new TalkResultVO();
-        talkResultVO.setChartType(chartType);
         talkResultVO.setChartType(ChartTypeEnum.LINE.getName());
         talkResultVO.setLineData(lineVO);
         return talkResultVO;

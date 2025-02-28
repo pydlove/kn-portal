@@ -15,25 +15,5 @@ import java.util.Map;
  */
 @Data
 public class PieVO {
-
-      /**
-       * 饼图的标签列表
-       */
-      private List<String> labels;
-
-      /**
-       * 饼图的值列表
-       */
-      private List<String> values;
-
-      /**
-       * 饼图的键值对映射
-       */
-      private Map<String, String> dataPairs;
-
-      public PieVO() {
-            this.labels = new ArrayList<>();
-            this.values = new ArrayList<>();
-            this.dataPairs = new HashMap<>();
-      }
+      private List<PieDataVO> data;
 }

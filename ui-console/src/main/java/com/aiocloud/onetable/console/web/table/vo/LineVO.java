@@ -14,6 +14,24 @@ import java.util.List;
  */
 @Data
 public class LineVO {
+    
+    @JsonProperty("title")
+    private String title;
+
+    @JsonProperty("legend")
+    private String legend;
+
+    @JsonProperty("xCode")
+    private String xCode; // X轴code
+
+    @JsonProperty("xName")
+    private String xName; // X轴名称
+
+    @JsonProperty("yCode")
+    private String yCode; // Y轴code
+
+    @JsonProperty("yName")
+    private String yName; // Y轴名称
 
     @JsonProperty("xAxis")
     private List<String> xAxis;
