@@ -15,6 +15,6 @@ import java.util.Map;
 @Data
 public class TableVO {
 
-    private List<String> headers;
-    private List<Map<String, Object>> rows;
+    private List<ColumnInfoVo> headers;
+    private List<Map<String, String>> rows;
 }

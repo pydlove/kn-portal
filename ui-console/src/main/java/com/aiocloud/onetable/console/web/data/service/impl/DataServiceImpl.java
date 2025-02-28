@@ -40,7 +40,9 @@ public class DataServiceImpl implements DataService {
         TalkVO talkVO = list.getData();
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.TABLE.getName());
-
+        TableVO tableVO = new TableVO();
+        tableVO.setHeaders(talkVO.getColumnList());
+        tableVO.setRows(talkVO.getDataList());
         //talkResultVO.setTableData(talkVO);
         return talkResultVO;
     }
@@ -48,17 +50,17 @@ public class DataServiceImpl implements DataService {
     private TalkResultVO generateBarChartData(CommonResponse<TalkVO> list, String chartType) {
         TalkVO talkVO = list.getData();
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
-        List<Map> dataList = talkVO.getDataList();
+        List<Map<String, String>> dataList = talkVO.getDataList();
 
         BarVO barVO = new BarVO();
-        barVO.setXName(columnList.get(0).getColumnName());
-        barVO.setYName(columnList.get(1).getColumnName());
+        barVO.setXName(columnList.get(0).getColumnDesc());
+        barVO.setYName(columnList.get(1).getColumnDesc());
 
         List<String> xList = new ArrayList<>();
         List<String> yList = new ArrayList<>();
-        for (Map data : dataList) {
-            xList.add((String) data.get(columnList.get(0).getColumnName()));
-            yList.add((String) data.get(columnList.get(1).getColumnName()));
+        for (Map<String, String> data : dataList) {
+            xList.add(data.get(columnList.get(0).getColumnName()));
+            yList.add(data.get(columnList.get(1).getColumnName()));
         }
 
         barVO.setXAxis(xList);
@@ -73,11 +75,11 @@ public class DataServiceImpl implements DataService {
     private TalkResultVO generatePieChartData(CommonResponse<TalkVO> list, String chartType) {
         TalkVO talkVO = list.getData();
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
-        List<Map> dataList = talkVO.getDataList();
+        List<Map<String, String>> dataList = talkVO.getDataList();
 
         PieVO pieVO = new PieVO();
         List<PieDataVO> pieDataList = new ArrayList<>();
-        for (Map data : dataList) {
+        for (Map<String, String> data : dataList) {
             PieDataVO pieDataVO = new PieDataVO();
             pieDataVO.setName(data.get(columnList.get(0).getColumnName()).toString());
             pieDataVO.setValue(data.get(columnList.get(1).getColumnName()).toString());
@@ -94,7 +96,7 @@ public class DataServiceImpl implements DataService {
     private TalkResultVO generateLineChartData(CommonResponse<TalkVO> list, String chartType) {
         TalkVO talkVO = list.getData();
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
-        List<Map> dataList = talkVO.getDataList();
+        List<Map<String, String>> dataList = talkVO.getDataList();
 
         LineVO lineVO = new LineVO();
         lineVO.setXName(columnList.get(0).getColumnDesc());
@@ -102,9 +104,9 @@ public class DataServiceImpl implements DataService {
 
         List<String> xList = new ArrayList<>();
         List<String> yList = new ArrayList<>();
-        for (Map data : dataList) {
-            xList.add((String) data.get(columnList.get(0).getColumnName()));
-            yList.add((String) data.get(columnList.get(1).getColumnName()));
+        for (Map<String, String> data : dataList) {
+            xList.add(data.get(columnList.get(0).getColumnName()));
+            yList.add(data.get(columnList.get(1).getColumnName()));
         }
 
         lineVO.setXAxis(xList);

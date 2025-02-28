@@ -10,7 +10,7 @@ public class TalkVO {
 
     private int mode = 0;// 0：表格  1：柱状图  2：饼图  3：折线图
     private List<ColumnInfoVo> columnList;
-    private List<Map> dataList;
+    private List<Map<String, String>> dataList;
 
     public int getMode() {
         return mode;
@@ -30,11 +30,11 @@ public class TalkVO {
         return this;
     }
 
-    public List<Map> getDataList() {
+    public List<Map<String, String>> getDataList() {
         return dataList;
     }
 
-    public TalkVO setDataList(List<Map> dataList) {
+    public TalkVO setDataList(List<Map<String, String>> dataList) {
         this.dataList = dataList;
         return this;
     }
