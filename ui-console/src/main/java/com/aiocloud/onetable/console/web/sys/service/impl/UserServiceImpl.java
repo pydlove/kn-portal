@@ -211,11 +211,17 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
 
         List<TableUserRelDTO> tableUserRelDTOS = Optional.ofNullable(tableUserRelMapper.selectAllUserTable()).orElse(new ArrayList<>());
         Map<Long, List<String>> userTableNamesMap = new HashMap<>();
+        Map<Long, List<Long>> userTableIdsMap = new HashMap<>();
         for (TableUserRelDTO tableUserRelDTO : tableUserRelDTOS) {
             String tableComment = "【" + tableUserRelDTO.getTableComment() + "】";
             List<String> tableNames = userTableNamesMap.computeIfAbsent(tableUserRelDTO.getUserId(), k -> new ArrayList<>());
+            List<Long> tableIds = userTableIdsMap.computeIfAbsent(tableUserRelDTO.getUserId(), k -> new ArrayList<>());
             if (!tableNames.contains(tableComment)) {
                 tableNames.add(tableComment);
+            }
+
+            if (!tableIds.contains(tableUserRelDTO.getTableId())) {
+                tableIds.add(tableUserRelDTO.getTableId());
             }
         }
 
@@ -224,6 +230,9 @@ public class UserServiceImpl extends ServiceImpl<SysUserMapper, SysUserPO> imple
 
             List<String> tableNames = userTableNamesMap.getOrDefault(vo.getId(), new ArrayList<>());
             vo.setTableNames(String.join(SystemConstant.SEPARATOR_COMMA, tableNames));
+
+            List<Long> tableIds = userTableIdsMap.getOrDefault(vo.getId(), new ArrayList<>());
+            vo.setTableIds(tableIds);
         });
 
         return new PaginationResult<>(result.getTotal(), userPages);
