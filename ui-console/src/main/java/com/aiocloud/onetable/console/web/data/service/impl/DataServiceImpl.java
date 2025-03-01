@@ -76,8 +76,8 @@ public class DataServiceImpl implements DataService {
         List<PieDataVO> pieDataList = new ArrayList<>();
         for (Map<String, String> data : dataList) {
             PieDataVO pieDataVO = new PieDataVO();
-            pieDataVO.setName(data.get(columnList.get(0).getColumnName()).toString());
-            pieDataVO.setValue(data.get(columnList.get(1).getColumnName()).toString());
+            pieDataVO.setName(String.valueOf(data.get(columnList.get(0).getColumnName())));
+            pieDataVO.setValue(String.valueOf(data.get(columnList.get(1).getColumnName())));
             pieDataList.add(pieDataVO);
         }
         pieVO.setData(pieDataList);

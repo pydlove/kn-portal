@@ -98,6 +98,7 @@ public class SQLExtractor {
         }
         CoNLLSentence coNLLWords = HanLP.parseDependency(content);
         CoNLLWord[] wordArray = coNLLWords.getWordArray();
+        int sum = 0;
         for (int i = 0; i < wordArray.length; i++) {
             CoNLLWord word = wordArray[i];
             if (word.POSTAG.equals("column")){
@@ -118,7 +119,10 @@ public class SQLExtractor {
                     break;
                 }
                 if (groupSplitRange[1].contains(word.LEMMA)){
-                    return String.join(",", groupColumns);
+                    if (++ sum > 1){
+                        return String.join(",", groupColumns);
+                    }
+                    break;
                 }
             }
         }

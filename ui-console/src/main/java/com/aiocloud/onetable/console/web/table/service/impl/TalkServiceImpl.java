@@ -132,7 +132,7 @@ public class TalkServiceImpl implements TalkService {
         if (sql.contains("count") && (content.contains("趋势") || content.contains("走势"))){
             return 3;
         }
-        if (sql.contains("count") && (content.contains("比例")|| content.contains("占比"))){
+        if (sql.contains("count") && (content.contains("比例") || content.contains("占比") || content.contains("比列"))){
             return 2;
         }
         if (sql.contains("count")){
