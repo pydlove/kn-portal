@@ -1,14 +1,13 @@
 package com.aiocloud.onetable.console.web.table.controller;
 
 import com.aiocloud.onetable.console.base.common.CommonResponse;
+import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
-import com.aiocloud.onetable.console.utils.Result;
 import com.aiocloud.onetable.console.web.data.service.DataService;
 import com.aiocloud.onetable.console.web.table.dto.TalkDTO;
 import com.aiocloud.onetable.console.web.table.service.TalkService;
 import com.aiocloud.onetable.console.web.table.vo.TalkResultVO;
 import com.aiocloud.onetable.console.web.table.vo.TalkVO;
-import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,23 +28,38 @@ public class TalkController {
 
     @PostMapping("/question")
     @ResponseBody
-    public CommonResponse question(@RequestBody TalkDTO talkDTO){
+    public CommonResponse question(@RequestBody TalkDTO talkDTO) throws Exception {
         if (talkDTO == null){
             return new CommonResponse<>(ErrorCode.PARAMETER_ERROR);
         }
-        CommonResponse question = talkService.question(talkDTO.getTableName(), talkDTO.getContent(), talkDTO.getPageSize(), talkDTO.getPageNum());
-
-        TalkResultVO talkResultVO = dataService.generateChartData(question);
+        TalkResultVO talkResultVO = null;
+        try {
+            TalkVO talkVO = talkService.question(talkDTO.getTableName(), talkDTO.getContent(), talkDTO.getPageSize(), talkDTO.getPageNum());
+            talkResultVO = dataService.generateChartData(talkVO);
+        } catch (Exception e) {
+            if (e instanceof BadRequestException){
+                throw e;
+            }
+            throw new BadRequestException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
 
         return new CommonResponse<TalkResultVO>(talkResultVO);
     }
 
     @PostMapping("/preview")
     @ResponseBody
-    public CommonResponse preview(@RequestBody TalkDTO talkDTO){
+    public CommonResponse preview(@RequestBody TalkDTO talkDTO) throws Exception {
         if (talkDTO == null){
             return new CommonResponse<>(ErrorCode.PARAMETER_ERROR);
         }
-        return talkService.question(talkDTO.getTableName(), talkDTO.getContent(), talkDTO.getPageSize(), talkDTO.getPageNum());
+        try {
+            TalkVO talkVO = talkService.question(talkDTO.getTableName(), talkDTO.getContent(), talkDTO.getPageSize(), talkDTO.getPageNum());
+            return new CommonResponse(talkVO);
+        } catch (Exception e) {
+            if (e instanceof BadRequestException){
+                throw e;
+            }
+            throw new BadRequestException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -20,6 +20,7 @@ public enum ErrorCode {
     PARAMETER_ERROR(1006, "参数错误"),
     UNRECOGNIZED(1007, "很抱歉，未能识别您的需求。"),
     NOTFOUNDTABLE(1008, "查不到表信息"),
+    NOTFOUNDCOLUMN(1009, "查不到列信息"),
     USER_EXIST(2001, "用户已经存在"),
 
     ;

@@ -1,6 +1,5 @@
 package com.aiocloud.onetable.console.web.data.service.impl;
 
-import com.aiocloud.onetable.console.base.common.CommonResponse;
 import com.aiocloud.onetable.console.enums.ChartTypeEnum;
 import com.aiocloud.onetable.console.web.data.service.DataService;
 import com.aiocloud.onetable.console.web.table.vo.*;
@@ -14,30 +13,28 @@ import java.util.Map;
 public class DataServiceImpl implements DataService {
 
     @Override
-    public TalkResultVO generateChartData(CommonResponse<TalkVO> list) {
-        TalkVO talkVO = list.getData();
+    public TalkResultVO generateChartData(TalkVO talkVO) {
 //        String chartType = "1";
         String chartType = String.valueOf(talkVO.getMode());
         try {
             switch (chartType) {
                 case "0":
-                    return generateListData(list, chartType);
+                    return generateListData(talkVO, chartType);
                 case "1":
-                    return generateBarChartData(list, chartType);
+                    return generateBarChartData(talkVO, chartType);
                 case "2":
-                    return generatePieChartData(list, chartType);
+                    return generatePieChartData(talkVO, chartType);
                 case "3":
-                    return generateLineChartData(list, chartType);
+                    return generateLineChartData(talkVO, chartType);
                 default:
-                    return generateListData(list, chartType);
+                    return generateListData(talkVO, chartType);
             }
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private TalkResultVO generateListData(CommonResponse<TalkVO> list, String chartType) {
-        TalkVO talkVO = list.getData();
+    private TalkResultVO generateListData(TalkVO talkVO, String chartType) {
         TalkResultVO talkResultVO = new TalkResultVO();
         talkResultVO.setChartType(ChartTypeEnum.TABLE.getName());
         TableVO tableVO = new TableVO();
@@ -47,8 +44,7 @@ public class DataServiceImpl implements DataService {
         return talkResultVO;
     }
 
-    private TalkResultVO generateBarChartData(CommonResponse<TalkVO> list, String chartType) {
-        TalkVO talkVO = list.getData();
+    private TalkResultVO generateBarChartData(TalkVO talkVO, String chartType) {
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
         List<Map<String, String>> dataList = talkVO.getDataList();
 
@@ -72,8 +68,7 @@ public class DataServiceImpl implements DataService {
         return talkResultVO;
     }
 
-    private TalkResultVO generatePieChartData(CommonResponse<TalkVO> list, String chartType) {
-        TalkVO talkVO = list.getData();
+    private TalkResultVO generatePieChartData(TalkVO talkVO, String chartType) {
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
         List<Map<String, String>> dataList = talkVO.getDataList();
 
@@ -93,8 +88,7 @@ public class DataServiceImpl implements DataService {
         return talkResultVO;
     }
 
-    private TalkResultVO generateLineChartData(CommonResponse<TalkVO> list, String chartType) {
-        TalkVO talkVO = list.getData();
+    private TalkResultVO generateLineChartData(TalkVO talkVO, String chartType) {
         List<ColumnInfoVo> columnList = talkVO.getColumnList();
         List<Map<String, String>> dataList = talkVO.getDataList();
 

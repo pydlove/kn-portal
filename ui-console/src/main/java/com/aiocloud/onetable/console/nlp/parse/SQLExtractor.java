@@ -1,9 +1,12 @@
 package com.aiocloud.onetable.console.nlp.parse;
 
+import com.aiocloud.onetable.console.base.exception.BadRequestException;
+import com.aiocloud.onetable.console.base.exception.ErrorCode;
+import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
 import com.aiocloud.onetable.console.nlp.model.Condition;
 import com.aiocloud.onetable.console.nlp.model.Sort;
-import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
 import com.aiocloud.onetable.console.utils.StringUtil;
+import com.aiocloud.onetable.mysql.table.po.ColumnInfoPO;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
@@ -98,6 +101,10 @@ public class SQLExtractor {
         for (int i = 0; i < wordArray.length; i++) {
             CoNLLWord word = wordArray[i];
             if (word.POSTAG.equals("column")){
+                ColumnInfoPO columnInfoPO = TableInfoCache.get(tableName, word.LEMMA);
+                if (columnInfoPO == null){
+                    throw new BadRequestException(ErrorCode.NOTFOUNDCOLUMN, tableName + "表没有" + word.LEMMA + "相关属性");
+                }
                 String column = TableInfoCache.get(tableName, word.LEMMA).getColumnName();
                 if (!StringUtil.isBlank(column)){
                     groupColumns.add(column);

@@ -1,6 +1,6 @@
 package com.aiocloud.onetable.console.web.table.service.impl;
 
-import com.aiocloud.onetable.console.base.common.CommonResponse;
+import com.aiocloud.onetable.console.base.exception.BadRequestException;
 import com.aiocloud.onetable.console.base.exception.ErrorCode;
 import com.aiocloud.onetable.console.nlp.SQLExecutor;
 import com.aiocloud.onetable.console.nlp.cache.TableInfoCache;
@@ -12,7 +12,6 @@ import com.aiocloud.onetable.console.web.table.service.TalkService;
 import com.aiocloud.onetable.console.web.table.vo.ColumnInfoVo;
 import com.aiocloud.onetable.console.web.table.vo.TalkVO;
 import com.aiocloud.onetable.mysql.table.po.ColumnInfoPO;
-import com.aiocloud.onetable.mysql.table.po.TableInfoPO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +38,7 @@ public class TalkServiceImpl implements TalkService {
     private TableAuthService tableAuthService;
 
     @Override
-    public CommonResponse question(String tableName, String content, Integer pageSize, Integer pageNum) {
+    public TalkVO question(String tableName, String content, Integer pageSize, Integer pageNum) throws Exception {
         TalkVO talkVO = new TalkVO();
         /*try {
             if (!checkTableAuth(tableName)){
@@ -54,7 +53,7 @@ public class TalkServiceImpl implements TalkService {
             Map<String, ColumnInfoPO> tableMap = TableInfoCache.getTableMap(tableName);
             if (tableMap == null){
                 logger.error("查不到表{}信息", tableName);
-                return new CommonResponse(ErrorCode.NOTFOUNDTABLE, talkVO);
+                throw  new BadRequestException(ErrorCode.NOTFOUNDTABLE);
             }
 
             Map<String, ColumnInfoVo> columnInfoVoMap = formatColumnInfo(tableMap);
@@ -67,9 +66,12 @@ public class TalkServiceImpl implements TalkService {
             talkVO.setColumnList(resultColumns).setDataList(list).setMode(resultType(content, select));
         } catch (Exception e) {
             logger.error("对话异常", e);
-            return new CommonResponse(ErrorCode.UNRECOGNIZED, talkVO);
+            if (e instanceof BadRequestException){
+                throw e;
+            }
+            throw new BadRequestException(ErrorCode.UNRECOGNIZED);
         }
-        return new CommonResponse(talkVO);
+        return talkVO;
     }
 
     /**
