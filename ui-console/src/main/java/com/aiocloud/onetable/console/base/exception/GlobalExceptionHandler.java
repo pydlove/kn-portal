@@ -44,4 +44,12 @@ public class GlobalExceptionHandler {
         errorResponse.setData(errorCode.getMsg());
         return new ResponseEntity<>(errorResponse, httpStatusCode);
     }
+
+    @ExceptionHandler(TalkRequestException.class)
+    public ResponseEntity<CommonResponse<String>> handleException(TalkRequestException e) {
+        var httpStatusCode = e.getClass().getAnnotation(ResponseStatus.class).code();
+        CommonResponse<String> errorResponse = new CommonResponse<>(500, e.getMessage(), null);
+        errorResponse.setData(e.getMessage());
+        return new ResponseEntity<>(errorResponse, httpStatusCode);
+    }
 }

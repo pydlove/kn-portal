@@ -32,6 +32,15 @@ public class CommonResponse<T> {
                 .build();
     }
 
+    public CommonResponse(int errorCode, String message, T value) {
+        error = ErrorResponse.builder()
+                .code(errorCode)
+                .message(message)
+                .service(SERVICE_NAME)
+                .detail(value)
+                .build();
+    }
+
     public static <T> CommonResponse<T> success(T data) {
         return new CommonResponse<>(data);
     }
