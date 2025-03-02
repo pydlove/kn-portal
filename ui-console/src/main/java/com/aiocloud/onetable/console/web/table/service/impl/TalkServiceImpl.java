@@ -129,13 +129,13 @@ public class TalkServiceImpl implements TalkService {
     }
 
     private int resultType(String content, String sql){
-        if (sql.contains("count") && (content.contains("趋势") || content.contains("走势"))){
+        if (sql.contains("count(1)") && (content.contains("趋势") || content.contains("走势"))){
             return 3;
         }
-        if (sql.contains("count") && (content.contains("比例") || content.contains("占比") || content.contains("比列"))){
+        if (sql.contains("count(1)") && (content.contains("比例") || content.contains("占比") || content.contains("比列"))){
             return 2;
         }
-        if (sql.contains("count")){
+        if (sql.contains("count(1)")){
             return 1;
         }
         return 0;

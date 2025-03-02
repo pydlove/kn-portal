@@ -40,7 +40,7 @@ public class DataServiceImpl implements DataService {
         TableVO tableVO = new TableVO();
         tableVO.setHeaders(talkVO.getColumnList());
         tableVO.setRows(talkVO.getDataList());
-        //talkResultVO.setTableData(talkVO);
+        talkResultVO.setTableData(tableVO);
         return talkResultVO;
     }
 
