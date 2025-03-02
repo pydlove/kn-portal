@@ -22,7 +22,53 @@ public class KeywordSpliter {
             {"通过", "排序"},{"根据", "排序"},{"使用", "排序"},{"使", "排序"},{"让", "排序"}
     };
 
-    public static final String limitRegex = "(显示|需要|展示|查询|取|获取|给我|找出|找|查出|查)+[0-9]+[条行]";
+    public static final String limitRegex = "(显示|显示前|显示后|显示最后|需要|需要前|需要后|需要最后|展示|展示前|展示后|展示最后|查询|查询前|查询后|查询最后|取|取前|取后|取最后|获取|获取前|获取后|获取最后|给我|给我前|给我后|给我最后|找出|找出前|找出后|找出最后|找|找前|找后|找最后|查出|查出前|查出后|查出最后|查|查前|查后|查最后)+[0-9]+[条行]";
+    private static final String ageRegex = "[0-9零一二贰两三叁四肆五伍六陆七柒八捌九玖十拾百佰千仟万萬亿]+[岁]";
+    private static final String zhcnNumRegex = "[零一二贰两三叁四肆五伍六陆七柒八捌九玖十拾百佰千仟万萬亿]";
+
+    public static void main(String[] args) {
+        String text = "查询十八岁,二十七岁";
+        Pattern pattern = Pattern.compile(ageRegex);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()){
+            System.out.println(matcher.group());
+            System.out.println(NumberConverter.convert("一十二"));
+        }
+    }
+
+    /**
+     * 处理年龄字段
+     * @param content
+     * @return
+     */
+    public static String handleAgeText(String content){
+        if (content.contains("年龄")){
+            return content;
+        }
+        Pattern pattern = Pattern.compile(ageRegex);
+        Matcher matcher = pattern.matcher(content);
+        if (!matcher.find()){
+            return content;
+        }
+        String ageGroup = matcher.group();
+        Pattern numPattern = Pattern.compile(zhcnNumRegex);
+        Matcher numMatcher = numPattern.matcher(ageGroup);
+        String ageText = ageGroup;
+        if (numMatcher.find()){
+            long number = NumberConverter.convert(numMatcher.group());
+            ageText = String.valueOf(number);
+        }
+        if (content.contains("大于" + ageGroup) || content.contains(ageGroup + "以上")
+                || content.contains(ageGroup + "以后") || content.contains(ageGroup + "后")){
+            content = content.replace(ageGroup, "年龄大于" + ageText);
+        } else if (content.contains("小于" + ageGroup) || content.contains(ageGroup + "以下")
+                || content.contains(ageGroup + "以前") || content.contains(ageGroup + "前")){
+            content = content.replace(ageGroup, "年龄小于" + ageText);
+        } else {
+            content = content.replace(ageGroup, "年龄等于" + ageText);
+        }
+        return content;
+    }
 
     /**
      * 截取分组部分的文本

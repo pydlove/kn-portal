@@ -51,7 +51,28 @@ public class SQLExtractor {
 //                    }
                 }
             }
-            if (word.POSTAG.equals("operator")){
+            if (word.POSTAG.equals("nr")){//识别人名
+                if (i > 0){// 设置左边比较值
+                    CoNLLWord lastWord = wordArray[i - 1];
+                    if (lastWord.POSTAG.equals("column") || lastWord.POSTAG.equals("operator")){
+                        continue;
+                    }
+                }
+                if (i < wordArray.length){// 设置右边比较值
+                    CoNLLWord nextWord = wordArray[i + 1];
+                    if (nextWord.POSTAG.equals("column") || nextWord.POSTAG.equals("operator")){
+                        continue;
+                    }
+                }
+                condition.setOperator("=");
+                condition.setLeftValue(TableInfoCache.get(tableName, "姓名").getColumnName());
+                condition.setRightValue(String.join("", "'",  word.LEMMA, "'"));
+                if (condition.fillComplated()){
+                    conditionList.add(condition);
+                    condition = new Condition();
+                }
+            }
+            if (word.POSTAG.equals("operator")){//通过比较符两边确认
                 condition.setOperator(extractOperator(word.LEMMA));
                 boolean lastColumn = false;//左边是否是表字段
                 boolean nextColumn = false;//右边边是否是表字段

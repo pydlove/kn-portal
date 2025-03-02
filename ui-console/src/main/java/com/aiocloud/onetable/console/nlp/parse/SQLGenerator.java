@@ -16,6 +16,7 @@ public class SQLGenerator {
     public static String generate(String tableName, String content, Integer pageSize, Integer pageNum){
         String regex = "(?<!\\d:)\\s+(?!\\d+:)";//时间格式中的空格不能去掉
         content = content.replaceAll(regex, "");
+        content = KeywordSpliter.handleAgeText(content);//处理年龄属性
         List<Condition> conditionList = SQLExtractor.extractConditon(tableName, content);
         String groupColumns = SQLExtractor.extractGroupField(tableName, content);
         List<Sort> sortList = SQLExtractor.extractSortField(tableName, content);
