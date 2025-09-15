@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.aiocloud.parent</groupId>
-        <artifactId>one-table</artifactId>
+        <artifactId>kn-portal-parent</artifactId>
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ui-console</artifactId>
+    <artifactId>kn-portal</artifactId>
     <name>ui-console</name>
     <packaging>jar</packaging>
 
@@ -26,37 +26,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Boot Security -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
         <!-- druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.2.8</version>
-        </dependency>
-
-        <!-- JWT -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.11.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>0.11.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>0.11.5</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
@@ -85,58 +59,13 @@
             <version>${revision}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/ai.djl/api -->
-        <dependency>
-            <groupId>ai.djl</groupId>
-            <artifactId>api</artifactId>
-            <version>0.32.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ai.djl.huggingface</groupId>
-            <artifactId>tokenizers</artifactId>
-            <version>0.32.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-tools -->
-        <dependency>
-            <groupId>org.apache.opennlp</groupId>
-            <artifactId>opennlp-tools</artifactId>
-            <version>2.5.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.hankcs</groupId>
-            <artifactId>hanlp</artifactId>
-            <version>portable-1.8.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <!-- Apache POI for Excel -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-schemas</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlbeans</groupId>
-            <artifactId>xmlbeans</artifactId>
-            <version>5.1.1</version>
-        </dependency>
-
         <!-- JPA API -->
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
         </dependency>
+
         <!-- Hibernate 实现 -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -146,4 +75,21 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- Spring Boot Maven Plugin -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.1.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

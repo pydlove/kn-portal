@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.aiocloud.parent</groupId>
-    <artifactId>one-table</artifactId>
+    <artifactId>kn-portal-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>aiocloud</name>
