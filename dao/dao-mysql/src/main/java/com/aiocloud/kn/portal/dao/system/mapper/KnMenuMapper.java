@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -32,4 +33,6 @@ public interface KnMenuMapper extends BaseMapper<KnMenu> {
     List<KnMenu> selectAll();
 
     List<KnMenu> selectByParentId(@Param("parentId") Long parentId);
+
+    List<KnMenu> selectRootMenu(@Param("menuIds") Set<Long> menuIds);
 }

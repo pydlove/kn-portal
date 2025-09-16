@@ -1,11 +1,10 @@
 package com.aiocloud.kn.portal.web.system.controller;
 
 import com.aiocloud.kn.portal.base.common.CommonResponse;
-import com.aiocloud.kn.portal.config.auth.PermissionRequired;
 import com.aiocloud.kn.portal.web.system.service.ArticleService;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleMenuVO;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleVO;
-import com.aiocloud.kn.portal.web.system.vo.KnMenuVO;
+import com.aiocloud.kn.portal.web.system.vo.KnSearchVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -145,4 +144,12 @@ public class ArticleController {
         return new CommonResponse<>(articleService.delete(id));
     }
 
+    @GetMapping("/search/page")
+    public CommonResponse<Page<KnSearchVO>> searchArticlePage(
+            @RequestParam() String content,
+            @RequestParam() Integer pageNum,
+            @RequestParam() Integer pageSize
+    ) {
+        return new CommonResponse<>(articleService.searchArticlePage(content, pageNum, pageSize));
+    }
 }

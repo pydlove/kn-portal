@@ -2,6 +2,7 @@ package com.aiocloud.kn.portal.web.system.service;
 
 import com.aiocloud.kn.portal.web.system.vo.KnArticleMenuVO;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleVO;
+import com.aiocloud.kn.portal.web.system.vo.KnSearchVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ArticleService {
     KnArticleVO update(Long id, KnArticleVO articleVO);
 
     Long delete(Long id);
+
+    Page<KnSearchVO> searchArticlePage(String content, Integer pageNum, Integer pageSize);
 }

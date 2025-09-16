@@ -4,6 +4,7 @@ import com.aiocloud.kn.portal.dao.system.domain.KnArticle;
 import com.aiocloud.kn.portal.dao.system.domain.KnMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +31,8 @@ public interface KnArticleMapper extends BaseMapper<KnArticle> {
     int updateByPrimaryKey(KnArticle record);
 
     List<KnArticle> selectTitleByMenuIds(List<Long> menuIds);
+
+    int selectCountByFulltextSearch(String content);
+
+    List<KnArticle> selectByFulltextSearch(@Param("content") String content, @Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
 }

@@ -39,6 +39,22 @@
         order by create_time desc
     </select>
 
+    <select id="selectCountByFulltextSearch" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM kn_article
+        WHERE MATCH(article_title, article_content) AGAINST(#{content} IN NATURAL LANGUAGE MODE)
+        and deleted_status = 0
+    </select>
+
+    <select id="selectByFulltextSearch" resultMap="BaseResultMap">
+        SELECT id, article_title, SUBSTRING(article_content, 1, 100) as article_content, menu_id
+        FROM kn_article
+        WHERE MATCH(article_title, article_content) AGAINST(#{content} IN NATURAL LANGUAGE MODE)
+          and deleted_status = 0
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from kn_article

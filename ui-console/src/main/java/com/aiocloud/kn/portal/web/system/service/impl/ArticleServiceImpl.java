@@ -13,6 +13,7 @@ import com.aiocloud.kn.portal.web.system.vo.KnArticleMenuVO;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleTitleVO;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleVO;
 import com.aiocloud.kn.portal.web.system.vo.KnMenuVO;
+import com.aiocloud.kn.portal.web.system.vo.KnSearchVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class ArticleServiceImpl implements ArticleService {
         for (KnArticle knArticle : knArticles) {
             Long menuId = knArticle.getMenuId();
             List<KnArticleTitleVO> articleTitleList = menuMap.computeIfAbsent(menuId, k -> new ArrayList<>());
-            articleTitleList.add(new KnArticleTitleVO(knArticle.getId(), knArticle.getArticleTitle()));
+            articleTitleList.add(new KnArticleTitleVO(knArticle.getId(), knArticle.getArticleTitle(), knArticle.getMenuId()));
         }
 
         List<KnArticleMenuVO> result = new ArrayList<>();
@@ -90,7 +91,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         if (null != menuId) {
-             queryWrapper.eq("menu_id", menuId);
+            queryWrapper.eq("menu_id", menuId);
         }
 
         queryWrapper.orderByDesc("create_time");
@@ -167,5 +168,39 @@ public class ArticleServiceImpl implements ArticleService {
         knArticleMapper.updateByPrimaryKeySelective(knArticle);
 
         return knArticle.getId();
+    }
+
+    @Override
+    public Page<KnSearchVO> searchArticlePage(String content, Integer pageNum, Integer pageSize) {
+
+        int total = knArticleMapper.selectCountByFulltextSearch(content);
+
+        int offset = (pageNum - 1) * pageSize;
+        List<KnArticle> knArticles = knArticleMapper.selectByFulltextSearch(content, offset, pageSize);
+
+        Map<Long, KnMenu> menuMap = new HashMap<>();
+        if (CollUtil.isNotEmpty(knArticles)) {
+            Set<Long> menuIds = knArticles.stream().map(KnArticle::getMenuId).collect(Collectors.toSet());
+            List<KnMenu> knMenus = knMenuMapper.selectRootMenu(menuIds);
+            menuMap = knMenus.stream().collect(Collectors.toMap(KnMenu::getId, menu -> menu));
+        }
+
+        Map<Long, KnMenu> finalMenuMap = menuMap;
+        List<KnSearchVO> result = knArticles.stream()
+                .map(article -> {
+                    KnMenu knMenu = finalMenuMap.get(article.getMenuId());
+                    return new KnSearchVO(
+                            article.getId(),
+                            knMenu.getParentId(),
+                            article.getMenuId(),
+                            article.getArticleTitle(),
+                            article.getArticleContent());
+                })
+                .toList();
+
+        Page<KnSearchVO> page = new Page<>(pageNum, pageSize, total);
+        page.setRecords(result);
+
+        return page;
     }
 }

@@ -24,4 +24,6 @@ public class KnArticleTitleVO {
     private Long articleId;
 
     private String title;
+
+    private Long menuId;
 }
