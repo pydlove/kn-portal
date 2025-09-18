@@ -42,15 +42,38 @@
     <select id="selectCountByFulltextSearch" resultType="java.lang.Integer">
         SELECT count(*)
         FROM kn_article
-        WHERE MATCH(article_title, article_content) AGAINST(#{content} IN NATURAL LANGUAGE MODE)
+        WHERE MATCH(article_title, article_content) AGAINST(#{content} IN BOOLEAN MODE)
+           OR article_title LIKE CONCAT('%', #{content}, '%')
+           OR article_content LIKE CONCAT('%', #{content}, '%')
         and deleted_status = 0
     </select>
 
     <select id="selectByFulltextSearch" resultMap="BaseResultMap">
-        SELECT id, article_title, SUBSTRING(article_content, 1, 100) as article_content, menu_id
+        SELECT id,
+               article_title,
+               CASE
+                   WHEN LOCATE(UPPER(#{content}), UPPER(article_content)) > 0 THEN
+                       CONCAT(
+                               CASE WHEN LOCATE(UPPER(#{content}), UPPER(article_content)) > 30
+                                        THEN '...'
+                                    ELSE ''
+                                   END,
+                               SUBSTRING(article_content,
+                                         GREATEST(1, LOCATE(UPPER(#{content}), UPPER(article_content)) - 30),
+                                         40),
+                               CASE WHEN LENGTH(article_content) > LOCATE(UPPER(#{content}), UPPER(article_content)) + 70
+                                        THEN '...'
+                                    ELSE ''
+                                   END
+                       )
+                   ELSE SUBSTRING(article_content, 1, 40)
+                   END as article_content,
+               menu_id
         FROM kn_article
-        WHERE MATCH(article_title, article_content) AGAINST(#{content} IN NATURAL LANGUAGE MODE)
-          and deleted_status = 0
+        WHERE MATCH(article_title, article_content) AGAINST(#{content} IN BOOLEAN MODE)
+           OR article_title LIKE CONCAT('%', #{content}, '%')
+           OR article_content LIKE CONCAT('%', #{content}, '%')
+            and deleted_status = 0
         ORDER BY create_time DESC
         LIMIT #{offset}, #{pageSize}
     </select>

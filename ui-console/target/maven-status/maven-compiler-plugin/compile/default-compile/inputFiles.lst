@@ -27,6 +27,7 @@ D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\port
 D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\web\system\controller\ArticleController.java
 D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\web\system\service\impl\ArticleServiceImpl.java
 D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\web\system\vo\LoginVO.java
+D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\web\system\vo\KnSearchVO.java
 D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\base\exception\BadRequestException.java
 D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\config\auth\PermissionInterceptor.java
 D:\1@CodeManager\project\kn-portal\ui-console\src\main\java\com\aiocloud\kn\portal\config\auth\WebMvcConfig.java
