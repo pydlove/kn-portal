@@ -27,7 +27,7 @@ public interface MenusService {
 
     KnMenuVO create(KnMenuVO menuVO);
 
-    Page<KnMenuVO> page(Integer pageNum, Integer pageSize);
+    Page<KnMenuVO> page(Integer pageNum, Integer pageSize, String menuName);
 
     List<KnMenuVO> getRootMenus();
 

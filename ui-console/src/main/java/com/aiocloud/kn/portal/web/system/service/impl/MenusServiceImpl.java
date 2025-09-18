@@ -1,6 +1,7 @@
 package com.aiocloud.kn.portal.web.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.aiocloud.kn.portal.dao.system.domain.KnMenu;
 import com.aiocloud.kn.portal.dao.system.mapper.KnMenuMapper;
 import com.aiocloud.kn.portal.enums.DeletedStatusEnum;
@@ -107,13 +108,17 @@ public class MenusServiceImpl implements MenusService {
     }
 
     @Override
-    public Page<KnMenuVO> page(Integer pageNum, Integer pageSize) {
+    public Page<KnMenuVO> page(Integer pageNum, Integer pageSize, String menuName) {
 
         Page<KnMenu> page = new Page<>(pageNum, pageSize);
 
         QueryWrapper<KnMenu> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("deleted_status", DeletedStatusEnum.NOT_DELETED.getCode());
         queryWrapper.orderByDesc("create_time");
+
+        if (StrUtil.isNotBlank(menuName)) {
+            queryWrapper.like("menu_name", menuName);
+        }
 
         Page<KnMenu> menuPage = knMenuMapper.selectPage(page, queryWrapper);
 

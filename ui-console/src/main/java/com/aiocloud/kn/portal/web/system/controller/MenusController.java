@@ -61,10 +61,11 @@ public class MenusController {
      */
     @GetMapping("/page")
     public CommonResponse<Page<KnMenuVO>> page(
+            @RequestParam(required = false) String menuName,
             @RequestParam() Integer pageNum,
             @RequestParam() Integer pageSize
     ) {
-        return new CommonResponse<>(menusService.page(pageNum, pageSize));
+        return new CommonResponse<>(menusService.page(pageNum, pageSize, menuName));
     }
 
     /**
