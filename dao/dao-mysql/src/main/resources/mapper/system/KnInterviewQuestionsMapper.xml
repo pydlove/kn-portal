@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.system.mapper.KnInterviewQuestionsMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.system.domain.KnInterviewQuestions">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="version" column="version"/>
+        <result property="createUid" column="create_uid"/>
+        <result property="updateUid" column="update_uid"/>
+        <result property="deletedStatus" column="deleted_status"/>
+        <result property="questionTitle" column="question_title"/>
+        <result property="questionText" column="question_text"/>
+        <result property="difficultyLevel" column="difficulty_level"/>
+        <result property="answerHint" column="answer_hint"/>
+        <result property="referenceAnswer" column="reference_answer"/>
+        <result property="categoryName" column="category_name"/>
+    </resultMap>
+
+    <resultMap id="RelWithQuestionTemplateMap" extends="BaseResultMap"
+               type="com.aiocloud.kn.portal.dao.system.dto.KnInterviewQuestionsDTO">
+        <result property="templateId" column="template_id"/>
+        <result property="templateName" column="template_name"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,update_time,version,create_uid,update_uid,
+        deleted_status,question_title,question_text,difficulty_level,
+        answer_hint,reference_answer, category_name
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from kn_interview_questions
+        where id = #{id}
+    </select>
+
+    <select id="selectByTemplateId" resultMap="RelWithQuestionTemplateMap">
+        SELECT q.id,
+               q.create_time,
+               q.update_time,
+               q.version,
+               q.create_uid,
+               q.update_uid,
+               q.deleted_status,
+               q.question_title,
+               q.question_text,
+               q.difficulty_level,
+               q.answer_hint,
+               q.reference_answer,
+               t.id            AS template_id,
+               t.template_name AS template_name
+        FROM kn_interview_questions q
+                 INNER JOIN kn_interview_template_question_rel rel ON q.id = rel.question_id
+                 INNER JOIN kn_interview_template t ON rel.template_id = t.id
+        WHERE t.id = #{templateId}
+          AND q.deleted_status = 0
+          AND t.deleted_status = 0
+        order by rel.order_no asc
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from kn_interview_questions
+        where id = #{id}
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewQuestions" useGeneratedKeys="true">
+        insert into kn_interview_questions
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="version != null">version,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="deletedStatus != null">deleted_status,</if>
+            <if test="questionTitle != null">question_title,</if>
+            <if test="questionText != null">question_text,</if>
+            <if test="difficultyLevel != null">difficulty_level,</if>
+            <if test="answerHint != null">answer_hint,</if>
+            <if test="referenceAnswer != null">reference_answer,</if>
+            <if test="categoryName != null">category_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="version != null">#{version},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="deletedStatus != null">#{deletedStatus},</if>
+            <if test="questionTitle != null">#{questionTitle},</if>
+            <if test="questionText != null">#{questionText},</if>
+            <if test="difficultyLevel != null">#{difficultyLevel},</if>
+            <if test="answerHint != null">#{answerHint},</if>
+            <if test="referenceAnswer != null">#{referenceAnswer},</if>
+            <if test="categoryName != null">#{categoryName},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewQuestions">
+        update kn_interview_questions
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="deletedStatus != null">
+                deleted_status = #{deletedStatus},
+            </if>
+            <if test="questionTitle != null">
+                question_title = #{questionTitle},
+            </if>
+            <if test="questionText != null">
+                question_text = #{questionText},
+            </if>
+            <if test="difficultyLevel != null">
+                difficulty_level = #{difficultyLevel},
+            </if>
+            <if test="answerHint != null">
+                answer_hint = #{answerHint},
+            </if>
+            <if test="referenceAnswer != null">
+                reference_answer = #{referenceAnswer},
+            </if>
+            <if test="categoryName != null">
+                category_name = #{categoryName},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 更新 updateByPrimaryKey 语句 -->
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewQuestions">
+        update kn_interview_questions
+        set create_time      = #{createTime},
+            update_time      = #{updateTime},
+            version          = #{version},
+            create_uid       = #{createUid},
+            update_uid       = #{updateUid},
+            deleted_status   = #{deletedStatus},
+            question_title   = #{questionTitle},
+            question_text    = #{questionText},
+            difficulty_level = #{difficultyLevel},
+            answer_hint      = #{answerHint},
+            reference_answer = #{referenceAnswer},
+            category_name    = #{categoryName}
+        where id = #{id}
+    </update>
+</mapper>

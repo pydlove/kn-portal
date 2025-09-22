@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.system.mapper.KnInterviewTemplateMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplate">
+        <id property="id" column="id" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="version" column="version" />
+        <result property="createUid" column="create_uid" />
+        <result property="updateUid" column="update_uid" />
+        <result property="deletedStatus" column="deleted_status" />
+        <result property="templateName" column="template_name" />
+        <result property="templateDesc" column="template_desc" />
+        <result property="templateLevel" column="template_level" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, create_time,update_time,version,create_uid,update_uid,
+        deleted_status,template_name,template_desc,template_level
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from kn_interview_template
+        where  id = #{id}
+    </select>
+
+    <select id="selectByLevel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from kn_interview_template
+        where template_level = #{level} and deleted_status = 0
+        order by template_level
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from kn_interview_template
+        where  id = #{id}
+    </delete>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplate" useGeneratedKeys="true">
+        insert into kn_interview_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="version != null">version,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="deletedStatus != null">deleted_status,</if>
+            <if test="templateName != null">template_name,</if>
+            <if test="templateDesc != null">template_desc,</if>
+            <if test="templateLevel != null">template_level,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="version != null">#{version},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="deletedStatus != null">#{deletedStatus},</if>
+            <if test="templateName != null">#{templateName},</if>
+            <if test="templateDesc != null">#{templateDesc},</if>
+            <if test="templateLevel != null">#{templateLevel},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplate">
+        update kn_interview_template
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="deletedStatus != null">
+                deleted_status = #{deletedStatus},
+            </if>
+            <if test="templateName != null">
+                template_name = #{templateName},
+            </if>
+            <if test="templateDesc != null">
+                template_desc = #{templateDesc},
+            </if>
+            <if test="templateLevel != null">
+                template_level = #{templateLevel},
+            </if>
+        </set>
+        where   id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplate">
+        update kn_interview_template
+        set create_time    = #{createTime},
+            update_time    = #{updateTime},
+            version        = #{version},
+            create_uid     = #{createUid},
+            update_uid     = #{updateUid},
+            deleted_status = #{deletedStatus},
+            template_name  = #{templateName},
+            template_desc  = #{templateDesc},
+            template_level = #{templateLevel}
+        where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,3 @@
+com\aiocloud\kn\portal\web\system\service\impl\MenusServiceImpl.class
+com\aiocloud\kn\portal\web\system\controller\MenusController.class
+com\aiocloud\kn\portal\web\system\service\MenusService.class

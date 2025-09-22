@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.system.mapper.KnInterviewTemplateQuestionRelMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplateQuestionRel">
+        <id property="id" column="id"/>
+        <result property="templateId" column="template_id"/>
+        <result property="questionId" column="question_id"/>
+        <result property="orderNo" column="order_no"/>
+    </resultMap>
+
+    <resultMap id="RelWithQuestionTitleMap" extends="BaseResultMap" type="com.aiocloud.kn.portal.dao.system.dto.KnInterviewTemplateQuestionRelDTO">
+        <result property="questionTitle" column="question_title"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id,template_id,question_id,order_no
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from kn_interview_template_question_rel
+        where id = #{id}
+    </select>
+
+    <select id="selectRelWithQuestionTitle" resultMap="RelWithQuestionTitleMap">
+        SELECT
+            rel.id,
+            rel.template_id,
+            rel.question_id,
+            rel.order_no,
+            q.question_title
+        FROM kn_interview_template_question_rel rel
+                 LEFT JOIN kn_interview_questions q ON rel.question_id = q.id
+        WHERE rel.template_id = #{templateId}
+        ORDER BY rel.order_no ASC
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from kn_interview_template_question_rel
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByTemplateId">
+        delete
+        from kn_interview_template_question_rel
+        where template_id = #{templateId}
+    </delete>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplateQuestionRel"
+            useGeneratedKeys="true">
+        insert into kn_interview_template_question_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="questionId != null">question_id,</if>
+            <if test="orderNo != null">order_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="questionId != null">#{questionId},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+        </trim>
+    </insert>
+
+    <!-- 批量插入SQL -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into kn_interview_template_question_rel
+        (template_id, question_id, order_no)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.templateId}, #{item.questionId}, #{item.orderNo})
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplateQuestionRel">
+        update kn_interview_template_question_rel
+        <set>
+            <if test="templateId != null">
+                template_id = #{templateId},
+            </if>
+            <if test="questionId != null">
+                question_id = #{questionId},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplateQuestionRel">
+        update kn_interview_template_question_rel
+        set template_id = #{templateId},
+            question_id = #{questionId},
+            order_no = #{orderNo}
+        where id = #{id}
+    </update>
+</mapper>
