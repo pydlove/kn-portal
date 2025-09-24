@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.ruankao.mapper.RkExamQuestionEssayMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="version" column="version"/>
+        <result property="createUid" column="create_uid"/>
+        <result property="updateUid" column="update_uid"/>
+        <result property="deletedStatus" column="deleted_status"/>
+        <result property="questionId" column="question_id"/>
+        <result property="requirement" column="requirement"/>
+        <result property="wordLimitMin" column="word_limit_min"/>
+        <result property="wordLimitMax" column="word_limit_max"/>
+        <result property="referenceAnswer" column="reference_answer"/>
+        <result property="scoringCriteria" column="scoring_criteria"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,update_time,version,create_uid,update_uid,
+        deleted_status,question_id,requirement,word_limit_min,word_limit_max,
+        reference_answer,scoring_criteria
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_question_essay
+        where id = #{id}
+    </select>
+
+    <select id="selectByQuestionId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_question_essay
+        where question_id = #{questionId} and deleted_status = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from rk_exam_question_essay
+        where id = #{id}
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay" useGeneratedKeys="true">
+        insert into rk_exam_question_essay
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="version != null">version,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="deletedStatus != null">deleted_status,</if>
+            <if test="questionId != null">question_id,</if>
+            <if test="requirement != null">requirement,</if>
+            <if test="wordLimitMin != null">word_limit_min,</if>
+            <if test="wordLimitMax != null">word_limit_max,</if>
+            <if test="referenceAnswer != null">reference_answer,</if>
+            <if test="scoringCriteria != null">scoring_criteria,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="version != null">#{version},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="deletedStatus != null">#{deletedStatus},</if>
+            <if test="questionId != null">#{questionId},</if>
+            <if test="requirement != null">#{requirement},</if>
+            <if test="wordLimitMin != null">#{wordLimitMin},</if>
+            <if test="wordLimitMax != null">#{wordLimitMax},</if>
+            <if test="referenceAnswer != null">#{referenceAnswer},</if>
+            <if test="scoringCriteria != null">#{scoringCriteria},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay">
+        update rk_exam_question_essay
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="deletedStatus != null">
+                deleted_status = #{deletedStatus},
+            </if>
+            <if test="questionId != null">
+                question_id = #{questionId},
+            </if>
+            <if test="requirement != null">
+                requirement = #{requirement},
+            </if>
+            <if test="wordLimitMin != null">
+                word_limit_min = #{wordLimitMin},
+            </if>
+            <if test="wordLimitMax != null">
+                word_limit_max = #{wordLimitMax},
+            </if>
+            <if test="referenceAnswer != null">
+                reference_answer = #{referenceAnswer},
+            </if>
+            <if test="scoringCriteria != null">
+                scoring_criteria = #{scoringCriteria},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay">
+        update rk_exam_question_essay
+        set create_time      = #{createTime},
+            update_time      = #{updateTime},
+            version          = #{version},
+            create_uid       = #{createUid},
+            update_uid       = #{updateUid},
+            deleted_status   = #{deletedStatus},
+            question_id      = #{questionId},
+            requirement      = #{requirement},
+            word_limit_min   = #{wordLimitMin},
+            word_limit_max   = #{wordLimitMax},
+            reference_answer = #{referenceAnswer},
+            scoring_criteria = #{scoringCriteria}
+        where id = #{id}
+    </update>
+</mapper>

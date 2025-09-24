@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.ruankao.mapper.RkExamQuestionMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestion">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="version" column="version"/>
+        <result property="createUid" column="create_uid"/>
+        <result property="updateUid" column="update_uid"/>
+        <result property="deletedStatus" column="deleted_status"/>
+        <result property="type" column="type"/>
+        <result property="title" column="title"/>
+        <result property="score" column="score"/>
+        <result property="difficulty" column="difficulty"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="BaseResultDtoMap" type="com.aiocloud.kn.portal.dao.ruankao.dto.RkExamQuestionDTO">
+        <result property="sortOrder" column="sort_order"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,update_time,version,create_uid,update_uid,
+        deleted_status,type,title,score,difficulty,
+        status
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_question
+        where id = #{id}
+    </select>
+
+    <select id="selectPageByCalendarId" resultMap="BaseResultDtoMap">
+        SELECT q.*, r.sort_order
+        FROM rk_exam_question q
+        INNER JOIN rk_exam_calendar_question_rel r ON q.id = r.question_id
+        WHERE q.deleted_status = 0
+        <if test="calendarId != null and calendarId != ''">
+            AND r.calendar_id = #{calendarId}
+        </if>
+        <if test="type != null and type != ''">
+            AND q.type = #{type}
+        </if>
+        <if test="title != null and title != ''">
+            AND q.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="difficulty != null">
+            AND q.difficulty = #{difficulty}
+        </if>
+        ORDER BY q.create_time DESC
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from rk_exam_question
+        where id = #{id}
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestion" useGeneratedKeys="true">
+        insert into rk_exam_question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="version != null">version,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="deletedStatus != null">deleted_status,</if>
+            <if test="type != null">type,</if>
+            <if test="title != null">title,</if>
+            <if test="score != null">score,</if>
+            <if test="difficulty != null">difficulty,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="version != null">#{version},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="deletedStatus != null">#{deletedStatus},</if>
+            <if test="type != null">#{type},</if>
+            <if test="title != null">#{title},</if>
+            <if test="score != null">#{score},</if>
+            <if test="difficulty != null">#{difficulty},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestion">
+        update rk_exam_question
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="deletedStatus != null">
+                deleted_status = #{deletedStatus},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="difficulty != null">
+                difficulty = #{difficulty},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestion">
+        update rk_exam_question
+        set create_time    = #{createTime},
+            update_time    = #{updateTime},
+            version        = #{version},
+            create_uid     = #{createUid},
+            update_uid     = #{updateUid},
+            deleted_status = #{deletedStatus},
+            type           = #{type},
+            title          = #{title},
+            score          = #{score},
+            difficulty     = #{difficulty},
+            status         = #{status}
+        where id = #{id}
+    </update>
+</mapper>

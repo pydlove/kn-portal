@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.ruankao.mapper.RkExamCalendarQuestionRelMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamCalendarQuestionRel">
+        <id property="id" column="id"/>
+        <result property="questionId" column="question_id"/>
+        <result property="calendarId" column="calendar_id"/>
+        <result property="sortOrder" column="sort_order"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,question_id,calendar_id,sort_order
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_calendar_question_rel
+        where id = #{id}
+    </select>
+
+    <select id="selectByCalendarId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_calendar_question_rel
+        where calendar_id = #{calendarId}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from rk_exam_calendar_question_rel
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByCalendarDateId">
+        delete
+        from rk_exam_calendar_question_rel
+        where calendar_id = #{calendarId}
+    </delete>
+
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamCalendarQuestionRel" useGeneratedKeys="true">
+        insert into rk_exam_calendar_question_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="questionId != null">question_id,</if>
+            <if test="calendarId != null">calendar_id,</if>
+            <if test="sortOrder != null">sort_order,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="questionId != null">#{questionId},</if>
+            <if test="calendarId != null">#{calendarId},</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+        </trim>
+    </insert>
+    <insert id="insertBatch">
+        insert into rk_exam_calendar_question_rel (question_id, calendar_id, sort_order) values
+        <foreach collection="relations" item="item" separator=",">
+            (#{item.questionId}, #{item.calendarId}, #{item.sortOrder})
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamCalendarQuestionRel">
+        update rk_exam_calendar_question_rel
+        <set>
+            <if test="questionId != null">
+                question_id = #{questionId},
+            </if>
+            <if test="calendarId != null">
+                calendar_id = #{calendarId},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamCalendarQuestionRel">
+        update rk_exam_calendar_question_rel
+        set question_id = #{questionId},
+            calendar_id = #{calendarId},
+            sort_order  = #{sortOrder}
+        where id = #{id}
+    </update>
+</mapper>

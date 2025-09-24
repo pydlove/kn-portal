@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.ruankao.mapper.RkExamQuestionChoiceMapper">
+
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="version" column="version"/>
+        <result property="createUid" column="create_uid"/>
+        <result property="updateUid" column="update_uid"/>
+        <result property="deletedStatus" column="deleted_status"/>
+        <result property="questionId" column="question_id"/>
+        <result property="choiceType" column="choice_type"/>
+        <result property="options" column="options"/>
+        <result property="correctAnswers" column="correct_answers"/>
+        <result property="analysis" column="analysis"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,update_time,version,create_uid,update_uid,
+        deleted_status,question_id,choice_type,options,correct_answers,
+        analysis
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_question_choice
+        where id = #{id}
+    </select>
+
+    <select id="selectByQuestionId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_exam_question_choice
+        where question_id = #{questionId} and deleted_status = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from rk_exam_question_choice
+        where id = #{id}
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice" useGeneratedKeys="true">
+        insert into rk_exam_question_choice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="version != null">version,</if>
+            <if test="createUid != null">create_uid,</if>
+            <if test="updateUid != null">update_uid,</if>
+            <if test="deletedStatus != null">deleted_status,</if>
+            <if test="questionId != null">question_id,</if>
+            <if test="choiceType != null">choice_type,</if>
+            <if test="options != null">options,</if>
+            <if test="correctAnswers != null">correct_answers,</if>
+            <if test="analysis != null">analysis,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="version != null">#{version},</if>
+            <if test="createUid != null">#{createUid},</if>
+            <if test="updateUid != null">#{updateUid},</if>
+            <if test="deletedStatus != null">#{deletedStatus},</if>
+            <if test="questionId != null">#{questionId},</if>
+            <if test="choiceType != null">#{choiceType},</if>
+            <if test="options != null">#{options},</if>
+            <if test="correctAnswers != null">#{correctAnswers},</if>
+            <if test="analysis != null">#{analysis},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice">
+        update rk_exam_question_choice
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="createUid != null">
+                create_uid = #{createUid},
+            </if>
+            <if test="updateUid != null">
+                update_uid = #{updateUid},
+            </if>
+            <if test="deletedStatus != null">
+                deleted_status = #{deletedStatus},
+            </if>
+            <if test="questionId != null">
+                question_id = #{questionId},
+            </if>
+            <if test="choiceType != null">
+                choice_type = #{choiceType},
+            </if>
+            <if test="options != null">
+                options = #{options},
+            </if>
+            <if test="correctAnswers != null">
+                correct_answers = #{correctAnswers},
+            </if>
+            <if test="analysis != null">
+                analysis = #{analysis},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice">
+        update rk_exam_question_choice
+        set create_time     = #{createTime},
+            update_time     = #{updateTime},
+            version         = #{version},
+            create_uid      = #{createUid},
+            update_uid      = #{updateUid},
+            deleted_status  = #{deletedStatus},
+            question_id     = #{questionId},
+            choice_type     = #{choiceType},
+            options         = #{options},
+            correct_answers = #{correctAnswers},
+            analysis        = #{analysis}
+        where id = #{id}
+    </update>
+</mapper>
