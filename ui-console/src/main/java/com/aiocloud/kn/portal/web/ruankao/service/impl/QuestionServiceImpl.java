@@ -1,6 +1,7 @@
 package com.aiocloud.kn.portal.web.ruankao.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Opt;
 import cn.hutool.core.util.StrUtil;
 import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestion;
 import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionArticle;
@@ -15,6 +16,7 @@ import com.aiocloud.kn.portal.dao.ruankao.mapper.RkExamQuestionCaseMapper;
 import com.aiocloud.kn.portal.dao.ruankao.mapper.RkExamQuestionEssayMapper;
 import com.aiocloud.kn.portal.web.enums.QuestionTypeEnum;
 import com.aiocloud.kn.portal.web.ruankao.service.QuestionService;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionDetailPageVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionPageVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,7 +24,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -215,6 +219,40 @@ public class QuestionServiceImpl implements QuestionService {
 
         Page<RkExamQuestionPageVO> voPage = new Page<>(pageNum, pageSize, dtoPage.getTotal());
         voPage.setRecords(BeanUtil.copyToList(dtoPage.getRecords(), RkExamQuestionPageVO.class));
+        return voPage;
+    }
+
+    @Override
+    public Page<RkExamQuestionDetailPageVO> getQuestionDetailPage(Long calendarId, Long pageNum, Long pageSize) {
+
+        Page<RkExamQuestionDTO> page = new Page<>(pageNum, pageSize);
+        Page<RkExamQuestionDTO> dtoPage = rkExamQuestionMapper.selectPageByCalendarId(page, calendarId, null, null, null);
+        List<RkExamQuestionDTO> records = Optional.ofNullable(dtoPage.getRecords()).orElse(new ArrayList<>());
+        List<RkExamQuestionDetailPageVO> questionDetailPageVOList = BeanUtil.copyToList(records, RkExamQuestionDetailPageVO.class);
+        for (RkExamQuestionDetailPageVO questionDetail : questionDetailPageVOList) {
+
+            QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.fromCode(questionDetail.getType());
+            switch (questionTypeEnum) {
+                case CHOICE:
+                    RkExamQuestionChoice choice = rkExamQuestionChoiceMapper.selectByQuestionId(questionDetail.getId());
+                    questionDetail.setQuestionChoice(choice);
+                    break;
+                case CASE:
+                    RkExamQuestionCase caseDetail = rkExamQuestionCaseMapper.selectByQuestionId(questionDetail.getId());
+                    questionDetail.setQuestionCase(caseDetail);
+                    break;
+                case ESSAY:
+                    RkExamQuestionEssay essay = rkExamQuestionEssayMapper.selectByQuestionId(questionDetail.getId());
+                    questionDetail.setQuestionEssay(essay);
+                    break;
+                case ARTICLE:
+                    RkExamQuestionArticle article = rkExamQuestionArticleMapper.selectByQuestionId(questionDetail.getId());
+                    questionDetail.setQuestionArticle(article);
+            }
+        }
+
+        Page<RkExamQuestionDetailPageVO> voPage = new Page<>(pageNum, pageSize, dtoPage.getTotal());
+        voPage.setRecords(questionDetailPageVOList);
         return voPage;
     }
 

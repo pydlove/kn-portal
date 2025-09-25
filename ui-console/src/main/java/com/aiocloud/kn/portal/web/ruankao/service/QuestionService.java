@@ -6,6 +6,7 @@ import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionArticle;
 import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice;
 import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionCase;
 import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionDetailPageVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionPageVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -196,4 +197,5 @@ public interface QuestionService {
     Page<RkExamQuestionPageVO> pageQuestions(Long calendarId,Long pageNum, Long pageSize);
 
 
+    Page<RkExamQuestionDetailPageVO> getQuestionDetailPage(Long calendarId, Long pageNum, Long pageSize);
 }

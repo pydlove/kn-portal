@@ -2,8 +2,10 @@ package com.aiocloud.kn.portal.web.ruankao.controller;
 
 import com.aiocloud.kn.portal.base.common.CommonResponse;
 import com.aiocloud.kn.portal.web.ruankao.service.ExamCalendarDateService;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarDateTaskVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarDateVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarQuestionRelVO;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionDetailPageVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionPageVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +84,7 @@ public class ExamCalendarDateController {
      */
     @GetMapping("/list-by-date")
     public CommonResponse<List<RkExamCalendarDateVO>> listByCalendarDate(
-            @RequestParam(required = false)  String calendarDateStr
+            @RequestParam(required = false) String calendarDateStr
     ) {
         List<RkExamCalendarDateVO> CommonResponse = examCalendarDateService.listByCalendarDate(calendarDateStr);
         return new CommonResponse<>(CommonResponse);
@@ -121,5 +123,22 @@ public class ExamCalendarDateController {
             @RequestParam(defaultValue = "10") Long pageSize
     ) {
         return new CommonResponse<>(examCalendarDateService.getCalendarDateQuestions(calendarId, pageNum, pageSize));
+    }
+
+    @GetMapping("/{calendarId}/detail")
+    public CommonResponse<Page<RkExamQuestionDetailPageVO>> getCalendarDateQuestionDetail(
+            @PathVariable Long calendarId,
+            @RequestParam(defaultValue = "1") Long pageNum,
+            @RequestParam(defaultValue = "1") Long pageSize
+    ) {
+        return new CommonResponse<>(examCalendarDateService.getCalendarDateQuestionDetail(calendarId, pageNum, pageSize));
+    }
+
+    @GetMapping("/task/list-by-date")
+    public CommonResponse<List<RkExamCalendarDateTaskVO>> getTaskListByDateRange(
+            @RequestParam() String calendarDateStr
+    ) {
+        List<RkExamCalendarDateTaskVO> CommonResponse = examCalendarDateService.getTaskListByDateRange(calendarDateStr);
+        return new CommonResponse<>(CommonResponse);
     }
 }

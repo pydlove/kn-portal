@@ -8,8 +8,10 @@ import com.aiocloud.kn.portal.enums.DeletedStatusEnum;
 import com.aiocloud.kn.portal.web.ruankao.service.ExamCalendarDateService;
 import com.aiocloud.kn.portal.web.ruankao.service.ExamCalendarQuestionRelService;
 import com.aiocloud.kn.portal.web.ruankao.service.QuestionService;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarDateTaskVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarDateVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarQuestionRelVO;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionDetailPageVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionPageVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -115,15 +117,25 @@ public class ExamCalendarDateServiceImpl implements ExamCalendarDateService {
         LambdaQueryWrapper<RkExamCalendarDate> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.ge(RkExamCalendarDate::getCalendarDate, startDate);
         queryWrapper.le(RkExamCalendarDate::getCalendarDate, endDate);
-        queryWrapper.eq(RkExamCalendarDate::getDeletedStatus, 0);
+        queryWrapper.eq(RkExamCalendarDate::getDeletedStatus, DeletedStatusEnum.NOT_DELETED.getCode());
         queryWrapper.orderByAsc(RkExamCalendarDate::getCalendarDate)
                 .orderByAsc(RkExamCalendarDate::getSortOrder);
 
         List<RkExamCalendarDate> rkExamCalendarDates = rkExamCalendarDateMapper.selectList(queryWrapper);
 
-
-
         return BeanUtil.copyToList(rkExamCalendarDates, RkExamCalendarDateVO.class);
+    }
+
+    @Override
+    public List<RkExamCalendarDateTaskVO> getTaskListByDateRange(String calendarDateStr) {
+
+        LambdaQueryWrapper<RkExamCalendarDate> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(RkExamCalendarDate::getCalendarDate, calendarDateStr);
+        queryWrapper.eq(RkExamCalendarDate::getDeletedStatus, DeletedStatusEnum.NOT_DELETED.getCode());
+        queryWrapper.orderByAsc(RkExamCalendarDate::getSortOrder);
+
+        List<RkExamCalendarDate> rkExamCalendarDates = rkExamCalendarDateMapper.selectList(queryWrapper);
+        return BeanUtil.copyToList(rkExamCalendarDates, RkExamCalendarDateTaskVO.class);
     }
 
     @Override
@@ -135,5 +147,10 @@ public class ExamCalendarDateServiceImpl implements ExamCalendarDateService {
     @Override
     public Page<RkExamQuestionPageVO> getCalendarDateQuestions(Long calendarId, Long pageNum, Long pageSize) {
         return questionService.pageQuestions(calendarId, pageNum, pageSize);
+    }
+
+    @Override
+    public Page<RkExamQuestionDetailPageVO> getCalendarDateQuestionDetail(Long calendarId, Long pageNum, Long pageSize) {
+        return questionService.getQuestionDetailPage(calendarId, pageNum, pageSize);
     }
 }

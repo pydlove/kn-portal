@@ -1,7 +1,9 @@
 package com.aiocloud.kn.portal.web.ruankao.service;
 
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarDateTaskVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarDateVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamCalendarQuestionRelVO;
+import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionDetailPageVO;
 import com.aiocloud.kn.portal.web.ruankao.vo.RkExamQuestionPageVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -89,4 +91,7 @@ public interface ExamCalendarDateService {
      */
     Page<RkExamQuestionPageVO> getCalendarDateQuestions(Long calendarId, Long pageNum, Long pageSize);
 
+    List<RkExamCalendarDateTaskVO> getTaskListByDateRange(String calendarDateStr);
+
+    Page<RkExamQuestionDetailPageVO> getCalendarDateQuestionDetail(Long calendarId, Long pageNum, Long pageSize);
 }
