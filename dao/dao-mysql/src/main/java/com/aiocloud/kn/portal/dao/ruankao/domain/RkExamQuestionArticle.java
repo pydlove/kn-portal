@@ -23,5 +23,5 @@ public class RkExamQuestionArticle extends BaseDomain {
 
     private String title;
 
-    private Integer content;
+    private String content;
 }
