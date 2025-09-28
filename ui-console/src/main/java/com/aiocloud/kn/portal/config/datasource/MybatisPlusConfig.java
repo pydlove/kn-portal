@@ -3,7 +3,6 @@ package com.aiocloud.kn.portal.config.datasource;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.DynamicTableNameInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -41,11 +40,6 @@ public class MybatisPlusConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
 
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-
-        // 动态表名插件
-        DynamicTableNameInnerInterceptor dynamicTableNameInnerInterceptor = new DynamicTableNameInnerInterceptor();
-        dynamicTableNameInnerInterceptor.setTableNameHandler(new DynamicTableNameParser());
-        interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor);
 
         // 添加乐观锁插件
         interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());

@@ -1,6 +1,6 @@
 package com.aiocloud.kn.portal.config.auth;
 
-import com.aiocloud.kn.portal.base.common.CommonResponse;
+import com.aiocloud.common.base.common.CommonResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.aiocloud.kn.portal.base.exception.ErrorCode.UNAUTHORIZED;
+import static com.aiocloud.common.base.exception.ErrorCode.UNAUTHORIZED;
+
 
 /**
  *

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiocloud.kn.portal.dao.ruankao.mapper.RkMenuMapper">
+    <resultMap id="BaseResultMap" type="com.aiocloud.kn.portal.dao.ruankao.domain.RkMenu">
+            <id property="id" column="id" />
+            <result property="menuName" column="menu_name" />
+            <result property="menuDesc" column="menu_desc" />
+            <result property="menuUrl" column="menu_url" />
+            <result property="parentId" column="parent_id" />
+            <result property="menuLevel" column="menu_level" />
+            <result property="orderNo" column="order_no" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="version" column="version" />
+            <result property="createUid" column="create_uid" />
+            <result property="updateUid" column="update_uid" />
+            <result property="deletedStatus" column="deleted_status" />
+            <result property="enabledStatus" column="enabled_status" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,menu_name,menu_desc,parent_id,menu_level,order_no,
+        create_time,update_time,version,create_uid,update_uid,
+        deleted_status,enabled_status, menu_url
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rk_menu
+        where  id = #{id} 
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rk_menu
+        where  deleted_status = 0 and enabled_status = 1
+        order by order_no asc
+    </select>
+
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from rk_menu
+        where  deleted_status = 0 and enabled_status = 1 and parent_id = #{parentId}
+        order by order_no asc
+    </select>
+
+    <select id="selectRootMenu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rk_menu
+        where deleted_status = 0 and enabled_status = 1
+        and id in
+        <foreach item="menuId" collection="menuIds" separator="," open="(" close=")">
+            #{menuId}
+        </foreach>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from rk_menu
+        where  id = #{id} 
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkMenu" useGeneratedKeys="true">
+        insert into rk_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="menuName != null">menu_name,</if>
+                <if test="menuDesc != null">menu_desc,</if>
+                <if test="parentId != null">parent_id,</if>
+                <if test="menuLevel != null">menu_level,</if>
+                <if test="orderNo != null">order_no,</if>
+                <if test="createTime != null">create_time,</if>
+                <if test="updateTime != null">update_time,</if>
+                <if test="version != null">version,</if>
+                <if test="createUid != null">create_uid,</if>
+                <if test="updateUid != null">update_uid,</if>
+                <if test="deletedStatus != null">deleted_status,</if>
+                <if test="enabledStatus != null">enabled_status,</if>
+                <if test="menuUrl != null">menu_url,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="menuName != null">#{menuName},</if>
+                <if test="menuDesc != null">#{menuDesc},</if>
+                <if test="parentId != null">#{parentId},</if>
+                <if test="menuLevel != null">#{menuLevel},</if>
+                <if test="orderNo != null">#{orderNo},</if>
+                <if test="createTime != null">#{createTime},</if>
+                <if test="updateTime != null">#{updateTime},</if>
+                <if test="version != null">#{version},</if>
+                <if test="createUid != null">#{createUid},</if>
+                <if test="updateUid != null">#{updateUid},</if>
+                <if test="deletedStatus != null">#{deletedStatus},</if>
+                <if test="enabledStatus != null">#{enabledStatus},</if>
+                <if test="menuUrl != null">#{menuUrl},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkMenu">
+        update rk_menu
+        <set>
+                <if test="menuName != null">
+                    menu_name = #{menuName},
+                </if>
+                <if test="menuDesc != null">
+                    menu_desc = #{menuDesc},
+                </if>
+                <if test="parentId != null">
+                    parent_id = #{parentId},
+                </if>
+                <if test="menuLevel != null">
+                    menu_level = #{menuLevel},
+                </if>
+                <if test="orderNo != null">
+                    order_no = #{orderNo},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime},
+                </if>
+                <if test="updateTime != null">
+                    update_time = #{updateTime},
+                </if>
+                <if test="version != null">
+                    version = #{version},
+                </if>
+                <if test="createUid != null">
+                    create_uid = #{createUid},
+                </if>
+                <if test="updateUid != null">
+                    update_uid = #{updateUid},
+                </if>
+                <if test="deletedStatus != null">
+                    deleted_status = #{deletedStatus},
+                </if>
+                <if test="enabledStatus != null">
+                    enabled_status = #{enabledStatus},
+                </if>
+                <if test="menuUrl != null">
+                    menu_url = #{menuUrl},
+                </if>
+        </set>
+        where   id = #{id} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkMenu">
+        update rk_menu
+        set 
+            menu_name =  #{menuName},
+            menu_desc =  #{menuDesc},
+            parent_id =  #{parentId},
+            menu_level =  #{menuLevel},
+            order_no =  #{orderNo},
+            create_time =  #{createTime},
+            update_time =  #{updateTime},
+            version =  #{version},
+            create_uid =  #{createUid},
+            update_uid =  #{updateUid},
+            deleted_status =  #{deletedStatus},
+            enabled_status =  #{enabledStatus},
+            menu_url =  #{menuUrl}
+        where   id = #{id}
+    </update>
+</mapper>

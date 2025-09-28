@@ -1,6 +1,6 @@
 package com.aiocloud.kn.portal.config.datasource;
 
-import com.aiocloud.kn.portal.enums.DeletedStatusEnum;
+import com.aiocloud.common.enums.DeletedStatusEnum;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;

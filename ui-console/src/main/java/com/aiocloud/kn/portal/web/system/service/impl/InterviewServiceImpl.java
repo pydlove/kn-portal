@@ -5,11 +5,8 @@ import com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplate;
 import com.aiocloud.kn.portal.dao.system.dto.KnInterviewQuestionsDTO;
 import com.aiocloud.kn.portal.dao.system.mapper.KnInterviewQuestionsMapper;
 import com.aiocloud.kn.portal.dao.system.mapper.KnInterviewTemplateMapper;
-import com.aiocloud.kn.portal.enums.InterviewLevelEnum;
 import com.aiocloud.kn.portal.web.system.service.InterviewService;
-import com.aiocloud.kn.portal.web.system.vo.KnInterviewQuestionsVO;
 import com.aiocloud.kn.portal.web.system.vo.KnInterviewVO;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

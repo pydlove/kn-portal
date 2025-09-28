@@ -1,7 +1,7 @@
 package com.aiocloud.kn.portal.config.datasource;
 
 import cn.hutool.core.util.BooleanUtil;
-import com.aiocloud.kn.portal.utils.DruidPasswordEncryptorUtil;
+import com.aiocloud.common.utils.DruidPasswordEncryptorUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

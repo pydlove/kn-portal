@@ -1,15 +1,15 @@
 package com.aiocloud.kn.portal;
 
-import com.aiocloud.kn.portal.bean.BaseBeanContainer;
-import com.aiocloud.kn.portal.bean.GlobalBeanFactory;
+
+import com.aiocloud.common.bean.BaseBeanContainer;
+import com.aiocloud.common.bean.GlobalBeanFactory;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import javax.annotation.PostConstruct;
 
 /**
  *

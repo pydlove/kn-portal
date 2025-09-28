@@ -2,9 +2,9 @@ package com.aiocloud.kn.portal.web.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.aiocloud.common.enums.DeletedStatusEnum;
 import com.aiocloud.kn.portal.dao.system.domain.KnMenu;
 import com.aiocloud.kn.portal.dao.system.mapper.KnMenuMapper;
-import com.aiocloud.kn.portal.enums.DeletedStatusEnum;
 import com.aiocloud.kn.portal.web.system.service.MenusService;
 import com.aiocloud.kn.portal.web.system.vo.IdNameVO;
 import com.aiocloud.kn.portal.web.system.vo.KnMenuVO;

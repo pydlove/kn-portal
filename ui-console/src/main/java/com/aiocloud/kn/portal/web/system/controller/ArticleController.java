@@ -1,6 +1,6 @@
 package com.aiocloud.kn.portal.web.system.controller;
 
-import com.aiocloud.kn.portal.base.common.CommonResponse;
+import com.aiocloud.common.base.common.CommonResponse;
 import com.aiocloud.kn.portal.web.system.service.ArticleService;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleMenuVO;
 import com.aiocloud.kn.portal.web.system.vo.KnArticleVO;

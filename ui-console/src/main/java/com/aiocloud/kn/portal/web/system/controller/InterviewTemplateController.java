@@ -1,6 +1,6 @@
 package com.aiocloud.kn.portal.web.system.controller;
 
-import com.aiocloud.kn.portal.base.common.CommonResponse;
+import com.aiocloud.common.base.common.CommonResponse;
 import com.aiocloud.kn.portal.web.system.service.InterviewTemplateService;
 import com.aiocloud.kn.portal.web.system.vo.IdNameVO;
 import com.aiocloud.kn.portal.web.system.vo.KnInterviewTemplateVO;
@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping("/template")
 public class InterviewTemplateController {
 
-    private final InterviewTemplateService InterviewTemplateService;
+    private final InterviewTemplateService interviewTemplateService;
 
     @GetMapping("/page")
     public CommonResponse<Page<KnInterviewTemplateVO>> getInterviewTemplatePage(
@@ -40,27 +40,26 @@ public class InterviewTemplateController {
             @RequestParam() Integer pageNum,
             @RequestParam() Integer pageSize
     ) {
-        return new CommonResponse<>(
-                InterviewTemplateService.getInterviewTemplatePage(templateName, pageNum, pageSize));
+        return new CommonResponse<>(interviewTemplateService.getInterviewTemplatePage(templateName, pageNum, pageSize));
     }
 
     @PostMapping("/create")
     public CommonResponse<KnInterviewTemplateVO> create(@RequestBody KnInterviewTemplateVO InterviewTemplateVO) {
-        return new CommonResponse<>(InterviewTemplateService.create(InterviewTemplateVO));
+        return new CommonResponse<>(interviewTemplateService.create(InterviewTemplateVO));
     }
 
     @PutMapping("/update/{id}")
     public CommonResponse<KnInterviewTemplateVO> update(@PathVariable Long id, @RequestBody KnInterviewTemplateVO InterviewTemplateVO) {
-        return new CommonResponse<>(InterviewTemplateService.update(id, InterviewTemplateVO));
+        return new CommonResponse<>(interviewTemplateService.update(id, InterviewTemplateVO));
     }
 
     @DeleteMapping("/delete/{id}")
     public CommonResponse<Long> delete(@PathVariable Long id) {
-        return new CommonResponse<>(InterviewTemplateService.delete(id));
+        return new CommonResponse<>(interviewTemplateService.delete(id));
     }
 
     @GetMapping("/all")
     public CommonResponse<List<IdNameVO>> getAllTemplates() {
-        return new CommonResponse<>(InterviewTemplateService.getAllTemplates());
+        return new CommonResponse<>(interviewTemplateService.getAllTemplates());
     }
 }

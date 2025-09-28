@@ -21,6 +21,7 @@
         <module>dao</module>
         <module>common</module>
         <module>schedule</module>
+        <module>ui-ruankao</module>
     </modules>
 
     <properties>
@@ -51,4 +52,5 @@
             <version>4.13.1</version>
         </dependency>
     </dependencies>
+
 </project>

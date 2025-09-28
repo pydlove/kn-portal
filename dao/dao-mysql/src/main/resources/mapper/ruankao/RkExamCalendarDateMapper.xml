@@ -30,6 +30,10 @@
         from rk_exam_calendar_date
         where id = #{id}
     </select>
+    <select id="selectTaskDates" resultType="java.time.LocalDate">
+        SELECT DISTINCT DATE(t.calendar_date) FROM rk_exam_calendar_date t
+        WHERE t.calendar_date >= #{startDate} AND t.calendar_date <![CDATA[<= #{endDate}]]>
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete

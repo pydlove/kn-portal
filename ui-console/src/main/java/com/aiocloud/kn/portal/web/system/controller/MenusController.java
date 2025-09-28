@@ -1,6 +1,6 @@
 package com.aiocloud.kn.portal.web.system.controller;
 
-import com.aiocloud.kn.portal.base.common.CommonResponse;
+import com.aiocloud.common.base.common.CommonResponse;
 import com.aiocloud.kn.portal.web.system.service.MenusService;
 import com.aiocloud.kn.portal.web.system.vo.IdNameVO;
 import com.aiocloud.kn.portal.web.system.vo.KnMenuVO;

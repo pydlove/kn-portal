@@ -1,8 +1,7 @@
 package com.aiocloud.kn.portal.web.system.controller;
 
-import com.aiocloud.kn.portal.base.common.CommonResponse;
+import com.aiocloud.common.base.common.CommonResponse;
 import com.aiocloud.kn.portal.web.system.service.InterviewTemplateQuestionRelService;
-import com.aiocloud.kn.portal.web.system.vo.KnInterviewQuestionsVO;
 import com.aiocloud.kn.portal.web.system.vo.KnInterviewTemplateQuestionRelVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;

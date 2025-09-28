@@ -4,6 +4,10 @@ import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamCalendarDate;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @description: RkExamCalendarDateMapper.java
@@ -26,4 +30,5 @@ public interface RkExamCalendarDateMapper extends BaseMapper<RkExamCalendarDate>
 
     int updateByPrimaryKey(RkExamCalendarDate record);
 
+    List<LocalDate> selectTaskDates(LocalDate startDate, LocalDate endDate);
 }

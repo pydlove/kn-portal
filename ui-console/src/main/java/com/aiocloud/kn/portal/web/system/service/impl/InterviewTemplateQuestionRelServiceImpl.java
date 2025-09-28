@@ -7,7 +7,6 @@ import com.aiocloud.kn.portal.dao.system.dto.KnInterviewTemplateQuestionRelDTO;
 import com.aiocloud.kn.portal.dao.system.mapper.KnInterviewTemplateQuestionRelMapper;
 import com.aiocloud.kn.portal.web.system.service.InterviewTemplateQuestionRelService;
 import com.aiocloud.kn.portal.web.system.vo.KnInterviewTemplateQuestionRelVO;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,29 +1,19 @@
 package com.aiocloud.kn.portal.web.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.aiocloud.kn.portal.dao.system.domain.KnArticle;
+import com.aiocloud.common.enums.DeletedStatusEnum;
 import com.aiocloud.kn.portal.dao.system.domain.KnInterviewQuestions;
-import com.aiocloud.kn.portal.dao.system.domain.KnInterviewTemplate;
-import com.aiocloud.kn.portal.dao.system.domain.KnMenu;
 import com.aiocloud.kn.portal.dao.system.mapper.KnInterviewQuestionsMapper;
 import com.aiocloud.kn.portal.dao.system.mapper.KnInterviewTemplateMapper;
-import com.aiocloud.kn.portal.enums.DeletedStatusEnum;
 import com.aiocloud.kn.portal.web.system.service.InterviewQuestionsService;
-import com.aiocloud.kn.portal.web.system.vo.KnArticleVO;
 import com.aiocloud.kn.portal.web.system.vo.KnInterviewQuestionsVO;
-import com.aiocloud.kn.portal.web.system.vo.KnMenuVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
