@@ -79,7 +79,7 @@
             <if test="scoringCriteria != null">#{scoringCriteria},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective"
+    <update id="updateByQuestionId"
             parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay">
         update rk_exam_question_essay
         <set>
@@ -101,9 +101,6 @@
             <if test="deletedStatus != null">
                 deleted_status = #{deletedStatus},
             </if>
-            <if test="questionId != null">
-                question_id = #{questionId},
-            </if>
             <if test="requirement != null">
                 requirement = #{requirement},
             </if>
@@ -120,7 +117,7 @@
                 scoring_criteria = #{scoringCriteria},
             </if>
         </set>
-        where id = #{id}
+        where question_id = #{questionId}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionEssay">
         update rk_exam_question_essay

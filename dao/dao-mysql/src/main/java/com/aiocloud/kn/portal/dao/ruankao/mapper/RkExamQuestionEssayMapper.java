@@ -23,7 +23,7 @@ public interface RkExamQuestionEssayMapper extends BaseMapper<RkExamQuestionEssa
 
     RkExamQuestionEssay selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(RkExamQuestionEssay record);
+    int updateByQuestionId(RkExamQuestionEssay record);
 
     int updateByPrimaryKey(RkExamQuestionEssay record);
 

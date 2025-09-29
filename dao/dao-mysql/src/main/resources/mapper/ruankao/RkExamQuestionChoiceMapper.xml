@@ -76,7 +76,7 @@
             <if test="analysis != null">#{analysis},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective"
+    <update id="updateByQuestionId"
             parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice">
         update rk_exam_question_choice
         <set>
@@ -98,9 +98,6 @@
             <if test="deletedStatus != null">
                 deleted_status = #{deletedStatus},
             </if>
-            <if test="questionId != null">
-                question_id = #{questionId},
-            </if>
             <if test="choiceType != null">
                 choice_type = #{choiceType},
             </if>
@@ -114,7 +111,7 @@
                 analysis = #{analysis},
             </if>
         </set>
-        where id = #{id}
+        where question_id = #{questionId}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionChoice">
         update rk_exam_question_choice

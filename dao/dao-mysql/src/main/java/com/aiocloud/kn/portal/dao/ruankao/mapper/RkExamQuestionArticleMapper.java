@@ -1,7 +1,6 @@
 package com.aiocloud.kn.portal.dao.ruankao.mapper;
 
 import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionArticle;
-import com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionCase;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -24,7 +23,7 @@ public interface RkExamQuestionArticleMapper extends BaseMapper<RkExamQuestionAr
 
     RkExamQuestionArticle selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(RkExamQuestionArticle record);
+    int updateByQuestionId(RkExamQuestionArticle record);
 
     int updateByPrimaryKey(RkExamQuestionArticle record);
 

@@ -142,25 +142,25 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public RkExamQuestionChoice updateChoiceQuestionDetail(RkExamQuestionChoice choiceDetail) {
-        rkExamQuestionChoiceMapper.updateByPrimaryKeySelective(choiceDetail);
+        rkExamQuestionChoiceMapper.updateByQuestionId(choiceDetail);
         return choiceDetail;
     }
 
     @Override
     public RkExamQuestionCase updateCaseQuestionDetail(RkExamQuestionCase caseDetail) {
-        rkExamQuestionCaseMapper.updateByPrimaryKeySelective(caseDetail);
+        rkExamQuestionCaseMapper.updateByQuestionId(caseDetail);
         return caseDetail;
     }
 
     @Override
     public RkExamQuestionEssay updateEssayQuestionDetail(RkExamQuestionEssay essayDetail) {
-        rkExamQuestionEssayMapper.updateByPrimaryKeySelective(essayDetail);
+        rkExamQuestionEssayMapper.updateByQuestionId(essayDetail);
         return essayDetail;
     }
 
     @Override
     public RkExamQuestionArticle updateArticleQuestionDetail(RkExamQuestionArticle articleDetail) {
-        rkExamQuestionArticleMapper.updateByPrimaryKeySelective(articleDetail);
+        rkExamQuestionArticleMapper.updateByQuestionId(articleDetail);
         return articleDetail;
     }
 
@@ -184,21 +184,21 @@ public class QuestionServiceImpl implements QuestionService {
                 RkExamQuestionChoice choice = rkExamQuestionChoiceMapper.selectByQuestionId(id);
                 if (choice != null) {
                     choice.setDeletedStatus(1);
-                    rkExamQuestionChoiceMapper.updateByPrimaryKeySelective(choice);
+                    rkExamQuestionChoiceMapper.updateByQuestionId(choice);
                 }
                 break;
             case CASE:
                 RkExamQuestionCase caseDetail = rkExamQuestionCaseMapper.selectByQuestionId(id);
                 if (caseDetail != null) {
                     caseDetail.setDeletedStatus(1);
-                    rkExamQuestionCaseMapper.updateByPrimaryKeySelective(caseDetail);
+                    rkExamQuestionCaseMapper.updateByQuestionId(caseDetail);
                 }
                 break;
             case ESSAY:
                 RkExamQuestionEssay essay = rkExamQuestionEssayMapper.selectByQuestionId(id);
                 if (essay != null) {
                     essay.setDeletedStatus(1);
-                    rkExamQuestionEssayMapper.updateByPrimaryKeySelective(essay);
+                    rkExamQuestionEssayMapper.updateByQuestionId(essay);
                 }
                 break;
         }

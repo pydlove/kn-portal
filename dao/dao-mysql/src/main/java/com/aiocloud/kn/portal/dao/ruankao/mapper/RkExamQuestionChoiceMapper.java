@@ -23,7 +23,7 @@ public interface RkExamQuestionChoiceMapper extends BaseMapper<RkExamQuestionCho
 
     RkExamQuestionChoice selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(RkExamQuestionChoice record);
+    int updateByQuestionId(RkExamQuestionChoice record);
 
     int updateByPrimaryKey(RkExamQuestionChoice record);
 

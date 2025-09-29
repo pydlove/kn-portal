@@ -72,7 +72,7 @@
             <if test="referenceAnswer != null">#{referenceAnswer},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective"
+    <update id="updateByQuestionId"
             parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionCase">
         update rk_exam_question_case
         <set>
@@ -94,9 +94,6 @@
             <if test="deletedStatus != null">
                 deleted_status = #{deletedStatus},
             </if>
-            <if test="questionId != null">
-                question_id = #{questionId},
-            </if>
             <if test="background != null">
                 background = #{background},
             </if>
@@ -107,7 +104,7 @@
                 reference_answer = #{referenceAnswer},
             </if>
         </set>
-        where id = #{id}
+        where question_id = #{questionId}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.aiocloud.kn.portal.dao.ruankao.domain.RkExamQuestionCase">
         update rk_exam_question_case
