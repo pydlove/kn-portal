@@ -117,6 +117,8 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     public String getVerificationCode(SendCodeVO sendCodeVO) {
 
         String key = sendCodeVO.getKey();
+        log.info("key: {}, start get verification code", key);
+
         if (StrUtil.isEmpty(key)) {
             return null;
         }
@@ -125,6 +127,8 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         if (entry == null) {
             return null;
         }
+
+        log.info("key: {}, end get verification code: {}", key, entry.getCode());
 
         return entry.getCode();
     }

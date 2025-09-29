@@ -70,7 +70,7 @@ public class WechatController {
             String replyText;
             String content = inMessage.getContent();
             if (content.startsWith("验证码")) {
-                String key = content.substring(2);
+                String key = content.substring(3);
                 String verificationCode = userService.getAndCheckVerificationCode(new SendCodeVO(key));
                 if (StrUtil.isEmpty(verificationCode)) {
                     replyText = "验证码不存在或者已经失效，请在注册页面点击刷新";
